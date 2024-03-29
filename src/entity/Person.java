@@ -91,9 +91,9 @@ public abstract class Person {
 
     // methods
     
-    /**
-     * Logs the person in.
-     */
-    public abstract void login();
+    // /**
+    //  * Logs the person in.
+    //  */
+    // public abstract void login();
     
 }

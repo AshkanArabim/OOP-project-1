@@ -14,10 +14,10 @@ public class Admin extends Person {
 
     // methods
 
-    /**
-     * Logs in the admin.
-     */
-    public void login() {
-        System.out.println("Admin logging in");
-    }
+    // /**
+    //  * Logs in the admin.
+    //  */
+    // public void login() {
+    //     System.out.println("Admin logging in");
+    // }
 }
