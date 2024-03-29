@@ -1,7 +1,9 @@
 package entity;
 
+/**
+ * The user class is to maintain and manage data of customers.
+ */
 public class User extends Person {
-
     private double balance;
 
     private int carsPurchased;
