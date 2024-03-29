@@ -9,7 +9,8 @@ Docs are not added to github because they can be generated with the `javadoc -d 
 ## Adding JavaDoc
 Change directory with: `cd src`
 
-Then run command: `javadoc -private -version -author -d JavaDoc *.java`
+Then run command: `javadoc -private -version -author -d JavaDoc -sourcepath src entity/*.java vehicles/*.java *.java`
+
 
 The `-private` argument ensures the comments for private variables are generated.
 
