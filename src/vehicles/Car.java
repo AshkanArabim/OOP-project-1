@@ -15,7 +15,6 @@ public abstract class Car {
      * Type of car may be Sedan, Pickup, Hatchback, or SUV
      */
     private String type;
-
     
     /**
      * Model of car.
@@ -89,7 +88,6 @@ public abstract class Car {
         "Cars Available: " + getVehiclesRemaining()
         ; }
     
-
     // getters and setters
 
     public int getCarID() {
