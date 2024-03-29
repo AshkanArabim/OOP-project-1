@@ -63,6 +63,20 @@ public class RunShop {
             
             // clearing before error messages so user has a chance to see them
             Utils.clear();
+
+            // Handle admin login
+            // For now I'm assuming the admin will use "admin" and "admin" as 
+            // both the username and password.
+            // 
+            // Also assuming the adming has the following attributes:
+            // - Firstname: Admin
+            // - Lastname: Adminson
+            if (username.equals("admin") && password.equals("admin")) {
+                currentPerson = new Admin(0, "Admin", "Adminson", username, password);
+                adminLogin();
+                currentPerson = null;
+                continue;
+            }
             
             User selected_user = users.getOrDefault(username, null);
             if (
@@ -78,8 +92,30 @@ public class RunShop {
                 // if they don't match
                 System.out.println("Username or password incorrect.");
             }
+        }
+    }
 
-            // TODO: handle admin login
+    private static void adminLogin() {
+        while (true) {
+            // print available options
+            Utils.line();
+            System.out.println("[ADMIN MODE]");
+            System.out.println("Options:");
+            System.out.println("1 - Display all users");
+            System.out.println("0 - Sign out");
+
+            // get input
+            int command = Utils.inputOneInt("Enter command: ");
+
+            Utils.clear();
+
+            if (command == 1) {
+                displayAllUsers();
+            } else if (command == 0) {
+                return;
+            } else {
+                System.out.println("Invalid command");
+            }
         }
     }
 
@@ -92,7 +128,7 @@ public class RunShop {
             System.out.println("2 - Filter Cars (used / new)");
             System.out.println("3 - Purchase a car");
             System.out.println("4 - View Tickets");
-            System.out.println("5 - Sign out");
+            System.out.println("0 - Sign out");
 
             // get input
             int command = Utils.inputOneInt("Enter command: ");
@@ -107,13 +143,23 @@ public class RunShop {
                 purchaseCar();
             } else if (command == 4) {
                 viewTickets();
-            } else if (command == 5) {
+            } else if (command == 0) {
                 // sign out
                 return;
             } else {
                 System.out.println("Invalid command");
             }
         }
+    }
+
+    private static void displayAllUsers() {
+        for (User user : users.values()) {
+            User.print(user);
+        }
+
+        System.out.println("");
+        System.out.println("Row content:");
+        System.out.println("[First \t Last \t Balance \t Cars purchased \t Is member? \t username]");
     }
 
     private static void displayAllCars() {
