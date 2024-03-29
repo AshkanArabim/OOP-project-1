@@ -12,9 +12,9 @@ public abstract class Car {
     private int carID;
 
     /**
-     * Car attribute to identify subclasses leveraging concept of polymorphism.
+     * Type of car may be Sedan, Pickup, Hatchback, or SUV
      */
-    private Car type;
+    private String type;
 
     
     /**
@@ -25,7 +25,7 @@ public abstract class Car {
     /**
      * Condition of car true means new, false means used.
      */
-    private boolean condition;
+    private boolean isNew;
     
     /**
      * Color of the car.
@@ -50,7 +50,7 @@ public abstract class Car {
     /**
      * Type of transmission is automatic if true manual otherwise.
      */
-    private boolean transmissionType;
+    private boolean isAutomatic;
     
     /**
      * VIN number for identification purposes.
@@ -73,7 +73,21 @@ public abstract class Car {
      * @return A string description of all attributes.
      */
     @Override
-    public String toString() {return "";}
+    public String toString() {
+        return 
+        "ID: " + getCarID() + "\n" +
+        "Car Type: " + getType() + "\n" +
+        "Model: " + getModel() + "\n" + 
+        "Condition: " + (isNew() ? "New" : "Used") + "\n" +
+        "Color: " + getColor() + "\n" +
+        "Capacity: " + getCapacity() + "\n" +
+        "Mileage: " + getMileage() + "\n" + 
+        "Fuel Type: " + getFuelType() + "\n" + 
+        "Transmission: " + (isAutomatic() ? "Automatic" : "Manual") + "\n" +
+        "VIN: " + getVin() + "\n" +
+        "Price: " + getPrice() + "\n" + 
+        "Cars Available: " + getVehiclesRemaining()
+        ; }
     
 
     // getters and setters
@@ -86,11 +100,11 @@ public abstract class Car {
         this.carID = carID;
     }
     
-    public Car getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Car type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -102,12 +116,12 @@ public abstract class Car {
         this.model = model;
     }
 
-    public boolean isCondition() {
-        return condition;
+    public boolean isNew() {
+        return isNew;
     }
 
-    public void setCondition(boolean condition) {
-        this.condition = condition;
+    public void setNew(boolean condition) {
+        this.isNew = condition;
     }
 
     public String getColor() {
@@ -142,12 +156,12 @@ public abstract class Car {
         this.fuelType = fuelType;
     }
 
-    public boolean isTransmissionType() {
-        return transmissionType;
+    public boolean isAutomatic() {
+        return isAutomatic;
     }
 
-    public void setTransmissionType(boolean transmissionType) {
-        this.transmissionType = transmissionType;
+    public void setAutomatic(boolean transmissionType) {
+        this.isAutomatic = transmissionType;
     }
 
     public String getVin() {
