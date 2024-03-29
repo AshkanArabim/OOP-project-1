@@ -1,18 +1,30 @@
 package entity;
 
+/**
+ * The user class is to maintain and manage data of customers.
+ */
 public class User extends Person {
 
+    /**
+     * Username of customer.
+     */
     private String userName;
 
+    /**
+     * Password of customer.
+     */
     private String password;
 
+    /**
+     * Allows users to log in.
+     */
     @Override
     public void login() {
-        System.out.println("Logging in");
+        System.out.println("User logging in");
     }
 
     // getter & setters
-
+    
     public String getUserName() {
         return userName;
     }
