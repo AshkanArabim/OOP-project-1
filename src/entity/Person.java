@@ -18,11 +18,18 @@ public abstract class Person {
     // private String dateOfBirth;
     
     private String emailAddress;
-    
-    /**
-     * To be implemented in subclasses.
-     */
-    public abstract void login();
+
+    // constructor
+
+    public Person (
+        int id, String firstName, String lastName, String username, String password
+    ) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+    }
 
     // getter & setters
 
@@ -81,5 +88,12 @@ public abstract class Person {
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
+
+    // methods
+    
+    /**
+     * Logs the person in.
+     */
+    public abstract void login();
     
 }

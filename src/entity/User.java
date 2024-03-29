@@ -8,6 +8,18 @@ public class User extends Person {
 
     private boolean isMember;
 
+    // constructor
+
+    public User (
+        int id, String firstName, String lastName, String username, String password,
+        double balance, int carsPurchased, boolean isMember
+    ) {
+        super(id, firstName, lastName, username, password);
+        this.balance = balance;
+        this.carsPurchased = carsPurchased;
+        this.isMember = isMember;
+    }
+
     // getters & setters
 
     public double getBalance() {
