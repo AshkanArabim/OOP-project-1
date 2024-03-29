@@ -2,61 +2,71 @@ package vehicles;
 /**
  * Car class that describes the state of a car.
  */
-public class Car {
+public abstract class Car {
+
+    // attributes
+
     /**
      * Car ID number used for shop identification purposes.
      */
     private int carID;
 
     /**
+     * Car attribute to identify subclasses leveraging concept of polymorphism.
+     */
+    private Car type;
+
+    
+    /**
      * Model of car.
      */
     private String model;
-
+    
     /**
      * Condition of car true means new, false means used.
      */
     private boolean condition;
-
+    
     /**
      * Color of the car.
      */
     private String color;
-
+    
     /**
      * Refers to the number of seats.
      */
     private int capacity;
-
+    
     /**
      * The number of miles on the car.
      */
     private int mileage;
-
+    
     /**
      * The type of fuel the car takes, may be Hybrid, Diesel, Electric, or Gasoline.
      */
     private String fuelType;
-
+    
     /**
      * Type of transmission is automatic if true manual otherwise.
      */
     private boolean transmissionType;
-
+    
     /**
      * VIN number for identification purposes.
      */
     private String vin;
-
+    
     /**
      * Price of the car.
      */
     private double price;
-
+    
     /**
      *  Used to determine if the vehicle is available for purchase.
      */
-    private boolean isAvailable;
+    private int vehiclesRemaining;
+    
     
     /**
      * Provides a description of a specific instance of a car.
@@ -64,13 +74,24 @@ public class Car {
      */
     @Override
     public String toString() {return "";}
+    
+
+    // getters and setters
 
     public int getCarID() {
         return carID;
     }
-
+    
     public void setCarID(int carID) {
         this.carID = carID;
+    }
+    
+    public Car getType() {
+        return type;
+    }
+
+    public void setType(Car type) {
+        this.type = type;
     }
 
     public String getModel() {
@@ -145,12 +166,12 @@ public class Car {
         this.price = price;
     }
 
-    public boolean isAvailable() {
-        return isAvailable;
+    public int getVehiclesRemaining() {
+        return vehiclesRemaining;
     }
 
-    public void setAvailable(boolean isAvailable) {
-        this.isAvailable = isAvailable;
+    public void setVehiclesRemaining(int vehiclesRemaining) {
+        this.vehiclesRemaining = vehiclesRemaining;
     }
     
 }
