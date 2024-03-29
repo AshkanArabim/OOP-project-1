@@ -5,54 +5,74 @@ package entity;
  */
 public abstract class Person {
 
-    private String name;
+    private String username;
 
-    private int idNumber;
+    private String password;
 
-    private String dateOfBirth;
+    private String firstName;
+
+    private String lastName;
+
+    private int id;
+
+    // private String dateOfBirth;
     
-    private int age;
-
     private String emailAddress;
-
-    private double balance;
     
     /**
      * To be implemented in subclasses.
      */
     public abstract void login();
 
-    public String getName() {
-        return name;
+    // getter & setters
+
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public int getIdNumber() {
-        return idNumber;
+        return id;
     }
 
-    public void setIdNumber(int idNumber) {
-        this.idNumber = idNumber;
+    public void setIdNumber(int id) {
+        this.id = id;
     }
 
-    public String getDateOfBirth() {
-        return dateOfBirth;
-    }
+    // public String getDateOfBirth() {
+    //     return dateOfBirth;
+    // }
 
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
+    // public void setDateOfBirth(String dateOfBirth) {
+    //     this.dateOfBirth = dateOfBirth;
+    // }
 
     public String getEmailAddress() {
         return emailAddress;
@@ -60,14 +80,6 @@ public abstract class Person {
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
     }
     
 }

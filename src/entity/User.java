@@ -2,34 +2,44 @@ package entity;
 
 public class User extends Person {
 
-    private String userName;
+    private double balance;
 
-    private String password;
+    private int carsPurchased;
+
+    private boolean isMember;
+
+    // getters & setters
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public double getCarsPurchased() {
+        return carsPurchased;
+    }
+
+    public void setCarsPurchased(int carsPurchased) {
+        this.carsPurchased = carsPurchased;
+    }
+
+    public boolean getIsMember() {
+        return isMember;
+    }
+
+    public void setIsMember(boolean isMember) {
+        this.isMember = isMember;
+    }
+
+    // methods
 
     @Override
     public void login() {
         System.out.println("Logging in");
     }
-
-    // getter & setters
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    // methods
 
     public void viewCars() {
     }
@@ -42,12 +52,4 @@ public class User extends Person {
 
     public void viewTicket() {
     }
-
-    public void applyForMembership() {
-    }
-
-    public boolean isMember() {
-        return true;
-    }
-
 }
