@@ -5,9 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import vehicles.Car;
-import entity.User;
-import UI.Utils;
-import UI.UserView;
+import entity.*;
+import UI.*;
 
 /**
  * This is the main runner class.
@@ -22,6 +21,8 @@ public class RunShop {
 
     private static ArrayList<Car> cars = new ArrayList<Car>();
 
+    private static Person currentPerson;
+
     // Using a hashmap to quickly match the entered username (in login prompt)
     // to a valid user in the database. Awesome efficiency.
     private static HashMap<String, User> users = new HashMap<String, User>();
@@ -34,7 +35,7 @@ public class RunShop {
     public static void main(String[] args) {
 
         // debug: current working dir
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
+        // System.out.println("Working Directory = " + System.getProperty("user.dir"));
         
         loadUsers("../data/user_data.csv");
         loadCars("../data/car_data.csv");
@@ -49,8 +50,7 @@ public class RunShop {
 
         // loop so it prompts again when user signs out.
         while (true) {
-            System.out.println();
-            System.out.println("--------------------------------------");
+            Utils.line();
             System.out.println("Welcome to Mine Cars!");
             System.out.println();
     
@@ -69,8 +69,10 @@ public class RunShop {
                 selected_user.getPassword().equals(password)
             ) {
                 // if username + password match
-                UserView ui = new UserView(selected_user);
-                ui.run();
+                currentPerson = selected_user;
+                userLogin();
+                currentPerson = null; 
+                System.out.println("Logged out.");
             } else {
                 // if they don't match
                 System.out.println("Username or password incorrect.");
@@ -78,6 +80,55 @@ public class RunShop {
 
             // TODO: handle admin login
         }
+    }
+
+    private static void userLogin() {
+        while (true) {
+            // print available options
+            Utils.line();
+            System.out.println("Options:");
+            System.out.println("1 - Display all cars");
+            System.out.println("2 - Filter Cars (used / new)");
+            System.out.println("3 - Purchase a car");
+            System.out.println("4 - View Tickets");
+            System.out.println("5 - Sign out");
+
+            // get input
+            int command = Utils.inputOneInt("Enter command: ");
+
+            Utils.clear();
+
+            if (command == 1) {
+                displayAllCars();
+            } else if (command == 2) {
+                filterCars();
+            } else if (command == 3) {
+                purchaseCar();
+            } else if (command == 4) {
+                viewTickets();
+            } else if (command == 5) {
+                // sign out
+                return;
+            } else {
+                System.out.println("Invalid command");
+            }
+        }
+    }
+
+    private static void displayAllCars() {
+        System.out.println("All cars!");
+    }
+
+    private static void filterCars() {
+        System.out.println("Filter cars!");
+    }
+
+    private static void purchaseCar() {
+        System.out.println("Purchase car!");
+    }
+
+    private static void viewTickets() {
+        System.out.println("View tickets!");
     }
 
     private static void loadUsers (String sourceCSV) {

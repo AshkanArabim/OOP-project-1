@@ -9,6 +9,12 @@ import java.util.Scanner;
  * Note that this class is not instantiated. Use the methods directly.
  */
 public class Utils {
+    public static void line() {
+        System.out.println("");
+        System.out.println("--------------------------------------");
+        System.out.println("");
+    }
+
     public static void clear() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -18,10 +24,17 @@ public class Utils {
         System.out.print(prompt);
         
         Scanner s = new Scanner(System.in);
-        String word = s.next();
         // Not closing s because doing so will prevent me from reading System.in
         // ever again. 
 
-        return word;
+        return s.next();
+    }
+
+    public static int inputOneInt(String prompt) {
+        System.out.print(prompt);
+        
+        Scanner s = new Scanner(System.in);
+
+        return s.nextInt();
     }
 }
