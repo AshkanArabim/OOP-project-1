@@ -1,4 +1,5 @@
 package vehicles;
+import UI.Utils;
 /**
  * Car class that describes the state of a car.
  */
@@ -73,8 +74,8 @@ public abstract class Car {
      */
     @Override
     public String toString() {
-        return 
-        "ID: " + getCarID() + "\t" +
+        Utils.line();
+        return "ID: " + getCarID() + "\t" +
         "Car Type: " + getType() + "\t" +
         "Model: " + getModel() + "\t" + 
         "Condition: " + (isNew() ? "New" : "Used") + "\t" +
