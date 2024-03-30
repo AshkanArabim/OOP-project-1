@@ -48,6 +48,19 @@ public class User extends Person {
         this.isMember = isMember;
     }
 
+    // static methods
+    public static void print(User u) {
+        System.out.println(
+            "" + u.getIdNumber() + "\t" +
+            u.getFirstName() + "\t" + 
+            u.getLastName() + "\t" + 
+            u.getBalance() + "\t" + 
+            u.getCarsPurchased() + "\t" + 
+            u.getIsMember() + "\t" + 
+            u.getUsername() + "\t"
+        );
+    }
+
     // methods
 
     // @Override
