@@ -4,11 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import vehicles.Car;
-import vehicles.Hatchback;
-import vehicles.Pickup;
-import vehicles.SUV;
-import vehicles.Sedan;
+import vehicles.*;
 import entity.*;
 import UI.*;
 
@@ -164,7 +160,9 @@ public class RunShop {
     }
 
     private static void displayAllCars() {
-        System.out.println("All cars!");
+        for (Car car : cars) {
+            System.out.println(car);
+        }
     }
 
     private static void filterCars() {
@@ -236,10 +234,10 @@ public class RunShop {
             while (csvCarScanner.hasNextLine()) {
                 String[] line = csvCarScanner.nextLine().split(",");
                 
-                //testing
-                for (String l : line) {
-                    System.out.print(l + " ");
-                }
+                // testing
+                // for (String l : line) {
+                //     System.out.print(l + " ");
+                // }
 
                 System.out.println();
                 Car car = carFactory(line);
@@ -251,7 +249,7 @@ public class RunShop {
             System.err.println("Cars csv file " + sourceCSV + " not found");
             System.exit(1);
         }
-
+        displayAllCars();
     }
 
     private static Car carFactory(String[] contents) {

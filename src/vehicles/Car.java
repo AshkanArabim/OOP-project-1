@@ -74,17 +74,17 @@ public abstract class Car {
     @Override
     public String toString() {
         return 
-        "ID: " + getCarID() + "\n" +
-        "Car Type: " + getType() + "\n" +
-        "Model: " + getModel() + "\n" + 
-        "Condition: " + (isNew() ? "New" : "Used") + "\n" +
-        "Color: " + getColor() + "\n" +
-        "Capacity: " + getCapacity() + "\n" +
-        "Mileage: " + getMileage() + "\n" + 
-        "Fuel Type: " + getFuelType() + "\n" + 
-        "Transmission: " + (isAutomatic() ? "Automatic" : "Manual") + "\n" +
-        "VIN: " + getVin() + "\n" +
-        "Price: " + getPrice() + "\n" + 
+        "ID: " + getCarID() + "\t" +
+        "Car Type: " + getType() + "\t" +
+        "Model: " + getModel() + "\t" + 
+        "Condition: " + (isNew() ? "New" : "Used") + "\t" +
+        "Color: " + getColor() + "\t" +
+        "Capacity: " + getCapacity() + "\t" +
+        "Mileage: " + getMileage() + "\t" + 
+        "Fuel Type: " + getFuelType() + "\t" + 
+        "Transmission: " + (isAutomatic() ? "Automatic" : "Manual") + "\t" +
+        "VIN: " + getVin() + "\t" +
+        "Price: " + getPrice() + "\t" + 
         "Cars Available: " + getVehiclesRemaining()
         ; }
     
