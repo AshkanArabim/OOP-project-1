@@ -5,6 +5,25 @@ import UI.Utils;
  */
 public abstract class Car {
 
+    /**
+     * Constructs car objects based off of data from car_data.csv
+     */
+    public Car(int carID, String type, String model, boolean isNew, String color, int capacity,
+        int mileage, String fuelType, boolean isAutomatic, String vin, double price, int vehiclesRemaining) {
+        this.carID = carID;
+        this.type = type;
+        this.model = model;
+        this.isNew = isNew;
+        this.color = color;
+        this.capacity = capacity;
+        this.mileage = mileage;
+        this.fuelType = fuelType;
+        this.isAutomatic = isAutomatic;
+        this.vin = vin;
+        this.price = price;
+        this.vehiclesRemaining = vehiclesRemaining;
+    }
+
     // attributes
 
     /**
