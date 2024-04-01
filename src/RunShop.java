@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import vehicles.Car;
+import vehicles.Hatchback;
+import vehicles.Pickup;
+import vehicles.SUV;
+import vehicles.Sedan;
 import entity.*;
 import UI.*;
 
@@ -35,9 +39,6 @@ public class RunShop {
      */    
     public static void main(String[] args) {
 
-        // debug: current working dir
-        // System.out.println("Working Directory = " + System.getProperty("user.dir"));
-        
         loadUsers("../data/user_data.csv");
         loadCars("../data/car_data.csv");
 
@@ -225,6 +226,57 @@ public class RunShop {
     }
 
     private static void loadCars(String sourceCSV) {
-        // TODO: waiting for Ruben's work on Cars
+        File f = new File(sourceCSV);
+        Scanner csvCarScanner;
+        try {
+            csvCarScanner = new Scanner(f);
+            // skip the first line
+            csvCarScanner.nextLine();
+
+            while (csvCarScanner.hasNextLine()) {
+                String[] line = csvCarScanner.nextLine().split(",");
+                
+                //testing
+                for (String l : line) {
+                    System.out.print(l + " ");
+                }
+
+                System.out.println();
+                Car car = carFactory(line);
+                cars.add(car);
+
+            }
+        }
+        catch(FileNotFoundException e) {
+            System.err.println("Cars csv file " + sourceCSV + " not found");
+            System.exit(1);
+        }
+
+    }
+
+    private static Car carFactory(String[] contents) {
+        Car c = null;
+        switch(contents[1]) {
+            case("Hatchback"): c = new Hatchback(Integer.valueOf(contents[0]), contents[1], 
+            contents[2], Boolean.valueOf(contents[3]), contents[4], Integer.valueOf(contents[5]),
+            Integer.valueOf(contents[6]), contents[7], Boolean.valueOf(contents[8]), contents[9], Double.valueOf(contents[10]),
+            Integer.valueOf(contents[11])); break;
+
+            case("Pickup"): c = new Pickup(Integer.valueOf(contents[0]), contents[1], 
+            contents[2], Boolean.valueOf(contents[3]), contents[4], Integer.valueOf(contents[5]),
+            Integer.valueOf(contents[6]), contents[7], Boolean.valueOf(contents[8]), contents[9], Double.valueOf(contents[10]),
+            Integer.valueOf(contents[11]));
+
+            case("SUV"): c = new SUV(Integer.valueOf(contents[0]), contents[1], 
+            contents[2], Boolean.valueOf(contents[3]), contents[4], Integer.valueOf(contents[5]),
+            Integer.valueOf(contents[6]), contents[7], Boolean.valueOf(contents[8]), contents[9], Double.valueOf(contents[10]),
+            Integer.valueOf(contents[11]));
+
+            case("Sedan"): c = new Sedan(Integer.valueOf(contents[0]), contents[1], 
+            contents[2], Boolean.valueOf(contents[3]), contents[4], Integer.valueOf(contents[5]),
+            Integer.valueOf(contents[6]), contents[7], Boolean.valueOf(contents[8]), contents[9], Double.valueOf(contents[10]),
+            Integer.valueOf(contents[11]));
+        }
+        return c;
     }
 }
