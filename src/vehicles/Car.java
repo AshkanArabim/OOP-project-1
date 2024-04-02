@@ -91,19 +91,10 @@ public abstract class Car {
      */
     @Override
     public String toString() {
-        Utils.line();
-        return "ID: " + getCarID() + "\t" +
-        "Car Type: " + getType() + "\t" +
-        "Model: " + getModel() + "\t" + 
-        "Condition: " + (isNew() ? "New" : "Used") + "\t" +
-        "Color: " + getColor() + "\t" +
-        "Capacity: " + getCapacity() + "\t" +
-        "Mileage: " + getMileage() + "\t" + 
-        "Fuel Type: " + getFuelType() + "\t" + 
-        "Transmission: " + (isAutomatic() ? "Automatic" : "Manual") + "\t" +
-        "VIN: " + getVin() + "\t" +
-        "Price: " + getPrice() + "\t" + 
-        "Cars Available: " + getVehiclesRemaining()
+        Utils.longerLine();
+        return getCarID() + "\t" + getType() + "\t" + getModel() + "\t" + (isNew() ? "New" : "Used") + "\t" + getColor() 
+        + "\t" + getCapacity() + "\t" + getMileage() + "\t" + getFuelType() + "\t" + (isAutomatic() ? "Automatic" : "Manual") + "\t" +
+        getVin() + "\t" + getPrice() + "\t" + getVehiclesRemaining()
         ; }
     
     // getters and setters
