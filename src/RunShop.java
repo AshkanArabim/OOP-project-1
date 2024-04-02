@@ -38,7 +38,7 @@ public class RunShop {
         loadUsers("../data/user_data.csv");
         loadCars("../data/car_data.csv");
 
-        //loginScreen();
+        // loginScreen();
         userLogin();
     }
 
@@ -164,6 +164,10 @@ public class RunShop {
         for (Car car : cars) {
             System.out.println(car);
         }
+
+        System.out.println("");
+        System.out.println("Row content:");
+        System.out.println("[ID \t Type \t Mode \t Condition \t Color \t Capacity \t Mileage \t Fuel Type \t Transmission Type \t VIN \t Price \t Cars Available]");
     }
 
     private static void displayUsedCars() {
@@ -207,6 +211,41 @@ public class RunShop {
 
     private static void purchaseCar() {
         System.out.println("Purchase car!");
+        displayAllUsers();
+
+        while(true) {
+            Utils.line();
+            System.out.println("Options:");
+            System.out.println("# - Enter ID of desired car");
+            System.out.println("0 - Go back");
+
+            // get input
+            int command = Utils.inputOneInt("Enter command: ");
+
+            Utils.clear();
+            
+            // Go back
+            if (command == 0) {
+                return;
+            }
+            // User did not enter an int
+            else if (command == -1) {
+                System.out.println("Invalid command");
+            }
+            // User entered an ID that was out of bounds
+            else if (command < 0 || command > cars.size()) {
+                System.out.println("Invalid car ID");
+            }
+            else {
+                // Verify the user has sufficient funds and the desired car is available.
+                Car desiredCar = cars.get(command - 1);
+                // if (currentPerson.getBalance() >= desiredCar.getPrice() && desiredCar.getVehiclesRemaining() > 0) {
+                //     System.out.println("Congrats!!!");
+                // }
+                System.out.println("Congrats!");
+            }
+
+        }
 
     }
 

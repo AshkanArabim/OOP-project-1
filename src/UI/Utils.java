@@ -15,6 +15,15 @@ public class Utils {
         System.out.println("");
     }
 
+    /**
+     * More dashes to make printing of Cars aesthetically pleasing.
+     */
+    public static void longerLine() {
+        System.out.println("");
+        System.out.println("---------------------------------------------------------------------------------------------------");
+        System.out.println("");
+    }
+
     public static void clear() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
