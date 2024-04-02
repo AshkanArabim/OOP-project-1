@@ -166,8 +166,43 @@ public class RunShop {
         }
     }
 
+    private static void displayUsedCars() {
+        for (Car car : cars) {
+            if (!car.isNew()) {
+                System.out.println(car);
+            }
+        }
+    }
+
+    private static void displayNewCars() {
+        for (Car car : cars) {
+            if (car.isNew()) {
+                System.out.println(car);
+            }
+        }
+    }
+
     private static void filterCars() {
-        System.out.println("Filter cars!");
+        while(true) {
+            Utils.line();
+            System.out.println("Options:");
+            System.out.println("1 - Display New Cars");
+            System.out.println("2 - Display Used Cars");
+            System.out.println("3 - Go back");
+
+            // get input
+            int command = Utils.inputOneInt("Enter command: ");
+
+            Utils.clear();
+
+            switch(command) {
+                case(1): {displayNewCars();}; break;
+                case(2): {displayUsedCars();} break;
+                case(3): return;
+                // command returned -1 meaning the user entered something other than an int
+                default: System.out.println("Invalid command"); continue;
+            }
+        }
     }
 
     private static void purchaseCar() {
@@ -249,6 +284,6 @@ public class RunShop {
             System.err.println("Cars csv file " + sourceCSV + " not found");
             System.exit(1);
         }
-        displayAllCars();
+        // displayAllCars();
     }
 }

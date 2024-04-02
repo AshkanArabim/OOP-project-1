@@ -1,6 +1,5 @@
 package vehicles;
 import UI.Utils;
-import java.util.ArrayList;
 /**
  * Car class that describes the state of a car.
  */
@@ -14,12 +13,12 @@ public abstract class Car {
         this.carID = Integer.parseInt(contents[0]);
         this.type = contents[1];
         this.model = contents[2];
-        this.isNew = Boolean.parseBoolean(contents[3]);
+        this.isNew = contents[3].equals("New") ? true : false;
         this.color = contents[4];
         this.capacity = Integer.parseInt(contents[5]);
         this.mileage = Integer.parseInt(contents[6]);
         this.fuelType = contents[7];
-        this.isAutomatic = Boolean.parseBoolean(contents[8]);
+        this.isAutomatic = contents[8].equals("Automatic") ? true : false;
         this.vin = contents[9];
         this.price = Double.parseDouble(contents[10]);
         this.vehiclesRemaining = Integer.parseInt(contents[11]);
