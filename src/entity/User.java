@@ -32,7 +32,7 @@ public class User extends Person {
         this.balance = balance;
     }
 
-    public double getCarsPurchased() {
+    public int getCarsPurchased() {
         return carsPurchased;
     }
 
