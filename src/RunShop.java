@@ -254,7 +254,7 @@ public class RunShop {
                         continue;
                     }
                     currentUser.setBalance(currentUser.getBalance() - desiredCar.getPrice());
-                    
+                    currentUser.setCarsPurchased(currentUser.getCarsPurchased() + 1);
                     // decrement count of vehicle
                     desiredCar.setVehiclesRemaining(desiredCar.getVehiclesRemaining() - 1);
                     
