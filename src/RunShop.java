@@ -188,6 +188,22 @@ public class RunShop {
         }
     }
 
+    private static void displayUsedCars() {
+        for (Car car : cars) {
+            if (!car.isNew()) {
+                System.out.println(car);
+            }
+        }
+    }
+
+    private static void displayNewCars() {
+        for (Car car : cars) {
+            if (car.isNew()) {
+                System.out.println(car);
+            }
+        }
+    }
+
     private static void filterCars() {
         while(true) {
             Utils.line();
@@ -212,7 +228,6 @@ public class RunShop {
     }
 
     private static void purchaseCar() {
-
         while(true) {
             Utils.line();
 
@@ -326,6 +341,7 @@ public class RunShop {
         if (!tempFile.renameTo(inputFile)) {
             System.err.println("Could not rename temporary file");
         }
+
     }
 
     private static void viewTickets() {
