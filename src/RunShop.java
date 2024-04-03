@@ -3,6 +3,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import vehicles.*;
 import entity.*;
@@ -210,17 +212,20 @@ public class RunShop {
     }
 
     private static void purchaseCar() {
-        System.out.println("Purchase car!");
-        displayAllUsers();
 
         while(true) {
             Utils.line();
+
+            // testing purposes
+            User currentUser = users.get("batman");
+            System.out.println("Your balance is " + currentUser.getBalance());
+            
             System.out.println("Options:");
             System.out.println("# - Enter ID of desired car");
             System.out.println("0 - Go back");
 
             // get input
-            int command = Utils.inputOneInt("Enter command: ");
+            int command = Utils.inputOneInt("Enter ID of desired car: ");
 
             Utils.clear();
             
@@ -237,16 +242,124 @@ public class RunShop {
                 System.out.println("Invalid car ID");
             }
             else {
-                // Verify the user has sufficient funds and the desired car is available.
                 Car desiredCar = cars.get(command - 1);
-                // if (currentPerson.getBalance() >= desiredCar.getPrice() && desiredCar.getVehiclesRemaining() > 0) {
-                //     System.out.println("Congrats!!!");
-                // }
-                System.out.println("Congrats!");
+                if(desiredCar.getVehiclesRemaining() == 0) {
+                    System.out.println("Sorry,\n" + desiredCar + "\nis out of stock :(");
+                    continue;
+                }
+                // Verify the user has sufficient funds
+                if (currentUser.getBalance() >= desiredCar.getPrice()) {
+                    // method that confirms if the user wants to follow through with the purchase.
+                    if(!confirmPurchase(desiredCar)) {
+                        continue;
+                    }
+                    currentUser.setBalance(currentUser.getBalance() - desiredCar.getPrice());
+                    
+                    // decrement count of vehicle
+                    desiredCar.setVehiclesRemaining(desiredCar.getVehiclesRemaining() - 1);
+                    
+                    // in case the user purchases the last vehicle
+                    if (desiredCar.getVehiclesRemaining() == 0) {
+                        // remove from CSV.
+                        removeCarFromCSV("../data/car_data.csv", desiredCar.getCarID());
+                    }
+                    else {
+                        // decrement from csv
+                        decrementCarFromCSV("../data/car_data.csv", desiredCar.getCarID());
+                    }
+                    System.out.println("Succesfully purchased:\n" + desiredCar);
+
+                    // TODO: Add to log
+                    // addToLog() - TODO by Ashkan
+                    // updateUserBalanceinCSV - TODO by Ashkan
+                }
+                else {
+                    System.out.println("Sorry,\n" + desiredCar + "\ncosts $" + desiredCar.getPrice() + " but you only have $" + currentUser.getBalance());
+                }
             }
 
         }
 
+    }
+
+    private static boolean confirmPurchase(Car desiredCar) {
+        while (true) {
+            System.out.println("Are you sure you want to purchase?\n" + desiredCar);
+            System.out.println("1 - Yes");
+            System.out.println("2 - No");
+            int decision = Utils.inputOneInt("Enter command: ");
+            Utils.clear();
+            if (decision == -1) {
+                System.out.println("Invalid command");
+                continue;
+            }
+            else if (decision == 1) {return true;}
+            else {return false;}
+        }
+    }
+
+    private static void removeCarFromCSV(String sourceCSV, int id) {
+        File inputFile = new File(sourceCSV);
+        File tempFile = new File("temp.csv");
+
+        try {
+            Scanner scanner = new Scanner(inputFile);
+            FileWriter writer = new FileWriter(tempFile);
+            writer.write(scanner.nextLine() + "\n");
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] parts = line.split(",");
+                int idToRemove = Integer.parseInt(parts[0]);
+                if (id != idToRemove) {
+                    writer.write(line + "\n");
+                }
+            }
+
+            scanner.close();
+            writer.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + sourceCSV);
+        } catch (IOException e) {
+            System.err.println("Error reading or writing file: " + e.getMessage());
+        }
+
+        // Replace the original file with the temporary file
+        if (!tempFile.renameTo(inputFile)) {
+            System.err.println("Could not rename temporary file");
+        }
+    }
+
+    private static void decrementCarFromCSV(String sourceCSV, int id) {
+        File inputFile = new File(sourceCSV);
+        File tempFile = new File("temp.csv");
+
+        try {
+            Scanner scanner = new Scanner(inputFile);
+            FileWriter writer = new FileWriter(tempFile);
+            writer.write(scanner.nextLine() + "\n");
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] parts = line.split(",");
+                int idToRemove = Integer.parseInt(parts[0]);
+                if (id == idToRemove) {
+                    parts[11] = "" + (cars.get(id - 1).getVehiclesRemaining());
+                    line = String.join(",", parts);
+                }
+                writer.write(line + "\n");
+            }
+
+            scanner.close();
+            writer.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + sourceCSV);
+        } catch (IOException e) {
+            System.err.println("Error reading or writing file: " + e.getMessage());
+        }
+
+        // Replace the original file with the temporary file
+        if (!tempFile.renameTo(inputFile)) {
+            System.err.println("Could not rename temporary file");
+        }
     }
 
     private static void viewTickets() {
