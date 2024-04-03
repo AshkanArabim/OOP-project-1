@@ -257,16 +257,8 @@ public class RunShop {
                     currentUser.setCarsPurchased(currentUser.getCarsPurchased() + 1);
                     // decrement count of vehicle
                     desiredCar.setVehiclesRemaining(desiredCar.getVehiclesRemaining() - 1);
-                    
-                    // in case the user purchases the last vehicle
-                    if (desiredCar.getVehiclesRemaining() == 0) {
-                        // remove from CSV.
-                        removeCarFromCSV("../data/car_data.csv", desiredCar.getCarID());
-                    }
-                    else {
-                        // decrement from csv
-                        decrementCarFromCSV("../data/car_data.csv", desiredCar.getCarID());
-                    }
+                    // decrement from csv
+                    decrementCarFromCSV("../data/car_data.csv", desiredCar.getCarID());
                     System.out.println("Succesfully purchased:\n" + desiredCar);
 
                     // TODO: Add to log
@@ -282,6 +274,11 @@ public class RunShop {
 
     }
 
+    /**
+     * Ensures the user wants to make the purchase.
+     * @param desiredCar object of type Car that the user wishes to purchase.
+     * @return true if the customer wishes to proceed with the purchase, false if the user changed their mind.
+     */
     private static boolean confirmPurchase(Car desiredCar) {
         while (true) {
             System.out.println("Are you sure you want to purchase?\n" + desiredCar);
@@ -295,37 +292,6 @@ public class RunShop {
             }
             else if (decision == 1) {return true;}
             else {return false;}
-        }
-    }
-
-    private static void removeCarFromCSV(String sourceCSV, int id) {
-        File inputFile = new File(sourceCSV);
-        File tempFile = new File("temp.csv");
-
-        try {
-            Scanner scanner = new Scanner(inputFile);
-            FileWriter writer = new FileWriter(tempFile);
-            writer.write(scanner.nextLine() + "\n");
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] parts = line.split(",");
-                int idToRemove = Integer.parseInt(parts[0]);
-                if (id != idToRemove) {
-                    writer.write(line + "\n");
-                }
-            }
-
-            scanner.close();
-            writer.close();
-        } catch (FileNotFoundException e) {
-            System.err.println("File not found: " + sourceCSV);
-        } catch (IOException e) {
-            System.err.println("Error reading or writing file: " + e.getMessage());
-        }
-
-        // Replace the original file with the temporary file
-        if (!tempFile.renameTo(inputFile)) {
-            System.err.println("Could not rename temporary file");
         }
     }
 
