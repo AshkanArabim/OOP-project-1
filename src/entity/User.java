@@ -5,11 +5,11 @@ package entity;
 import java.util.ArrayList;
 /************************************************************************/
 
+
 /**
  * The user class is to maintain and manage data of customers.
  */
-public class User extends Person {
-    
+public class User extends Person {  
     /**
      * Constructor that invokes abstract superclass Person through constructor chaining, leveraging the concept of polymorphism.
      * @param id Identification of the user.

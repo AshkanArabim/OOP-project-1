@@ -333,6 +333,7 @@ public class RunShop {
                     desiredCar.setVehiclesRemaining(desiredCar.getVehiclesRemaining() - 1);
                     
                     // Subtract 1 from the count of cars in the CSV file.
+
                     decrementCarFromCSV(desiredCar.getCarID());
 
                     // Update the user's balance.
@@ -379,6 +380,7 @@ public class RunShop {
     }
 
     /**
+
      * Decrements the count of a specific vehicle in the car data CSV by 1 because it was purchased.
      * @param id The ID of the car to be decremented.
      */
@@ -452,7 +454,7 @@ public class RunShop {
             System.err.println("Could not rename temporary file");
         }
     }
-
+  
     /**
      * Display tickets of the current user.
      */
