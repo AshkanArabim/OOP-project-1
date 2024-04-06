@@ -333,10 +333,10 @@ public class RunShop {
                     desiredCar.setVehiclesRemaining(desiredCar.getVehiclesRemaining() - 1);
                     
                     // Subtract 1 from the count of cars in the CSV file.
-                    decrementCarFromCSV(carSourceCSV, desiredCar.getCarID());
+                    decrementCarFromCSV(desiredCar.getCarID());
 
                     // Update the user's balance.
-                    currentUser.updateBalanceInCSV(userSourceCSV);
+                    updateBalanceInCSV(currentUser);
 
                     // Inform the user they successfully purchased the car.
                     System.out.println("Successfully purchased:\n" + desiredCar);
@@ -379,12 +379,11 @@ public class RunShop {
     }
 
     /**
-     * 
-     * @param sourceCSV
-     * @param id
+     * Decrements the count of a specific vehicle in the car data CSV by 1 because it was purchased.
+     * @param id The ID of the car to be decremented.
      */
-    private static void decrementCarFromCSV(String sourceCSV, int id) {
-        File inputFile = new File(sourceCSV);
+    private static void decrementCarFromCSV(int id) {
+        File inputFile = new File(carSourceCSV);
         File tempFile = new File("temp.csv");
 
         try {
@@ -405,7 +404,7 @@ public class RunShop {
             scanner.close();
             writer.close();
         } catch (FileNotFoundException e) {
-            System.err.println("File not found: " + sourceCSV);
+            System.err.println("File not found: " + carSourceCSV);
         } catch (IOException e) {
             System.err.println("Error reading or writing file: " + e.getMessage());
         }
@@ -415,6 +414,43 @@ public class RunShop {
             System.err.println("Could not rename temporary file");
         }
 
+    }
+
+    /**
+     * Updates the balance in the CSV of the user logged in because the purchased a vehicle.
+     * @param user The current user logged in.
+     */
+    public static void updateBalanceInCSV(User user) {
+        File inputFile = new File(userSourceCSV);
+        File tempFile = new File("temp.csv");
+
+        try {
+            Scanner scanner = new Scanner(inputFile);
+            FileWriter writer = new FileWriter(tempFile);
+            writer.write(scanner.nextLine() + "\n");
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] parts = line.split(",");
+                if (parts[6].equals(user.getUsername())) {
+                    parts[3] = "" + user.getBalance();
+                    parts[4] = "" + user.getCarsPurchased();
+                }
+                line = String.join(",", parts);
+                writer.write(line + "\n");
+            }
+
+            scanner.close();
+            writer.close();
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + userSourceCSV);
+        } catch (IOException e) {
+            System.err.println("Error reading or writing file: " + e.getMessage());
+        }
+
+        // Replace the original file with the temporary file
+        if (!tempFile.renameTo(inputFile)) {
+            System.err.println("Could not rename temporary file");
+        }
     }
 
     /**
