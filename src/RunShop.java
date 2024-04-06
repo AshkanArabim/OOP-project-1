@@ -18,6 +18,10 @@ import UI.*;
 
 public class RunShop {
 
+    // constants
+
+    private static final String DATADIR = "../data";
+
     // global vars
 
     private static ArrayList<Car> cars = new ArrayList<Car>();
@@ -35,8 +39,8 @@ public class RunShop {
      */    
     public static void main(String[] args) {
 
-        loadUsers("../data/user_data.csv");
-        loadCars("../data/car_data.csv");
+        loadUsers(DATADIR + "/user_data.csv");
+        loadCars(DATADIR + "/car_data.csv");
 
         loginScreen();
     }
@@ -117,6 +121,10 @@ public class RunShop {
     }
 
     private static void userLogin() {
+        Log log = new Log(DATADIR, currentPerson.getUsername());
+        
+        log.addLogEntry("login", "");
+
         while (true) {
             // print available options
             Utils.line();
