@@ -1,30 +1,32 @@
 package vehicles;
+// import statements
+/************************************************************************/
 import UI.Utils;
+/************************************************************************/
+
 /**
- * Car class that describes the state of a car.
+ * Car class that is abstract and describes the state of a car.
  */
 public abstract class Car {
-
     /**
-     * Constructs car objects based off of data from car_data.csv
+     * Constructs car objects based off of data from car_data.csv.
+     * @param contents string array from csv data that contains carID, type, model, isNew, color, capacity, milage,
+     * fueltype, isAutomatic, VIN number, price, and the number of vehicles remaining in the shop.
      */
-    public Car(int carID, String type, String model, boolean isNew, String color, int capacity,
-        int mileage, String fuelType, boolean isAutomatic, String vin, double price, int vehiclesRemaining) {
-        this.carID = carID;
-        this.type = type;
-        this.model = model;
-        this.isNew = isNew;
-        this.color = color;
-        this.capacity = capacity;
-        this.mileage = mileage;
-        this.fuelType = fuelType;
-        this.isAutomatic = isAutomatic;
-        this.vin = vin;
-        this.price = price;
-        this.vehiclesRemaining = vehiclesRemaining;
+    public Car(String[] contents) {
+        this.carID = Integer.parseInt(contents[0]);
+        this.type = contents[1];
+        this.model = contents[2];
+        this.isNew = contents[3].equals("New") ? true : false;
+        this.color = contents[4];
+        this.capacity = Integer.parseInt(contents[5]);
+        this.mileage = Integer.parseInt(contents[6]);
+        this.fuelType = contents[7];
+        this.isAutomatic = contents[8].equals("Automatic") ? true : false;
+        this.vin = contents[9];
+        this.price = Double.parseDouble(contents[10]);
+        this.vehiclesRemaining = Integer.parseInt(contents[11]);
     }
-
-    // attributes
 
     /**
      * Car ID number used for shop identification purposes.
@@ -42,7 +44,7 @@ public abstract class Car {
     private String model;
     
     /**
-     * Condition of car true means new, false means used.
+     * True means new, false means used.
      */
     private boolean isNew;
     
@@ -93,23 +95,24 @@ public abstract class Car {
      */
     @Override
     public String toString() {
-        Utils.line();
-        return "ID: " + getCarID() + "\t" +
-        "Car Type: " + getType() + "\t" +
-        "Model: " + getModel() + "\t" + 
-        "Condition: " + (isNew() ? "New" : "Used") + "\t" +
-        "Color: " + getColor() + "\t" +
-        "Capacity: " + getCapacity() + "\t" +
-        "Mileage: " + getMileage() + "\t" + 
-        "Fuel Type: " + getFuelType() + "\t" + 
-        "Transmission: " + (isAutomatic() ? "Automatic" : "Manual") + "\t" +
-        "VIN: " + getVin() + "\t" +
-        "Price: " + getPrice() + "\t" + 
-        "Cars Available: " + getVehiclesRemaining()
-        ; }
+        Utils.longerLine();
+        return 
+        getCarID() + "\t" + 
+        getType() + "\t" + 
+        getModel() + "\t" + 
+        (isNew() ? "New" : "Used") + "\t" + 
+        getColor() + "\t" + 
+        getCapacity() + "\t" + 
+        getMileage() + "\t" + 
+        getFuelType() + "\t" + 
+        (isAutomatic() ? "Automatic" : "Manual") + "\t" +
+        getVin() + "\t" + 
+        getPrice() + "\t" + 
+        getVehiclesRemaining(); 
+    }
     
     // getters and setters
-
+    /************************************************************************/
     public int getCarID() {
         return carID;
     }
@@ -205,5 +208,5 @@ public abstract class Car {
     public void setVehiclesRemaining(int vehiclesRemaining) {
         this.vehiclesRemaining = vehiclesRemaining;
     }
-    
+    /************************************************************************/
 }

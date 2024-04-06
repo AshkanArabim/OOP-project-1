@@ -1,10 +1,15 @@
 package vehicles;
 
 /**
- * Sedan class.
+ * Sedan class that is a subtype of the abstract Car class.
  */
 public class Sedan extends Car {
-    public Sedan(int carID, String type, String model, boolean isNew, String color, int capacity, int mileage, String fuelType, boolean isAutomatic, String vin, double price, int vehiclesRemaining) {
-        super(carID, type, model, isNew, color, capacity, mileage, fuelType, isAutomatic, vin, price, vehiclesRemaining);
+    /**
+     * Constructor that invokes the Car class through constructor chaining leveraging polymorphism.
+     * @param contents string array from csv data that contains carID, type, model, isNew, color, capacity, milage,
+     * fueltype, isAutomatic, VIN number, price, and the number of vehicles remaining in the shop.
+     */
+    public Sedan(String[] contents) {
+        super(contents);
     }
 }
