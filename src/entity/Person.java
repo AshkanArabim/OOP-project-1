@@ -14,8 +14,6 @@ public abstract class Person {
     private String lastName;
 
     private int id;
-
-    // private String dateOfBirth;
     
     private String emailAddress;
 
@@ -73,14 +71,6 @@ public abstract class Person {
         this.id = id;
     }
 
-    // public String getDateOfBirth() {
-    //     return dateOfBirth;
-    // }
-
-    // public void setDateOfBirth(String dateOfBirth) {
-    //     this.dateOfBirth = dateOfBirth;
-    // }
-
     public String getEmailAddress() {
         return emailAddress;
     }
@@ -89,11 +79,4 @@ public abstract class Person {
         this.emailAddress = emailAddress;
     }
 
-    // methods
-    
-    // /**
-    //  * Logs the person in.
-    //  */
-    // public abstract void login();
-    
 }

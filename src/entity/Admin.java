@@ -11,13 +11,4 @@ public class Admin extends Person {
     ) {
         super(id, firstName, lastName, username, password);
     }
-
-    // methods
-
-    // /**
-    //  * Logs in the admin.
-    //  */
-    // public void login() {
-    //     System.out.println("Admin logging in");
-    // }
 }

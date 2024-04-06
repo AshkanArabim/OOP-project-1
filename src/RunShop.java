@@ -27,8 +27,9 @@ public class RunShop {
     private static Person currentPerson;
 
     private static String carSourceCSV = "../data/car_data.csv";
-
     private static String userSourceCSV = "../data/user_data.csv";
+
+    private static ArrayList<Ticket> allTickets = new ArrayList<>();
 
     // Using a hashmap to quickly match the entered username (in login prompt)
     // to a valid user in the database. Awesome efficiency.
@@ -104,6 +105,7 @@ public class RunShop {
             System.out.println("[ADMIN MODE]");
             System.out.println("Options:");
             System.out.println("1 - Display all users");
+            System.out.println("2 - View all Tickets");
             System.out.println("0 - Sign out");
 
             // get input
@@ -115,7 +117,10 @@ public class RunShop {
                 displayAllUsers();
             } else if (command == 0) {
                 return;
-            } else {
+            } else if (command == 2) {
+                viewAllTickets();
+            }
+             else {
                 System.out.println("Invalid command");
             }
         }
@@ -260,17 +265,24 @@ public class RunShop {
                     if(!confirmPurchase(desiredCar)) {
                         continue;
                     }
+                    Ticket receipt = new Ticket(desiredCar.getType(), desiredCar.getModel(), 0000, desiredCar.getColor(), currentUser.getFirstName() + " " + currentUser.getLastName());
+                    
+                    //add to Users list of tickets
+                    currentUser.addTicket(receipt);
 
-                    //update userInfo
+                    //add to shops list of tickets
+                    allTickets.add(receipt);
+
+
+                    //update user info
                     currentUser.setBalance(Math.round((currentUser.getBalance() - desiredCar.getPrice()) * 100.0) / 100.0);
                     currentUser.setCarsPurchased(currentUser.getCarsPurchased() + 1);
-                    currentUser.updateBalanceInCSV(userSourceCSV);
-
-                    // decrement count of vehicle
+                    // update vehicle info
                     desiredCar.setVehiclesRemaining(desiredCar.getVehiclesRemaining() - 1);
                     
-                    // decrement count from csv
+                    // update CSV's
                     decrementCarFromCSV(carSourceCSV, desiredCar.getCarID());
+                    currentUser.updateBalanceInCSV(userSourceCSV);
 
                     System.out.println("Succesfully purchased:\n" + desiredCar);
 
@@ -278,13 +290,12 @@ public class RunShop {
                     // addToLog() - TODO by Ashkan
 
                 }
+                // the user doesn't possess sufficient funds
                 else {
                     System.out.println("Sorry,\n" + desiredCar + "\ncosts $" + desiredCar.getPrice() + " but you only have $" + currentUser.getBalance());
                 }
             }
-
         }
-
     }
 
     /**
@@ -343,7 +354,14 @@ public class RunShop {
     }
 
     private static void viewTickets() {
-        System.out.println("View tickets!");
+        User currentUser = (User) currentPerson;
+        currentUser.viewTickets();
+    }
+
+    private static void viewAllTickets() {
+        for(Ticket ticket : allTickets) {
+            System.out.println(ticket);
+        }
     }
 
     private static void loadUsers (String sourceCSV) {

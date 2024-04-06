@@ -1,5 +1,5 @@
 package entity;
-
+import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -16,6 +16,7 @@ public class User extends Person {
 
     private boolean isMember;
 
+    private ArrayList<Ticket> tickets;
     // constructor
 
     public User (
@@ -26,6 +27,7 @@ public class User extends Person {
         this.balance = balance;
         this.carsPurchased = carsPurchased;
         this.isMember = isMember;
+        this.tickets = new ArrayList<>();
     }
 
     public void updateBalanceInCSV(String sourceCSV) {
@@ -61,6 +63,18 @@ public class User extends Person {
         }
     }
 
+    // static methods
+    public static void printUser(User u) {
+        System.out.println(
+            "" + u.getIdNumber() + "\t" +
+            u.getFirstName() + "\t" + 
+            u.getLastName() + "\t" + 
+            u.getBalance() + "\t" + 
+            u.getCarsPurchased() + "\t" + 
+            u.getIsMember() + "\t" + 
+            u.getUsername() + "\t"
+        );
+    }
 
     // getters & setters
 
@@ -88,35 +102,17 @@ public class User extends Person {
         this.isMember = isMember;
     }
 
-    // static methods
-    public static void printUser(User u) {
-        System.out.println(
-            "" + u.getIdNumber() + "\t" +
-            u.getFirstName() + "\t" + 
-            u.getLastName() + "\t" + 
-            u.getBalance() + "\t" + 
-            u.getCarsPurchased() + "\t" + 
-            u.getIsMember() + "\t" + 
-            u.getUsername() + "\t"
-        );
+    public void addTicket(Ticket t) {
+        this.tickets.add(t);
     }
 
-    // methods
-
-    // @Override
-    // public void login() {
-    //     System.out.println("Logging in");
-    // }
-
-    public void viewCars() {
+    public ArrayList<Ticket> getTickets() {
+        return tickets;
     }
 
-    public void purchaseCars() {
-    }
-
-    public void filterCars() {
-    }
-
-    public void viewTicket() {
+    public void viewTickets() {
+        for (Ticket t : getTickets()) {
+            System.out.println(t);
+        }
     }
 }
