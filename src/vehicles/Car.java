@@ -1,14 +1,19 @@
+// import statements
+/************************************************************************/
 package vehicles;
 import UI.Utils;
+/************************************************************************/
+
+
 /**
- * Car class that describes the state of a car.
+ * Car class that is abstract and describes the state of a car.
  */
 public abstract class Car {
-
     /**
-     * Constructs car objects based off of data from car_data.csv
+     * Constructs car objects based off of data from car_data.csv.
+     * @param contents string array from csv data that contains carID, type, model, isNew, color, capacity, milage,
+     * fueltype, isAutomatic, VIN number, price, and the number of vehicles remaining in the shop.
      */
-
     public Car(String[] contents) {
         this.carID = Integer.parseInt(contents[0]);
         this.type = contents[1];
@@ -40,7 +45,7 @@ public abstract class Car {
     private String model;
     
     /**
-     * Condition of car true means new, false means used.
+     * True means new, false means used.
      */
     private boolean isNew;
     
@@ -108,7 +113,7 @@ public abstract class Car {
     }
     
     // getters and setters
-
+    /************************************************************************/
     public int getCarID() {
         return carID;
     }
@@ -204,5 +209,5 @@ public abstract class Car {
     public void setVehiclesRemaining(int vehiclesRemaining) {
         this.vehiclesRemaining = vehiclesRemaining;
     }
-    
+    /************************************************************************/
 }
