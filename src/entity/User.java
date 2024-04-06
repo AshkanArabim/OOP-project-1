@@ -64,16 +64,15 @@ public class User extends Person {
     }
 
     // static methods
-    public static void printUser(User u) {
-        System.out.println(
-            "" + u.getIdNumber() + "\t" +
-            u.getFirstName() + "\t" + 
-            u.getLastName() + "\t" + 
-            u.getBalance() + "\t" + 
-            u.getCarsPurchased() + "\t" + 
-            u.getIsMember() + "\t" + 
-            u.getUsername() + "\t"
-        );
+    @Override
+    public String toString() {
+        return getIdNumber() + "\t" +
+        getFirstName() + "\t" + 
+        getLastName() + "\t" + 
+        getBalance() + "\t" + 
+        getCarsPurchased() + "\t" + 
+        getIsMember() + "\t" + 
+        getUsername() + "\t";
     }
 
     // getters & setters
