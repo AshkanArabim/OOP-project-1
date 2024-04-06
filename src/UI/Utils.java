@@ -9,6 +9,9 @@ import java.util.Scanner;
  * Note that this class is not instantiated. Use the methods directly.
  */
 public class Utils {
+    /**
+     * Dashes to enhance printing aesthetics.
+     */
     public static void line() {
         System.out.println("");
         System.out.println("--------------------------------------");
@@ -16,7 +19,7 @@ public class Utils {
     }
 
     /**
-     * More dashes to make printing of Cars aesthetically pleasing.
+     * Extra dashes to further enhance printing aesthetics.
      */
     public static void longerLine() {
         System.out.println("");
@@ -24,11 +27,19 @@ public class Utils {
         System.out.println("");
     }
 
+    /**
+     * Clears the terminal.
+     */
     public static void clear() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
+    /**
+     * Prompts the user to enter a word.
+     * @param prompt Message displaying to the user.
+     * @return The user's decision.
+     */
     public static String inputOneWord(String prompt) {
         System.out.print(prompt);
         
@@ -39,15 +50,21 @@ public class Utils {
         return s.next();
     }
 
+    /**
+     * Prompts the user to enter an integer.
+     * @param prompt Message displaying to the user.
+     * @return The user's decision.
+     */
     public static int inputOneInt(String prompt) {
         System.out.print(prompt);
         
         Scanner s = new Scanner(System.in);
 
-        try{
+        try {
             return s.nextInt();
-        } catch (java.util.InputMismatchException e) {
-            return -1;
+        }
+        catch (java.util.InputMismatchException e) {
+            return -1; // In case the user did not enter an integer.
         }
     }
 }
