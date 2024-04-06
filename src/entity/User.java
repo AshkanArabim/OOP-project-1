@@ -1,69 +1,58 @@
 package entity;
+
+// import statements
+/************************************************************************/
 import java.util.ArrayList;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
+/************************************************************************/
 
 /**
  * The user class is to maintain and manage data of customers.
  */
 public class User extends Person {
-    private double balance;
-
-    private int carsPurchased;
-
-    private boolean isMember;
-
-    private ArrayList<Ticket> tickets;
-    // constructor
-
-    public User (
-        int id, String firstName, String lastName, String username, String password,
-        double balance, int carsPurchased, boolean isMember
-    ) {
+    
+    /**
+     * Constructor that invokes abstract superclass Person through constructor chaining, leveraging the concept of polymorphism.
+     * @param id Identification of the user.
+     * @param firstName First name of the user.
+     * @param lastName Last name of the user.
+     * @param username Username of the user.
+     * @param password Password of the user.
+     * @param balance Balance of the user.
+     * @param carsPurchased The number of cars purchased by the user.
+     * @param isMember True if the user is a member, false if the user is not a member.
+     */
+    public User (int id, String firstName, String lastName, String username, String password,
+    double balance, int carsPurchased, boolean isMember) {
         super(id, firstName, lastName, username, password);
         this.balance = balance;
         this.carsPurchased = carsPurchased;
         this.isMember = isMember;
         this.tickets = new ArrayList<>();
     }
+    
+    /**
+     * Balance of the user.
+     */
+    private double balance;
 
-    public void updateBalanceInCSV(String sourceCSV) {
-        File inputFile = new File(sourceCSV);
-        File tempFile = new File("temp.csv");
+    /**
+     * Number of cars purchased by the user.
+     */
+    private int carsPurchased;
 
-        try {
-            Scanner scanner = new Scanner(inputFile);
-            FileWriter writer = new FileWriter(tempFile);
-            writer.write(scanner.nextLine() + "\n");
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] parts = line.split(",");
-                if (parts[6].equals(getUsername())) {
-                    parts[3] = "" + getBalance();
-                    parts[4] = "" + getCarsPurchased();
-                }
-                line = String.join(",", parts);
-                writer.write(line + "\n");
-            }
+    /**
+     * True if the user is a member, false if the user is not a member.
+     */
+    private boolean isMember;
 
-            scanner.close();
-            writer.close();
-        } catch (FileNotFoundException e) {
-            System.err.println("File not found: " + sourceCSV);
-        } catch (IOException e) {
-            System.err.println("Error reading or writing file: " + e.getMessage());
-        }
+    /**
+     * A list of all the cars purchased by the user.
+     */
+    private ArrayList<Ticket> tickets;
 
-        // Replace the original file with the temporary file
-        if (!tempFile.renameTo(inputFile)) {
-            System.err.println("Could not rename temporary file");
-        }
-    }
-
-    // static methods
+    /**
+     * Aesthetics for printing.
+     */
     @Override
     public String toString() {
         return getIdNumber() + "\t" +
@@ -76,7 +65,7 @@ public class User extends Person {
     }
 
     // getters & setters
-
+    /************************************************************************/
     public double getBalance() {
         return balance;
     }
@@ -114,4 +103,5 @@ public class User extends Person {
             System.out.println(t);
         }
     }
+    /************************************************************************/
 }

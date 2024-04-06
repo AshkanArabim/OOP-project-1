@@ -1,9 +1,8 @@
+package vehicles;
 // import statements
 /************************************************************************/
-package vehicles;
 import UI.Utils;
 /************************************************************************/
-
 
 /**
  * Car class that is abstract and describes the state of a car.
