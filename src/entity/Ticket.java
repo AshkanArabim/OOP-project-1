@@ -4,12 +4,14 @@ import UI.*;
  * Serves as proof of purchase to customer by containing relevant information such as the car type, model, year, and color
  */
 public class Ticket {
-    private String type;
-    private String model;
-    private int year;
-    private String color;
-    private String owner;
-    // constructor
+    /**
+     * Ticket constructor that assigns type, model, year, color, and owner information.
+     * @param type The type of the vehicle purchased.
+     * @param model The model of the vehicle purchased. 
+     * @param year The year of the vehicle purchased.
+     * @param color The color of the vehicle purchased.
+     * @param owner The owner who purchased the vehicle.
+     */
     public Ticket(String type, String model, int year, String color, String owner) {
         this.type = type;
         this.model = model;
@@ -18,7 +20,34 @@ public class Ticket {
         this.owner = owner;
     }
 
-    // methods
+    /**
+     * The type of the vehicle purchased.
+     */
+    private String type;
+
+    /**
+     * The model of the vehicle purchased.
+     */
+    private String model;
+    
+    /**
+     * The year of the vehicle purchased.
+     */
+    private int year;
+
+    /**
+     * The color of the vehicle purchased.
+     */
+    private String color;
+    
+    /**
+     * The owner who purchased the vehicle.
+     */
+    private String owner;
+
+    /*
+     * Aesthetics for printing.
+     */
     @Override
     public String toString() {
         Utils.longerLine();
@@ -26,41 +55,34 @@ public class Ticket {
     }
 
     // getters and setters
-
+    /************************************************************************/
     public String getType() {
         return type;
     }
-
 
     public void setType(String type) {
         this.type = type;
     }
 
-
     public String getModel() {
         return model;
     }
-
 
     public void setModel(String model) {
         this.model = model;
     }
 
-
     public int getYear() {
         return year;
     }
-
 
     public void setYear(int year) {
         this.year = year;
     }
 
-
     public String getColor() {
         return color;
     }
-
 
     public void setColor(String color) {
         this.color = color;
@@ -73,6 +95,5 @@ public class Ticket {
     public void setOwner(String owner) {
         this.owner = owner;
     }
-
-    
+    /************************************************************************/
 }
