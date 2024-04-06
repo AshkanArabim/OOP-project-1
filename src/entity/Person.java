@@ -1,27 +1,18 @@
 package entity;
 
 /**
- * Person class.
+ * Abstract class that leverages polymorphism by enabling the RunShop login to be determined based on the subtypes, Admin and User.
  */
 public abstract class Person {
-
-    private String username;
-
-    private String password;
-
-    private String firstName;
-
-    private String lastName;
-
-    private int id;
-    
-    private String emailAddress;
-
-    // constructor
-
-    public Person (
-        int id, String firstName, String lastName, String username, String password
-    ) {
+    /**
+     * Constructs a Person Object giving them a first/last name, and a username/password.
+     * @param id Identification of the person.
+     * @param firstName First name of the person.
+     * @param lastName Last name of the Person.
+     * @param username Username of the Person.
+     * @param password Password of the Person.
+     */    
+    public Person (int id, String firstName, String lastName, String username, String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,8 +20,38 @@ public abstract class Person {
         this.password = password;
     }
 
-    // getter & setters
+    /**
+     * Username of the person.
+     */
+    private String username;
 
+    /**
+     * Password of the person.
+     */
+    private String password;
+
+    /**
+     * First name of the person.
+     */
+    private String firstName;
+
+    /**
+     * Last name of the person.
+     */
+    private String lastName;
+
+    /**
+     * ID of the person.
+     */
+    private int id;
+    
+    /**
+     * Email address of the person.
+     */
+    private String emailAddress;
+
+    // getter & setters
+    /************************************************************************/
     public String getUsername() {
         return username;
     }
@@ -78,5 +99,5 @@ public abstract class Person {
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
-
+    /************************************************************************/
 }
