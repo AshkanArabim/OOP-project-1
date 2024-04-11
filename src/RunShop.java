@@ -555,18 +555,16 @@ public class RunShop {
         Scanner csvCarScanner; // Scanner to scan the input.
         try {
             csvCarScanner = new Scanner(f); // Initialize the scanner with the File object.
-            csvCarScanner.nextLine(); // Skip the first line.
 
+            // Grab the column headers to dynamically assign attributes in ordering of CSV changes
+            String[] columnHeaders = csvCarScanner.nextLine().split(",");
+            CarFactory.setHeaders(columnHeaders);
             // Continue scanning while the file has lines.
             while (csvCarScanner.hasNextLine()) {
-                String[] line = csvCarScanner.nextLine().split(",");
-                // Initialize the appropriate Car object depending on the type and add to ArrayList.
-                switch(line[1]) {
-                    case("SUV"): {cars.add(new SUV(line)); break;}
-                    case("Sedan"): {cars.add(new Sedan(line)); break;}
-                    case("Pickup"): {cars.add(new Pickup(line)); break;}
-                    case("Hatchback"): {cars.add(new Hatchback(line)); break;}
-                }
+                String[] line = csvCarScanner.nextLine().split(",", -1);
+                // Initialize the appropriate Car object using Factory Pattern depending on the type and add to ArrayList.
+                Car car = CarFactory.createCar(line);
+                cars.add(car);
             }
             csvCarScanner.close(); // Close the scanner.
         }

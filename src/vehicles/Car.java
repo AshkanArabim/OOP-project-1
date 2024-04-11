@@ -1,5 +1,6 @@
 package vehicles;
 // import statements
+import java.util.HashMap;
 /************************************************************************/
 import UI.Utils;
 /************************************************************************/
@@ -13,19 +14,31 @@ public abstract class Car {
      * @param contents string array from csv data that contains carID, type, model, isNew, color, capacity, milage,
      * fueltype, isAutomatic, VIN number, price, and the number of vehicles remaining in the shop.
      */
-    public Car(String[] contents) {
-        this.carID = Integer.parseInt(contents[0]);
-        this.type = contents[1];
-        this.model = contents[2];
-        this.isNew = contents[3].equals("New") ? true : false;
-        this.color = contents[4];
-        this.capacity = Integer.parseInt(contents[5]);
-        this.mileage = Integer.parseInt(contents[6]);
-        this.fuelType = contents[7];
-        this.isAutomatic = contents[8].equals("Automatic") ? true : false;
-        this.vin = contents[9];
-        this.price = Double.parseDouble(contents[10]);
-        this.vehiclesRemaining = Integer.parseInt(contents[11]);
+    public Car(HashMap<String, String> contents) {
+        // this.carID = Integer.parseInt(contents[0]);
+        // this.type = contents[1];
+        // this.model = contents[2];
+        // this.isNew = contents[3].equals("New") ? true : false;
+        // this.color = contents[4];
+        // this.capacity = Integer.parseInt(contents[5]);
+        // this.mileage = Integer.parseInt(contents[6]);
+        // this.fuelType = contents[7];
+        // this.isAutomatic = contents[8].equals("Automatic") ? true : false;
+        // this.vin = contents[9];
+        // this.price = Double.parseDouble(contents[10]);
+        // this.vehiclesRemaining = Integer.parseInt(contents[11]);
+        this.carID = Integer.parseInt(contents.get("ID"));
+        this.type = contents.get("Car Type");
+        this.model = contents.get("Model");
+        this.isNew = contents.get("Condition").equals("New") ? true : false;
+        this.color = contents.get("Color");
+        this.capacity = Integer.parseInt(contents.get("Capacity"));
+        this.mileage = Integer.parseInt(contents.getOrDefault("Mileage", "0"));
+        this.fuelType = contents.get("Fuel Type");
+        this.isAutomatic = contents.get("Transmission").equals("Automatic") ? true : false;
+        this.vin = contents.get("VIN");
+        this.price = Double.parseDouble(contents.get("Price"));
+        this.vehiclesRemaining = Integer.parseInt(contents.get("Cars Available"));
     }
 
     /**
