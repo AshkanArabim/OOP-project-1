@@ -278,37 +278,25 @@ public class RunShop {
             Utils.clear();
 
             switch(command) {
-                case(1): {displayFilteredCars(true);} break; // If the user enters 1, they wish to display new cars.
-                case(2): {displayFilteredCars(false);} break; // If the user enters 2, they wish to display used cars.
+                case(1): {
+                    for (Car car : cars) {
+                        if (car.isNew()) {
+                            System.out.println(car); // Display new cars
+                        }
+                    }
+                } break;
+                case(2): {
+                    for (Car car : cars) {
+                        if (!car.isNew()) {
+                            System.out.println(car); // Display used cars 
+                        }
+                    }
+                } break; // If the user enters 2, they wish to display used cars.
                 case(3): return; // If the user enters 3, they wish to exit this menu.
                 default: System.out.println("Invalid command"); continue; // In case the user enters an invalid command.
             }
         }
     }
-
-    /**
-     * Displays used or new cars depending on what the user desires.
-     * @param printNew True if user wants to print new cars, false if user wants to print used cars.
-     */
-    private static void displayFilteredCars(boolean printNew) {
-        // The user wishes to display new cars.
-        if (printNew) {
-            for (Car car : cars) {
-                if (car.isNew()) {
-                    System.out.println(car);
-                }
-            }
-        }
-        // The user wishes to display used cars.
-        else {
-            for (Car car : cars) {
-                if (!car.isNew()) {
-                    System.out.println(car);
-                }
-            }
-        }
-    }
-
 
     /**
      * Allows user to purchase a car.
