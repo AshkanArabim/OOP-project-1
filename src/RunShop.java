@@ -12,10 +12,10 @@
  * James Newson
  * Ruben Martinez
  * 
- * Date: April 6th, 2024
+ * Date: April 11th, 2024
  * Course: CS 3331 Advanced Object Oriented Programming
  * Instructor: Bhanukiran Gurijala
- * Programming Assignment : 1
+ * Programming Assignment : 2
  * 
  * Description: The system offers both brand new and used cars for a car dealership Mine Cars. It provides
  * a wide variety of different models with varying prices and mileage to satisfy customers. Customers have budgets
@@ -46,7 +46,7 @@ import UI.*;
  * @author Ashkan Arabi
  * @author James Newson
  * @author Ruben Martinez
- * @version 1.0
+ * @version 2.0
  */
 public class RunShop {
 
