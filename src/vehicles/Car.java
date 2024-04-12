@@ -11,22 +11,9 @@ import UI.Utils;
 public abstract class Car {
     /**
      * Constructs car objects based off of data from car_data.csv.
-     * @param contents string array from csv data that contains carID, type, model, isNew, color, capacity, milage,
-     * fueltype, isAutomatic, VIN number, price, and the number of vehicles remaining in the shop.
+     * @param contents hashmap from csv data. Responds dynamically to changes.
      */
     public Car(HashMap<String, String> contents) {
-        // this.carID = Integer.parseInt(contents[0]);
-        // this.type = contents[1];
-        // this.model = contents[2];
-        // this.isNew = contents[3].equals("New") ? true : false;
-        // this.color = contents[4];
-        // this.capacity = Integer.parseInt(contents[5]);
-        // this.mileage = Integer.parseInt(contents[6]);
-        // this.fuelType = contents[7];
-        // this.isAutomatic = contents[8].equals("Automatic") ? true : false;
-        // this.vin = contents[9];
-        // this.price = Double.parseDouble(contents[10]);
-        // this.vehiclesRemaining = Integer.parseInt(contents[11]);
         this.carID = Integer.parseInt(contents.get("ID"));
         this.type = contents.get("Car Type");
         this.model = contents.get("Model");
@@ -39,7 +26,19 @@ public abstract class Car {
         this.vin = contents.get("VIN");
         this.price = Double.parseDouble(contents.get("Price"));
         this.vehiclesRemaining = Integer.parseInt(contents.get("Cars Available"));
+        this.year = Integer.parseInt(contents.get("Year"));
+        this.hasTurbo = contents.get("hasTurbo").equals("") || contents.get("hasTurbo").equals("No") ? false : true;
     }
+
+    /**
+     * Year of the car.
+     */
+    private int year;
+
+    /**
+     * If the car has a turbocharged engine.
+     */
+    private boolean hasTurbo;
 
     /**
      * Car ID number used for shop identification purposes.
@@ -121,11 +120,30 @@ public abstract class Car {
         (isAutomatic() ? "Automatic" : "Manual") + "\t" +
         getVin() + "\t" + 
         getPrice() + "\t" + 
-        getVehiclesRemaining(); 
+        getVehiclesRemaining() + "\t" +
+        getHasTurbo() + "\t" +
+        getYear();
+
     }
     
     // getters and setters
     /************************************************************************/
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public boolean getHasTurbo() {
+        return hasTurbo;
+    }
+
+    public void setHasTurbo(boolean hasTurbo) {
+        this.hasTurbo = hasTurbo;
+    }
+
     public int getCarID() {
         return carID;
     }

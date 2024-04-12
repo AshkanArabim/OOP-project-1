@@ -4,12 +4,8 @@ import java.util.HashMap;
 public class CarFactory {
     private static String[] headers;
     private static HashMap<String,String> columnMap = new HashMap<>();
+    public static HashMap<String, Integer> columnMapIndices = new HashMap<>();
     public static Car createCar(String[] values) {
-        if (values.length != headers.length) {
-            for (String str : values) {
-                System.out.println(str);
-            }
-        }
         for (int i = 0; i < headers.length; i++) {
             columnMap.put(headers[i], values[i]);
         }
@@ -27,6 +23,14 @@ public class CarFactory {
 
     public static void setHeaders(String[] headersIn) {
         headers = headersIn;
+        for (int i = 0; i < headers.length; i++) {
+            System.out.println(headers[i] + " " + i);
+            columnMapIndices.put(headers[i], i);
+        }
+    }
+
+    public static String[] getHeaders() {
+        return headers;
     }
 }
  

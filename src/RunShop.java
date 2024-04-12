@@ -338,7 +338,16 @@ public class RunShop {
                     continue;
                 }
                 // Verify the user has sufficient funds.
-                if (currentUser.getBalance() >= desiredCar.getPrice()) {
+                double subTotal = desiredCar.getPrice();
+
+                // Apply discount if user is a member
+                if (currentUser.getIsMember()) {
+                    subTotal = Math.round((subTotal - (.10 * subTotal)) * 100.0) / 100.0;
+                }
+                // Add taxes
+                double total = Math.round((subTotal + (.0625 * subTotal)) * 100.0) / 100.0;
+                System.out.println("Total: " + total + "\nSubtotal: " + subTotal);
+                if (currentUser.getBalance() >= total) {
 
                     // Confirm the user wants to proceed with the purchase.
                     if(!confirmPurchase(desiredCar)) {
@@ -346,7 +355,7 @@ public class RunShop {
                     }
 
                     // Create a receipt since the desired vehicle is in stock, the user has sufficient funds, and the user wishes to proceed.
-                    Ticket receipt = new Ticket(desiredCar.getType(), desiredCar.getModel(), 0000, desiredCar.getColor(), currentUser.getFirstName() + " " + currentUser.getLastName());
+                    Ticket receipt = new Ticket(desiredCar.getType(), desiredCar.getModel(), desiredCar.getYear(), desiredCar.getColor(), currentUser.getFirstName() + " " + currentUser.getLastName());
                     
                     // Add the receipt to the user's list of tickets.
                     currentUser.addTicket(receipt);
@@ -354,21 +363,18 @@ public class RunShop {
                     // Add the receipt to the shop's list of tickets.
                     allTickets.add(receipt);
 
-
-                    // Update the user's balance.
-                    currentUser.setBalance(Math.round((currentUser.getBalance() - desiredCar.getPrice()) * 100.0) / 100.0);
-
+                    
                     // Update the user's number of cars purchased.
                     currentUser.setCarsPurchased(currentUser.getCarsPurchased() + 1);
-
+                    
                     // Update the number of vehicles remaining for the car object.
                     desiredCar.setVehiclesRemaining(desiredCar.getVehiclesRemaining() - 1);
                     
                     // Subtract 1 from the count of cars in the CSV file.
-
                     decrementCarFromCSV(desiredCar.getCarID());
 
                     // Update the user's balance.
+                    currentUser.setBalance(currentUser.getBalance() - total);
                     updateBalanceInCSV(currentUser);
 
                     // Inform the user they successfully purchased the car.
@@ -425,10 +431,10 @@ public class RunShop {
             writer.write(scanner.nextLine() + "\n");
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                String[] parts = line.split(",");
-                int idToRemove = Integer.parseInt(parts[0]);
+                String[] parts = line.split(",", -1);
+                int idToRemove = Integer.parseInt(parts[CarFactory.columnMapIndices.get("ID")]);
                 if (id == idToRemove) {
-                    parts[11] = "" + (cars.get(id - 1).getVehiclesRemaining());
+                    parts[CarFactory.columnMapIndices.get("Cars Available")] = "" + (cars.get(id - 1).getVehiclesRemaining());
                     line = String.join(",", parts);
                 }
                 writer.write(line + "\n");
