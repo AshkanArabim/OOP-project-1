@@ -507,6 +507,9 @@ public class RunShop {
         for(Ticket ticket : allTickets) {
             System.out.println(ticket);
         }
+        System.out.println("");
+        System.out.println("Row content:");
+        System.out.println("[Type \t Model \t Year \t Color \t Owner]");
     }
 
     /**
