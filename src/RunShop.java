@@ -374,7 +374,7 @@ public class RunShop {
                     decrementCarFromCSV(desiredCar.getCarID());
 
                     // Update the user's balance.
-                    currentUser.setBalance(currentUser.getBalance() - total);
+                    currentUser.setBalance(Math.round((currentUser.getBalance() - total) * 100.0) / 100.0);
                     updateBalanceInCSV(currentUser);
 
                     // Inform the user they successfully purchased the car.
@@ -417,7 +417,6 @@ public class RunShop {
     }
 
     /**
-
      * Decrements the count of a specific vehicle in the car data CSV by 1 because it was purchased.
      * @param id The ID of the car to be decremented.
      */
