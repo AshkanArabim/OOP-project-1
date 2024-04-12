@@ -55,6 +55,7 @@ public class RunShop {
         while (true) {
             Utils.line();
             System.out.println("Welcome to Mine Cars!");
+            System.out.println("Note: for admin login, use 'admin' for both username & password.");
             System.out.println();
     
             // Username and password prompts.
