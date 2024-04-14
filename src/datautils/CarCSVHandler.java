@@ -7,24 +7,45 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import entity.Ticket;
 import vehicles.Car;
 import vehicles.CarFactory;
+import entity.User;
 
 /**
  * Handles all the data reading and writing for cars. 
  * Try keeping all car-data-related activities here so the rest of the code stays clean.
- * Info-retreival methods do not print anything; they just return Strings.
+ * UI-related methods do not print anything; they just return Strings.
  */
 public class CarCSVHandler extends CSVHandler {
-
+    
     // static fields
 
-    private static CarCSVHandler instance;
+    /**
+     * Determines the car attribute order when writing to the car data CSV file.
+     */
+    private static final String[] CSVORDER = {
+        "Capacity",
+        "Car Type",
+        "Cars Available",
+        "Condition",
+        "Color",
+        "ID",
+        "Year",
+        "Price",
+        "Transmission",
+        "VIN",
+        "Fuel Type",
+        "Model",
+        "hasTurbo"
+    };
 
     /**
      * A string to the directory of the Car Data CSV file.
      */
-    private static String carSourceCSV = DATADIR + "/car_data.csv";
+    private static final String CSVPATH = DATADIR + "/car_data.csv";
+    
+    private static CarCSVHandler instance;
 
     /**
      * Singleton instance retreiver.
@@ -44,7 +65,7 @@ public class CarCSVHandler extends CSVHandler {
     /**
      * Contains Car objects from the CSV files.
      */
-    private static ArrayList<Car> cars = new ArrayList<Car>();
+    private ArrayList<Car> cars = new ArrayList<Car>();
 
     /**
      * Private constructor to use with getInstance()
@@ -53,52 +74,47 @@ public class CarCSVHandler extends CSVHandler {
         loadCars();
     }
 
-    /**
-     * Updates the CSV file holder user data.
-     * Call this in every method of this class that modifies the "users" data structure
-     */
+    // note: javadoc for this method provided in parent class
     protected void updateCSV() {
-        // TODO:
+        // TODO: 
+        try {
+            FileWriter fw = new FileWriter(CSVPATH);
+
+            // write csv's first line
+            fw.write(String.join(",", CSVORDER));
+            fw.write("\n");
+            fw.flush();
+
+            // write one line per car
+            for (Car car : cars) {
+                String line = "";
+                line += 
+                    car.getCapacity() + "," + 
+                    car.getType() + "," + 
+                    car.getVehiclesRemaining() + "," + 
+                    (car.isNew() ? "New" : "Used") + "," + 
+                    car.getColor() + "," + 
+                    car.getCarID() + "," + 
+                    car.getYear() + "," + 
+                    String.format("%.2f", car.getPrice()) + "," + // price with two decimal places
+                    (car.isAutomatic() ? "Automatic" : "Manual") + "," + 
+                    car.getVin() + "," + 
+                    car.getFuelType() + "," + 
+                    car.getModel() + "," + 
+                    (car.getHasTurbo() ? "Yes" : "No") + "," + 
+                    "\n"; // add the newline character at the end of line
+
+                fw.write(line);
+                fw.flush();
+            }
+
+            fw.close();
+        } catch (Exception e) {
+            System.out.println("Couldn't re-write CSV file: " + CSVPATH);
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
-
-    // /**
-    //  * Decrements the count of a specific vehicle in the car data CSV by 1 because it was purchased.
-    //  * @param id The ID of the car to be decremented.
-    //  */
-    // // FIXME: move this to the car csv handler class
-    // private static void decrementCarFromCSV(int id) {
-    //     File inputFile = new File(carSourceCSV);
-    //     File tempFile = new File("temp.csv");
-
-    //     try {
-    //         Scanner scanner = new Scanner(inputFile);
-    //         FileWriter writer = new FileWriter(tempFile);
-    //         writer.write(scanner.nextLine() + "\n");
-    //         while (scanner.hasNextLine()) {
-    //             String line = scanner.nextLine();
-    //             String[] parts = line.split(",", -1);
-    //             int idToRemove = Integer.parseInt(parts[CarFactory.columnMapIndices.get("ID")]);
-    //             if (id == idToRemove) {
-    //                 parts[CarFactory.columnMapIndices.get("Cars Available")] = "" + (cars.get(id - 1).getVehiclesRemaining());
-    //                 line = String.join(",", parts);
-    //             }
-    //             writer.write(line + "\n");
-    //         }
-
-    //         scanner.close();
-    //         writer.close();
-    //     } catch (FileNotFoundException e) {
-    //         System.err.println("File not found: " + carSourceCSV);
-    //     } catch (IOException e) {
-    //         System.err.println("Error reading or writing file: " + e.getMessage());
-    //     }
-
-    //     // Replace the original file with the temporary file
-    //     if (!tempFile.renameTo(inputFile)) {
-    //         System.err.println("Could not rename temporary file");
-    //     }
-
-    // }
 
     /**
      * * Initialize the Cars ArrayList by reading from the Car Data CSV file.
@@ -106,7 +122,7 @@ public class CarCSVHandler extends CSVHandler {
      */
     // FIXME: add to car csv handler
     private void loadCars() {
-        File f = new File(carSourceCSV); // File to scan the input of.
+        File f = new File(CSVPATH); // File to scan the input of.
         Scanner csvCarScanner; // Scanner to scan the input.
         try {
             csvCarScanner = new Scanner(f); // Initialize the scanner with the File object.
@@ -124,7 +140,7 @@ public class CarCSVHandler extends CSVHandler {
             csvCarScanner.close(); // Close the scanner.
         }
         catch(FileNotFoundException e) {
-            System.err.println("Cars csv file " + carSourceCSV + " not found"); // In case the file could not be located.
+            System.err.println("Cars csv file " + CSVPATH + " not found"); // In case the file could not be located.
             System.exit(1);
         }
     }
@@ -142,6 +158,9 @@ public class CarCSVHandler extends CSVHandler {
         return outstr;
     }
 
+    /**
+     * Get a list of new cars in String form.
+     */
     public String getNewCarsList() {
         String outstr = "";
 
@@ -156,6 +175,9 @@ public class CarCSVHandler extends CSVHandler {
         return outstr;
     }
 
+    /**
+     * Get a list of used cars in String form.
+     */
     public String getUsedCarsList() {
         String outstr = "";
 
@@ -170,17 +192,87 @@ public class CarCSVHandler extends CSVHandler {
         return outstr;
     }
 
-    // /**
-    //  * Displays all cars from the CSV file.
-    //  */
-    // // FIXME: move this to the parent UI class
-    // private static void displayAllCars() {
-    //     for (Car car : cars) {
-    //         System.out.println(car);
-    //     }
+    public String getCarStringByID(int id) {
+        return "" + cars.get(id);
+    }
 
-    //     System.out.println("");
-    //     System.out.println("Row content:");
-    //     System.out.println("[ID \t Type \t Mode \t Condition \t Color \t Capacity \t Mileage \t Fuel Type \t Transmission Type \t VIN \t Price \t Cars Available]");
-    // }
+    /**
+     * Checks if the purchase is possible
+     * @return the subtotal if everything goes as expected
+     * @return -1 if invalid car ID
+     * @return -2 if out of stock
+     * @return -3 if insufficient funds
+     */
+    public double validatePurchase(int id, User user) {
+        if (id < 0 || id >= cars.size()) {
+            return -1; // invalid ID
+        } 
+        
+        Car desiredCar = cars.get(id); // Obtain the car the user wishes to purchase.
+
+        // In case desired car is out of stock, inform the user.
+        if(desiredCar.getVehiclesRemaining() == 0) {
+            return -2; // out of stock
+        }
+
+        // Verify the user has sufficient funds.
+
+        double subTotal = desiredCar.getPrice();
+        if (user.getIsMember()) {
+            // Apply discount if user is a member
+            subTotal = Math.round((subTotal - (.10 * subTotal)) * 100.0) / 100.0;
+        }
+        // Add taxes
+        double total = Math.round((subTotal + (.0625 * subTotal)) * 100.0) / 100.0;
+        System.out.println("Total: " + total + "\nSubtotal: " + subTotal);
+        if (user.getBalance() < total) {
+            return -3; // insufficient funds
+        }
+
+        return subTotal;
+    }
+
+    /**
+     * Purchases the case based on the ID for the user.
+     * At this stage the id should be checked, and the user is assumed to have enough funds.
+     * @return car ID if everything goes as expected.
+     * @return -1 in case of an error.
+     */
+    public int purchaseCar(int id, User user, double subTotal) {
+        
+        // Obtain the car the user wishes to purchase. 
+        // At this piont we assume the id is always correct.
+        Car desiredCar = cars.get(id); 
+
+        // Create a ticket
+        Ticket ticket = new Ticket(
+            desiredCar.getType(),
+            desiredCar.getModel(),
+            desiredCar.getYear(),
+            desiredCar.getColor(),
+            user.getFirstName() + " " + user.getLastName()
+        );
+        
+        // Add the ticket to the user's list of tickets.
+        user.addTicket(ticket);
+
+        // TODO: (low priority) when we figure out a way to store and load tickets that class will be used here.
+        // // Add the ticket to the shop's list of tickets.
+        // allTickets.add(ticket);
+        
+        // Update the user's number of cars purchased.
+        user.setCarsPurchased(user.getCarsPurchased() + 1);
+        
+        // Update the number of vehicles remaining for the car object.
+        desiredCar.setVehiclesRemaining(desiredCar.getVehiclesRemaining() - 1);
+        
+        // Subtract 1 from the count of cars in the CSV file.
+        this.updateCSV();
+
+        // Update the user's balance.
+        user.setBalance(Math.round((user.getBalance() - subTotal) * 100.0) / 100.0);
+        // updateBalanceInCSV(user); // FIXME: call usrcsv update when that's done
+
+        return desiredCar.getCarID();
+    }
 }

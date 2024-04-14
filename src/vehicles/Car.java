@@ -27,7 +27,7 @@ public abstract class Car {
         this.price = Double.parseDouble(contents.get("Price"));
         this.vehiclesRemaining = Integer.parseInt(contents.get("Cars Available"));
         this.year = Integer.parseInt(contents.get("Year"));
-        this.hasTurbo = contents.get("hasTurbo").equals("") || contents.get("hasTurbo").equals("No") ? false : true;
+        this.hasTurbo = contents.get("hasTurbo").equals("Yes");
     }
 
     /**

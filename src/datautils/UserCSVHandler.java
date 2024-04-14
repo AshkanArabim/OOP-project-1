@@ -47,10 +47,7 @@ public class UserCSVHandler extends CSVHandler {
         loadUsers();
     }
 
-    /**
-     * Updates the CSV file holder user data.
-     * Call this in every method of this class that modifies the "users" data structure
-     */
+    // note: javadoc for this method provided in parent class
     protected void updateCSV() {
         // TODO:
     }

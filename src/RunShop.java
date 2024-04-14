@@ -25,22 +25,7 @@
  * 
  */
 
-
-// import statements
-/************************************************************************/
-import java.util.Scanner;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.io.FileWriter;
-import java.io.IOException;
-import datautils.*;
-import vehicles.*;
-import entity.*;
 import UI.*;
-/************************************************************************/
-
 
 /**
  * This is the main runner class that is responsible for signing in users and admins, and also selling cars.
@@ -50,20 +35,6 @@ import UI.*;
  * @version 2.0
  */
 public class RunShop {
-
-    // Global Variables.
-    /************************************************************************/
-
-    // /**
-    //  * The person who is currently using the system.
-    //  */
-    // private static Person currentPerson;
-    
-    /**
-     * A list containing all Tickets for each car purchased.
-     */
-    private static ArrayList<Ticket> allTickets = new ArrayList<>();
-    /************************************************************************/
 
     /**
      * Main method.

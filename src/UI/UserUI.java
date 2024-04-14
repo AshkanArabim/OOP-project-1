@@ -44,7 +44,7 @@ public class UserUI extends UI{
 
     // FIXME: move this to user UI class
     private void menuLoop() {
-        Log log = new Log(this.user.getUsername());
+        Log log = new Log(this.person.getUsername());
         
         log.addLogEntry("login", "");
 
@@ -69,15 +69,16 @@ public class UserUI extends UI{
                 log.addLogEntry("view cars", "");
             } 
             else if (command == 2) {
-                filterCars(); // If the user enters 2, they wish to filter the cars based on condition.
+                // filter cars (used / new)
+                filterCars();
                 log.addLogEntry("filter cars", "");
             } 
             else if (command == 3) {
-                System.out.println("TODO:");
-                // int id = purchaseCar(); // If the user enters 3, they wish to purchase a car.
-                // if (id != -1) {
-                //     log.addLogEntry("purchase car", "User bought car " + id);
-                // }
+                // purchase a car
+                int id = purchaseCar();
+                if (id != -1) {
+                    log.addLogEntry("purchase car", "User bought car " + CARDATA.getCarStringByID(id));
+                }
             } 
             else if (command == 4) {
                 System.out.println("TODO:");
@@ -125,125 +126,93 @@ public class UserUI extends UI{
         }
     }
 
-    // /**
-    //  * Allows user to purchase a car.
-    //  * @return The car ID if the purchase was successful, else -1.
-    //  */
-    // // FIXME: move this to the user UI class
-    // private int purchaseCar() {
-    //     User currentUser = (User) currentPerson; // Cast the currentUser to a User type.
-    //     while(true) {
-    //         Utils.line();
+    /**
+     * Allows user to purchase a car.
+     * @return The car ID if the purchase was successful, else -1.
+     */
+    // FIXME: move this to the user UI class
+    private int purchaseCar() {
+        User currentUser = (User) this.person; // Cast the currentUser to a User type.
+        while(true) {
+            Utils.line();
 
-    //         // Display the current balance of the user.
-    //         System.out.println("Your balance is " + currentUser.getBalance());
+            // Display the current balance of the user.
+            System.out.println("Your balance is " + currentUser.getBalance());
             
-    //         // Available options.
-    //         System.out.println("Options:");
-    //         System.out.println("# - Enter ID of desired car"); 
-    //         System.out.println("0 - Go back");
+            // Available options.
+            System.out.println("Options:");
+            System.out.println("# - Enter ID of desired car"); 
+            System.out.println("0 - Go back");
 
-    //         // Prompt the user for the ID of desired car.
-    //         int command = Utils.inputOneInt("Enter ID of desired car: ");
+            // Prompt the user for the ID of desired car.
+            int id = Utils.inputOneInt("Enter ID of desired car: ");
 
-    //         Utils.clear();
+            Utils.clear();
             
-    //         if (command == 0) {
-    //             return -1; // If the user enters 0, they wish to go back.
-    //         }
-    //         else if (command == -1) {
-    //             System.out.println("Invalid command"); // In case the user enters an invalid command.
-    //         }
-    //         else if (command < 0 || command > cars.size()) {
-    //             System.out.println("Invalid car ID"); // In case the user enters an invalid ID.
-    //         }
-    //         else {
-    //             Car desiredCar = cars.get(command - 1); // Obtain the car the user wishes to purchase.
+            if (id == 0) {
+                return -1; // If the user enters 0, they wish to go back.
+            } 
+            
+            // TODO - this system may need to be revised to provide more detailed info
+            // I had to simplify these errors to make it easier to decouple the UI from the data
+            double subTotalOrStatus = CARDATA.validatePurchase(id - 1, currentUser);
 
-    //             // In case desired car is out of stock, inform the user.
-    //             if(desiredCar.getVehiclesRemaining() == 0) {
-    //                 System.out.println("Sorry,\n" + desiredCar + "\nis out of stock :(");
-    //                 continue;
-    //             }
-    //             // Verify the user has sufficient funds.
-    //             double subTotal = desiredCar.getPrice();
+            if (subTotalOrStatus < 0) {
+                if (subTotalOrStatus == -1) {
+                    System.out.println("Invalid car ID!"); // In case the user enters an invalid ID.
+                    // note that this also handles the case of id being -1 due to an invalid format
+                } else if (subTotalOrStatus == -2) {
+                    System.out.println("Sorry, that car is out of stock :(");
+                } else if (subTotalOrStatus == -3) {
+                    System.out.println("Insufficient funds!");
+                }
 
-    //             // Apply discount if user is a member
-    //             if (currentUser.getIsMember()) {
-    //                 subTotal = Math.round((subTotal - (.10 * subTotal)) * 100.0) / 100.0;
-    //             }
-    //             // Add taxes
-    //             double total = Math.round((subTotal + (.0625 * subTotal)) * 100.0) / 100.0;
-    //             System.out.println("Total: " + total + "\nSubtotal: " + subTotal);
-    //             if (currentUser.getBalance() >= total) {
+                continue;
+            }
 
-    //                 // Confirm the user wants to proceed with the purchase.
-    //                 if(!confirmPurchase(desiredCar)) {
-    //                     continue;
-    //                 }
+            // Confirm the user wants to proceed with the purchase.
+            if(!confirmPurchase(id - 1)) {
+                continue;
+            }
 
-    //                 // Create a receipt since the desired vehicle is in stock, the user has sufficient funds, and the user wishes to proceed.
-    //                 Ticket receipt = new Ticket(desiredCar.getType(), desiredCar.getModel(), desiredCar.getYear(), desiredCar.getColor(), currentUser.getFirstName() + " " + currentUser.getLastName());
-                    
-    //                 // Add the receipt to the user's list of tickets.
-    //                 currentUser.addTicket(receipt);
+            int purchaseStatus = CARDATA.purchaseCar(id - 1, currentUser, subTotalOrStatus);
 
-    //                 // Add the receipt to the shop's list of tickets.
-    //                 allTickets.add(receipt);
+            if (purchaseStatus == -1) {
+                System.out.println("Purchase failed...");
+            } else {
+                // Inform the user they successfully purchased the car.
+                System.out.println("Successfully purchased:\n" + CARDATA.getCarStringByID(id - 1));
+                return id - 1;
+            }
 
-                    
-    //                 // Update the user's number of cars purchased.
-    //                 currentUser.setCarsPurchased(currentUser.getCarsPurchased() + 1);
-                    
-    //                 // Update the number of vehicles remaining for the car object.
-    //                 desiredCar.setVehiclesRemaining(desiredCar.getVehiclesRemaining() - 1);
-                    
-    //                 // Subtract 1 from the count of cars in the CSV file.
-    //                 decrementCarFromCSV(desiredCar.getCarID());
+        }
+    }
 
-    //                 // Update the user's balance.
-    //                 currentUser.setBalance(Math.round((currentUser.getBalance() - total) * 100.0) / 100.0);
-    //                 updateBalanceInCSV(currentUser);
+    /**
+     * Ensures the user wants to make the purchase.
+     * @param id index (real, so subtract by 1 if passing from purchaseCar) of the car the user wants to buy
+     * @return True if the customer wishes to proceed with the purchase, False if the user changed their mind.
+     */
+    private boolean confirmPurchase(int carID) {
+        while (true) {
+            // Available options.
+            System.out.println("Are you sure you want to purchase?\n" + CARDATA.getCarStringByID(carID));
+            System.out.println("1 - Yes");
+            System.out.println("2 - No");
 
-    //                 // Inform the user they successfully purchased the car.
-    //                 System.out.println("Successfully purchased:\n" + desiredCar);
-    //                 return desiredCar.getCarID();
+            // Prompt the user for input.
+            int decision = Utils.inputOneInt("Enter command: ");
+            Utils.clear();
 
-    //             }
-    //             // Inform the user that they do not possess sufficient funds.
-    //             else {
-    //                 System.out.println("Sorry,\n" + desiredCar + "\ncosts $" + desiredCar.getPrice() + " but you only have $" + currentUser.getBalance());
-                    
-    //             }
-    //         }
-    //     }
-    // }
-
-    // /**
-    //  * Ensures the user wants to make the purchase.
-    //  * @param desiredCar object of type Car that the user wishes to purchase.
-    //  * @return True if the customer wishes to proceed with the purchase, False if the user changed their mind.
-    //  */
-    // // FIXME: move this to the user UI class
-    // private boolean confirmPurchase(Car desiredCar) {
-    //     while (true) {
-    //         // Available options.
-    //         System.out.println("Are you sure you want to purchase?\n" + desiredCar);
-    //         System.out.println("1 - Yes");
-    //         System.out.println("2 - No");
-
-    //         // Prompt the user for input.
-    //         int decision = Utils.inputOneInt("Enter command: ");
-    //         Utils.clear();
-
-    //         if (decision == -1) {
-    //             System.out.println("Invalid command"); // In case the user enters an invalid command.
-    //             continue;
-    //         }
-    //         else if (decision == 1) {return true;} // If the user enters 1, they wish to proceed with the purchase.
-    //         else if (decision == 2) {return false;} // If the user enters 2, they wish to cancel the purchase.
-    //     }
-    // }
+            if (decision == 1) {
+                return true;
+            } else if (decision == 2) {
+                return false;
+            } else {
+                System.out.println("Invalid command"); // In case the user enters an invalid command.
+            }
+        }
+    }
 
     // /**
     //  * Display tickets of the current user.
