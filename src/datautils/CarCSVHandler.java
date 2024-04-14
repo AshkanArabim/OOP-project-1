@@ -101,8 +101,8 @@ public class CarCSVHandler extends CSVHandler {
                     car.getVin() + "," + 
                     car.getFuelType() + "," + 
                     car.getModel() + "," + 
-                    (car.getHasTurbo() ? "Yes" : "No") + "," + 
-                    "\n"; // add the newline character at the end of line
+                    // add the newline character at the end of line instead of a comma
+                    (car.getHasTurbo() ? "Yes" : "No") + "\n";
 
                 fw.write(line);
                 fw.flush();
@@ -265,13 +265,11 @@ public class CarCSVHandler extends CSVHandler {
         
         // Update the number of vehicles remaining for the car object.
         desiredCar.setVehiclesRemaining(desiredCar.getVehiclesRemaining() - 1);
-        
-        // Subtract 1 from the count of cars in the CSV file.
         this.updateCSV();
 
         // Update the user's balance.
         user.setBalance(Math.round((user.getBalance() - subTotal) * 100.0) / 100.0);
-        // updateBalanceInCSV(user); // FIXME: call usrcsv update when that's done
+        UserCSVHandler.getInstance().updateCSV();
 
         return desiredCar.getCarID();
     }

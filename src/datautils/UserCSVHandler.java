@@ -3,8 +3,7 @@ package datautils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 import entity.User;
@@ -13,12 +12,26 @@ public class UserCSVHandler extends CSVHandler {
     
     // static fields
 
+    /**
+     * Determines the user attribute order when writing to the car data CSV file.
+     */
+    private static final String[] CSVORDER = {
+        "ID",
+        "First Name",
+        "Last Name",
+        "Money Available",
+        "Cars Purchased",
+        "MinerCars Membership",
+        "Username",
+        "Password"
+    };
+
     private static UserCSVHandler instance;
 
     /**
      * A string to the directory of the User Data CSV file.
      */
-    private static final String userSourceCSV = DATADIR + "/user_data.csv";
+    private static final String CSVPATH = DATADIR + "/user_data.csv";
 
     /**
      * Singleton instance retreiver.
@@ -38,7 +51,7 @@ public class UserCSVHandler extends CSVHandler {
     /**
      * Hashmap to efficiently match the entered username in login prompt to a valid user in the database.
      */
-    private static HashMap<String, User> users = new HashMap<String, User>();
+    private LinkedHashMap<String, User> users = new LinkedHashMap<>();
 
     /**
      * Private constructor to use with getInstance()
@@ -49,7 +62,38 @@ public class UserCSVHandler extends CSVHandler {
 
     // note: javadoc for this method provided in parent class
     protected void updateCSV() {
-        // TODO:
+        try {
+            FileWriter fw = new FileWriter(CSVPATH);
+
+            // write csv's first line
+            fw.write(String.join(",", CSVORDER));
+            fw.write("\n");
+            fw.flush();
+
+            // write one line per user
+            for (User user : users.values()) {
+                String line = "";
+                line += 
+                    user.getIdNumber() + "," +
+                    user.getFirstName() + "," +
+                    user.getLastName() + "," +
+                    String.format("%.2f", user.getBalance()) + "," +
+                    user.getCarsPurchased() + "," +
+                    (user.getIsMember() ? "True" : "False") + "," +
+                    user.getUsername() + "," +
+                    // add the newline character at the end of line instead of a comma
+                    user.getPassword() + "\n";
+
+                fw.write(line);
+                fw.flush();
+            }
+
+            fw.close();
+        } catch (Exception e) {
+            System.out.println("Couldn't re-write CSV file: " + CSVPATH);
+            e.printStackTrace();
+            System.exit(1);
+        }        
     }
 
     // /**
@@ -94,9 +138,8 @@ public class UserCSVHandler extends CSVHandler {
      * Initialize the Users HashMap by reading from the User Data CSV file.
      * @param sourceCSV A string to the directory of the User Data CSV file.
      */
-    // FIXME: add to user csv handler
     private void loadUsers () {
-        File f = new File(userSourceCSV); // File to scan input of.
+        File f = new File(CSVPATH); // File to scan input of.
         Scanner csvLineScanner; // Scanner to scan the input.
         try {
             csvLineScanner = new Scanner(f); // Initialize the scanner with the File object.
@@ -129,7 +172,7 @@ public class UserCSVHandler extends CSVHandler {
             csvLineScanner.close(); // Close the scanner.
         } 
         catch (FileNotFoundException e) {
-            System.err.println("Users csv file " + userSourceCSV + " not found"); // In case the file could not be located.
+            System.err.println("Users csv file " + CSVPATH + " not found"); // In case the file could not be located.
             System.exit(1);
         }
     }
