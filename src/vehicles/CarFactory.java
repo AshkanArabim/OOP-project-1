@@ -24,7 +24,6 @@ public class CarFactory {
     public static void setHeaders(String[] headersIn) {
         headers = headersIn;
         for (int i = 0; i < headers.length; i++) {
-            System.out.println(headers[i] + " " + i);
             columnMapIndices.put(headers[i], i);
         }
     }
