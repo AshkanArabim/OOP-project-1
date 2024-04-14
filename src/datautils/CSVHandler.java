@@ -1,6 +1,6 @@
 package datautils;
 
-public abstract class CSVHandler extends DataHandler {
+public abstract class CSVHandler implements DataHandler {
 
     /**
      * Updates the CSV file holder user data.

@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Log class that logs all customer activity to a log file.
  */
-public class Log extends DataHandler{
+public class Log implements DataHandler{
 
     // static fields
 
