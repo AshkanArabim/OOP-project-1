@@ -64,9 +64,9 @@ public class UserUI extends UI{
             Utils.clear();
 
             if (command == 1) {
-                System.out.println("TODO:");
-                // displayAllCars(); // If the user enters 1, they wish to display all cars.
-                // log.addLogEntry("view cars", "");
+                // display all cars
+                System.out.println(CARDATA);
+                log.addLogEntry("view cars", "");
             } 
             else if (command == 2) {
                 System.out.println("TODO:");

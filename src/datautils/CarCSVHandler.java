@@ -124,4 +124,32 @@ public class CarCSVHandler extends CSVHandler {
         }
     }
     
+    @Override
+    public String toString() {
+        String outstr = "";
+    
+        for (Car car : cars) {
+            outstr += car + "\n"; // car is automatically converted to String
+        }
+
+        outstr += "\n";
+        outstr += "Row content:\n";
+        outstr += "[ID \t Type \t Mode \t Condition \t Color \t Capacity \t Mileage \t Fuel Type \t Transmission Type \t VIN \t Price \t Cars Available]";
+
+        return outstr;
+    }
+
+    // /**
+    //  * Displays all cars from the CSV file.
+    //  */
+    // // FIXME: move this to the parent UI class
+    // private static void displayAllCars() {
+    //     for (Car car : cars) {
+    //         System.out.println(car);
+    //     }
+
+    //     System.out.println("");
+    //     System.out.println("Row content:");
+    //     System.out.println("[ID \t Type \t Mode \t Condition \t Color \t Capacity \t Mileage \t Fuel Type \t Transmission Type \t VIN \t Price \t Cars Available]");
+    // }
 }
