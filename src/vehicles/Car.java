@@ -123,7 +123,18 @@ public abstract class Car {
         getVehiclesRemaining() + "\t" +
         getHasTurbo() + "\t" +
         getYear();
+    }
 
+    /**
+     * Returns the legend to show the order that the toString method prints cars.
+     * Try using this whenever you print any car information.
+     */
+    public static String getLegend() {
+        String outstr = "\n";
+        outstr += "Row content:\n";
+        outstr += "[ID \t Type \t Mode \t Condition \t Color \t Capacity \t Mileage \t Fuel Type \t Transmission Type \t VIN \t Price \t Cars Available]";
+
+        return outstr;
     }
     
     // getters and setters

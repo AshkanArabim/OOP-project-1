@@ -10,6 +10,11 @@ import java.util.Scanner;
 import vehicles.Car;
 import vehicles.CarFactory;
 
+/**
+ * Handles all the data reading and writing for cars. 
+ * Try keeping all car-data-related activities here so the rest of the code stays clean.
+ * Info-retreival methods do not print anything; they just return Strings.
+ */
 public class CarCSVHandler extends CSVHandler {
 
     // static fields
@@ -132,9 +137,35 @@ public class CarCSVHandler extends CSVHandler {
             outstr += car + "\n"; // car is automatically converted to String
         }
 
-        outstr += "\n";
-        outstr += "Row content:\n";
-        outstr += "[ID \t Type \t Mode \t Condition \t Color \t Capacity \t Mileage \t Fuel Type \t Transmission Type \t VIN \t Price \t Cars Available]";
+        outstr += Car.getLegend();
+
+        return outstr;
+    }
+
+    public String getNewCarsList() {
+        String outstr = "";
+
+        for (Car car : cars) {
+            if (car.isNew()) {
+                outstr += car + "\n";
+            }
+        }
+
+        outstr += Car.getLegend();
+
+        return outstr;
+    }
+
+    public String getUsedCarsList() {
+        String outstr = "";
+
+        for (Car car : cars) {
+            if (!car.isNew()) {
+                outstr += car + "\n";
+            }
+        }
+
+        outstr += Car.getLegend();
 
         return outstr;
     }

@@ -69,9 +69,8 @@ public class UserUI extends UI{
                 log.addLogEntry("view cars", "");
             } 
             else if (command == 2) {
-                System.out.println("TODO:");
-                // filterCars(); // If the user enters 2, they wish to filter the cars based on condition.
-                // log.addLogEntry("filter cars", "");
+                filterCars(); // If the user enters 2, they wish to filter the cars based on condition.
+                log.addLogEntry("filter cars", "");
             } 
             else if (command == 3) {
                 System.out.println("TODO:");
@@ -95,44 +94,36 @@ public class UserUI extends UI{
         }
     }
 
-    // /**
-    //  * Allows user to display new cars or used cars.
-    //  */
-    // // FIXME: move this to the user UI class
-    // private void filterCars() {
-    //     while(true) {
-    //         // Available options for filtering cars.
-    //         Utils.line();
-    //         System.out.println("Options:");
-    //         System.out.println("1 - Display New Cars"); 
-    //         System.out.println("2 - Display Used Cars");
-    //         System.out.println("3 - Go back"); 
+    /**
+     * Allows user to display new cars or used cars.
+     */
+    // FIXME: move this to the user UI class
+    private void filterCars() {
+        while(true) {
+            // Available options for filtering cars.
+            Utils.line();
+            System.out.println("Options:");
+            System.out.println("1 - Display New Cars"); 
+            System.out.println("2 - Display Used Cars");
+            System.out.println("3 - Go back"); 
 
-    //         // Prompt the user for input.
-    //         int command = Utils.inputOneInt("Enter command: ");
+            // Prompt the user for input.
+            int command = Utils.inputOneInt("Enter command: ");
 
-    //         Utils.clear();
+            Utils.clear();
 
-    //         switch(command) {
-    //             case(1): {
-    //                 for (Car car : cars) {
-    //                     if (car.isNew()) {
-    //                         System.out.println(car); // Display new cars
-    //                     }
-    //                 }
-    //             } break;
-    //             case(2): {
-    //                 for (Car car : cars) {
-    //                     if (!car.isNew()) {
-    //                         System.out.println(car); // Display used cars 
-    //                     }
-    //                 }
-    //             } break; // If the user enters 2, they wish to display used cars.
-    //             case(3): return; // If the user enters 3, they wish to exit this menu.
-    //             default: System.out.println("Invalid command"); continue; // In case the user enters an invalid command.
-    //         }
-    //     }
-    // }
+            switch(command) {
+                case(1): {
+                    System.out.println(CARDATA.getNewCarsList());
+                } break;
+                case(2): {
+                    System.out.println(CARDATA.getUsedCarsList());
+                } break; // If the user enters 2, they wish to display used cars.
+                case(3): return; // If the user enters 3, they wish to exit this menu.
+                default: System.out.println("Invalid command"); continue; // In case the user enters an invalid command.
+            }
+        }
+    }
 
     // /**
     //  * Allows user to purchase a car.
