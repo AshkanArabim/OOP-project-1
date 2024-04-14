@@ -1,4 +1,4 @@
-package entity;
+package datautils;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,9 +9,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Log class that logs all customer activity to a log file.
  */
-public class Log {
-
-    private final String datadir;
+public class Log extends DataHandler{
 
     private final File logfile;
 
@@ -21,12 +19,11 @@ public class Log {
 
     // constructor
 
-    public Log(String datadir, String username) {
+    public Log(String username) {
         this.username = username;
-        this.datadir = datadir;
 
         // note that this path is relative to where you run the `java` command from.
-        this.logfile = new File(this.datadir + "/log.log");
+        this.logfile = new File(DATADIR + "/log.log");
 
         try {
             this.logWriter = new FileWriter(this.logfile, true);
@@ -78,11 +75,8 @@ public class Log {
             System.exit(1);
         }
     }
-    // getters
 
-    public String getDatadir() {
-        return datadir;
-    }
+    // getters
 
     public File getLogfile() {
         return logfile;

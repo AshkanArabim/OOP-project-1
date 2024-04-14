@@ -45,7 +45,7 @@ public class Ticket {
      */
     private String owner;
 
-    /*
+    /**
      * Aesthetics for printing.
      */
     @Override
