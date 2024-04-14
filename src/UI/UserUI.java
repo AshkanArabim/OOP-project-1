@@ -44,7 +44,7 @@ public class UserUI extends UI{
 
     // FIXME: move this to user UI class
     private void menuLoop() {
-        Log log = new Log(this.person.getUsername());
+        Log log = Log.getInstance(this.person.getUsername());
         
         log.addLogEntry("login", "");
 

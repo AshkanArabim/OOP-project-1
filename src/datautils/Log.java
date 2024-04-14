@@ -11,15 +11,45 @@ import java.time.format.DateTimeFormatter;
  */
 public class Log extends DataHandler{
 
+    // static fields
+
+    private static Log instance;
+
+    /**
+     * Singleton constructor
+     * Be sure to call this when the active user changes!!
+     * @param username the username to log as.
+     */
+    public static Log getInstance(String username) {
+        if (instance == null) {
+            instance = new Log(username);
+        } else {
+            instance.username = username;
+        }
+
+        return instance;
+    }
+
+    public static Log getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("Log instance has not been initialized!");
+        }
+
+        return instance;
+    }
+
+    // instance fields
+
     private final File logfile;
 
     private FileWriter logWriter;
 
     private String username;
 
-    // constructor
-
-    public Log(String username) {
+    /**
+     * Private constructor to use with getInstance
+     */
+    private Log(String username) {
         this.username = username;
 
         // note that this path is relative to where you run the `java` command from.
@@ -34,9 +64,6 @@ public class Log extends DataHandler{
         }
     }
 
-    
-    // public methods
-    
     /**
      * Adds a log entry to the log file.
      * BE SURE TO CALL THIS FOR EVERY OPTION AVAILABLE TO USERS!!
