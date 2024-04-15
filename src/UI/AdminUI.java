@@ -52,6 +52,7 @@ public class AdminUI extends UI{
                 System.out.println(USERDATA);
             } else if (command == 2) {
                 // print all ticktes                
+                System.out.println("Tickets:");
                 System.out.println(USERDATA.getAllTicketsList());
             } else if (command == 0) {
                 return;

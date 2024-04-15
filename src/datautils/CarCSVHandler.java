@@ -198,21 +198,21 @@ public class CarCSVHandler extends CSVHandler {
 
     /**
      * Checks if the purchase is possible
-     * @return the subtotal if everything goes as expected
-     * @return -1 if invalid car ID
-     * @return -2 if out of stock
-     * @return -3 if insufficient funds
+     * @return {subtotal, total} if everything goes as expected
+     * @return {-1} if invalid car ID
+     * @return {-2} if out of stock
+     * @return {-3} if insufficient funds
      */
-    public double validatePurchase(int id, User user) {
+    public double[] validatePurchase(int id, User user) {
         if (id < 0 || id >= cars.size()) {
-            return -1; // invalid ID
+            return new double[] {-1}; // invalid ID
         } 
         
         Car desiredCar = cars.get(id); // Obtain the car the user wishes to purchase.
 
         // In case desired car is out of stock, inform the user.
         if(desiredCar.getVehiclesRemaining() == 0) {
-            return -2; // out of stock
+            return new double[] {-2}; // out of stock
         }
 
         // Verify the user has sufficient funds.
@@ -224,12 +224,11 @@ public class CarCSVHandler extends CSVHandler {
         }
         // Add taxes
         double total = Math.round((subTotal + (.0625 * subTotal)) * 100.0) / 100.0;
-        System.out.println("Total: " + total + "\nSubtotal: " + subTotal);
         if (user.getBalance() < total) {
-            return -3; // insufficient funds
+            return new double[] {-3}; // insufficient funds
         }
 
-        return subTotal;
+        return new double[] {subTotal, total};
     }
 
     /**

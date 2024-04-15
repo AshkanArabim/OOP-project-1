@@ -7,7 +7,13 @@ import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 import entity.User;
+import entity.Ticket;
 
+/**
+ * Handles all User-related data operations. 
+ * Try to keep all User data structure modifications here (through specialized 
+ * methods) to keep the UI components clean.
+ */
 public class UserCSVHandler extends CSVHandler {
     
     // static fields
@@ -187,6 +193,23 @@ public class UserCSVHandler extends CSVHandler {
         }
 
         outstr += User.getLegend();
+
+        return outstr;
+    }
+
+    /**
+     * Iterates through all users to return a list of all tickets.
+     */
+    public String getAllTicketsList() {
+        String outstr = "";
+
+        for (User user: users.values()) {
+            for (Ticket ticket : user.getTickets()) {
+                outstr += ticket + "\n";
+            }
+        }
+
+        outstr += Ticket.getLegend();
 
         return outstr;
     }
