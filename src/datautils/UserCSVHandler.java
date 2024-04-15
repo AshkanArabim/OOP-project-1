@@ -61,6 +61,7 @@ public class UserCSVHandler extends CSVHandler {
     }
 
     // note: javadoc for this method provided in parent class
+    @Override
     protected void updateCSV() {
         try {
             FileWriter fw = new FileWriter(CSVPATH);
@@ -175,6 +176,19 @@ public class UserCSVHandler extends CSVHandler {
             System.err.println("Users csv file " + CSVPATH + " not found"); // In case the file could not be located.
             System.exit(1);
         }
+    }
+
+    @Override
+    public String toString() {
+        String outstr = "";
+
+        for (User user : users.values()) {
+            outstr += user + "\n";
+        }
+
+        outstr += User.getLegend();
+
+        return outstr;
     }
     
     /**

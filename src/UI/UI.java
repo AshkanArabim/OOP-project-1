@@ -13,5 +13,10 @@ public abstract class UI {
     public UI(Person person) {
         this.person = person;
     }
+
+    /**
+     * Provides the main loop for users to see and perform different tasks.
+     */
+    protected abstract void menuLoop();
     
 }

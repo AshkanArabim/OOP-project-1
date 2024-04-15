@@ -79,7 +79,15 @@ public class User extends Person {
         getIsMember() + "\t" + 
         getUsername() + "\t";
     }
-    
+
+    public static String getLegend() {
+        String outstr = "\n";
+        outstr += "Row content:\n";
+        outstr += "[ID \t First Name \t Last Name \t Money Available \t Cars Purchased \t MinerCars Membership \t Username]";
+
+        return outstr;
+    }
+
     // getters & setters
     /************************************************************************/
     public double getBalance() {

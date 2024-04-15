@@ -112,8 +112,8 @@ public class RunShop {
      */
     private static boolean login(String username, String password) {
         return (
-            UserUI.login(username, password) // ||
-            // AdminUI.login(username, password)
+            UserUI.login(username, password) ||
+            AdminUI.login(username, password)
         );
     }
 }

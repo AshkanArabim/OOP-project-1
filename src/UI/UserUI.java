@@ -36,8 +36,8 @@ public class UserUI extends UI{
         super(user);
     }
 
-    // FIXME: move this to user UI class
-    private void menuLoop() {
+    @Override
+    protected void menuLoop() {
         Log log = Log.getInstance(this.person.getUsername());
         
         log.addLogEntry("login", "");
