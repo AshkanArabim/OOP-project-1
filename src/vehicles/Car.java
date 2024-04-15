@@ -1,9 +1,6 @@
 package vehicles;
-// import statements
+
 import java.util.HashMap;
-/************************************************************************/
-import UI.Utils;
-/************************************************************************/
 
 /**
  * Car class that is abstract and describes the state of a car.
@@ -107,7 +104,6 @@ public abstract class Car {
      */
     @Override
     public String toString() {
-        Utils.longerLine();
         return 
         getCarID() + "\t" + 
         getType() + "\t" + 

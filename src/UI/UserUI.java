@@ -75,12 +75,15 @@ public class UserUI extends UI{
                 }
             } 
             else if (command == 4) {
-                viewTickets(); // If the user enters 4, they wish to view their tickets.
+                // print all tickets
+                User currentUser = (User) this.person;
+                System.out.println("Tickets:");
+                System.out.println(currentUser.getTicketsList());
                 log.addLogEntry("view tickets", "");
             } 
             else if (command == 0) {
                 log.addLogEntry("logout", "");
-                return; // returning true to show that login was a success
+                return; // exit loop
             } 
             else {
                 System.out.println("Invalid command"); // In case the user entered an invalid command.
@@ -99,7 +102,7 @@ public class UserUI extends UI{
             System.out.println("Options:");
             System.out.println("1 - Display New Cars"); 
             System.out.println("2 - Display Used Cars");
-            System.out.println("3 - Go back"); 
+            System.out.println("0 - Go back"); 
 
             // Prompt the user for input.
             int command = Utils.inputOneInt("Enter command: ");
@@ -113,7 +116,7 @@ public class UserUI extends UI{
                 case(2): {
                     System.out.println(CARDATA.getUsedCarsList());
                 } break; // If the user enters 2, they wish to display used cars.
-                case(3): return; // If the user enters 3, they wish to exit this menu.
+                case(0): return; // If the user enters 3, they wish to exit this menu.
                 default: System.out.println("Invalid command"); continue; // In case the user enters an invalid command.
             }
         }
@@ -148,15 +151,15 @@ public class UserUI extends UI{
             
             // TODO - this system may need to be revised to provide more detailed info
             // I had to simplify these errors to make it easier to decouple the UI from the data
-            double subTotalOrStatus = CARDATA.validatePurchase(id - 1, currentUser);
+            double[] totalAndSubTotalOrStatus = CARDATA.validatePurchase(id - 1, currentUser);
 
-            if (subTotalOrStatus < 0) {
-                if (subTotalOrStatus == -1) {
+            if (totalAndSubTotalOrStatus[0] < 0) {
+                if (totalAndSubTotalOrStatus[0] == -1) {
                     System.out.println("Invalid car ID!"); // In case the user enters an invalid ID.
                     // note that this also handles the case of id being -1 due to an invalid format
-                } else if (subTotalOrStatus == -2) {
+                } else if (totalAndSubTotalOrStatus[0] == -2) {
                     System.out.println("Sorry, that car is out of stock :(");
-                } else if (subTotalOrStatus == -3) {
+                } else if (totalAndSubTotalOrStatus[0] == -3) {
                     System.out.println("Insufficient funds!");
                 }
 
@@ -164,11 +167,13 @@ public class UserUI extends UI{
             }
 
             // Confirm the user wants to proceed with the purchase.
-            if(!confirmPurchase(id - 1)) {
+            double subtotal = totalAndSubTotalOrStatus[0];
+            double total = totalAndSubTotalOrStatus[1];
+            if(!confirmPurchase(id - 1, subtotal, total)) {
                 continue;
             }
 
-            int purchaseStatus = CARDATA.purchaseCar(id - 1, currentUser, subTotalOrStatus);
+            int purchaseStatus = CARDATA.purchaseCar(id - 1, currentUser, total);
 
             if (purchaseStatus == -1) {
                 System.out.println("Purchase failed...");
@@ -186,10 +191,17 @@ public class UserUI extends UI{
      * @param id index (real, so subtract by 1 if passing from purchaseCar) of the car the user wants to buy
      * @return True if the customer wishes to proceed with the purchase, False if the user changed their mind.
      */
-    private boolean confirmPurchase(int carID) {
+    private boolean confirmPurchase(int carID, double subtotal, double total) {
         while (true) {
+            System.out.println("Total: " + total);
+            System.out.println("Subtotal: " + subtotal);
+            System.out.println();
+
+            System.out.println("Are you sure you want to purchase?");
+            System.out.println(CARDATA.getCarStringByID(carID));
+            
             // Available options.
-            System.out.println("Are you sure you want to purchase?\n" + CARDATA.getCarStringByID(carID));
+            Utils.line();
             System.out.println("1 - Yes");
             System.out.println("2 - No");
 
@@ -205,14 +217,5 @@ public class UserUI extends UI{
                 System.out.println("Invalid command"); // In case the user enters an invalid command.
             }
         }
-    }
-
-    /**
-     * Display tickets of the current user.
-     */
-    // FIXME: move this to user UI class
-    private void viewTickets() {
-        User currentUser = (User) this.person;
-        currentUser.viewTickets();
     }
 }
