@@ -1,13 +1,7 @@
 package UI;
 
-import datautils.CarCSVHandler;
 import datautils.Log;
-import datautils.UserCSVHandler;
-import entity.Ticket;
 import entity.User;
-import vehicles.Car;
-import UI.UI;
-
 
 /**
  * Login screen for users that enable them to display all cars, filter cars, purchase a car, view tickets, and sign out.
@@ -81,9 +75,8 @@ public class UserUI extends UI{
                 }
             } 
             else if (command == 4) {
-                System.out.println("TODO:");
-                // viewTickets(); // If the user enters 4, they wish to view their tickets.
-                // log.addLogEntry("view tickets", "");
+                viewTickets(); // If the user enters 4, they wish to view their tickets.
+                log.addLogEntry("view tickets", "");
             } 
             else if (command == 0) {
                 log.addLogEntry("logout", "");
@@ -214,12 +207,12 @@ public class UserUI extends UI{
         }
     }
 
-    // /**
-    //  * Display tickets of the current user.
-    //  */
-    // // FIXME: move this to user UI class
-    // private void viewTickets() {
-    //     User currentUser = (User) currentPerson;
-    //     currentUser.viewTickets();
-    // }
+    /**
+     * Display tickets of the current user.
+     */
+    // FIXME: move this to user UI class
+    private void viewTickets() {
+        User currentUser = (User) this.person;
+        currentUser.viewTickets();
+    }
 }
