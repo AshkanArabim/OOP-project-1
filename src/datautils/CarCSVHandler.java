@@ -3,7 +3,6 @@ package datautils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -76,7 +75,6 @@ public class CarCSVHandler extends CSVHandler {
 
     // note: javadoc for this method provided in parent class
     protected void updateCSV() {
-        // TODO: 
         try {
             FileWriter fw = new FileWriter(CSVPATH);
 
@@ -120,7 +118,6 @@ public class CarCSVHandler extends CSVHandler {
      * * Initialize the Cars ArrayList by reading from the Car Data CSV file.
      * @param sourceCSV A string to the directory of the Car Data CSV file.
      */
-    // FIXME: add to car csv handler
     private void loadCars() {
         File f = new File(CSVPATH); // File to scan the input of.
         Scanner csvCarScanner; // Scanner to scan the input.
@@ -255,7 +252,8 @@ public class CarCSVHandler extends CSVHandler {
         // Add the ticket to the user's list of tickets.
         user.addTicket(ticket);
 
-        // TODO: (low priority) when we figure out a way to store and load tickets that class will be used here.
+        // TODO - (low priority) when we figure out a way to store and load tickets,
+        //  that class will be used here to update the corresponding CSV file for tickts.
         // // Add the ticket to the shop's list of tickets.
         // allTickets.add(ticket);
         

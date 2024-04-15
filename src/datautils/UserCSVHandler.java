@@ -66,7 +66,6 @@ public class UserCSVHandler extends CSVHandler {
         loadUsers();
     }
 
-    // note: javadoc for this method provided in parent class
     @Override
     protected void updateCSV() {
         try {
@@ -102,44 +101,6 @@ public class UserCSVHandler extends CSVHandler {
             System.exit(1);
         }        
     }
-
-    // /**
-    //  * Updates the balance in the CSV of the user logged in because the purchased a vehicle.
-    //  * @param user The current user logged in.
-    //  */
-    // // FIXME: move to user csv handler class
-    // public void updateBalanceInCSV(User user) {
-    //     File inputFile = new File(userSourceCSV);
-    //     File tempFile = new File("temp.csv");
-
-    //     try {
-    //         Scanner scanner = new Scanner(inputFile);
-    //         FileWriter writer = new FileWriter(tempFile);
-    //         writer.write(scanner.nextLine() + "\n");
-    //         while (scanner.hasNextLine()) {
-    //             String line = scanner.nextLine();
-    //             String[] parts = line.split(",");
-    //             if (parts[6].equals(user.getUsername())) {
-    //                 parts[3] = "" + user.getBalance();
-    //                 parts[4] = "" + user.getCarsPurchased();
-    //             }
-    //             line = String.join(",", parts);
-    //             writer.write(line + "\n");
-    //         }
-
-    //         scanner.close();
-    //         writer.close();
-    //     } catch (FileNotFoundException e) {
-    //         System.err.println("File not found: " + userSourceCSV);
-    //     } catch (IOException e) {
-    //         System.err.println("Error reading or writing file: " + e.getMessage());
-    //     }
-
-    //     // Replace the original file with the temporary file
-    //     if (!tempFile.renameTo(inputFile)) {
-    //         System.err.println("Could not rename temporary file");
-    //     }
-    // }
 
     /**
      * Initialize the Users HashMap by reading from the User Data CSV file.

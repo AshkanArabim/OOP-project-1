@@ -1,5 +1,4 @@
 package entity;
-import UI.*;
 /**
  * Serves as proof of purchase to customer by containing relevant information such as the car type, model, year, and color
  */

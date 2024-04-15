@@ -42,10 +42,6 @@ public class RunShop {
      * @param args
      */    
     public static void main(String[] args) {
-
-        // loadUsers(userSourceCSV); // Load the users from the CSV file.
-        // loadCars(carSourceCSV); // Load the cars from the CSV file.
-
         loginScreen();
     }
 
@@ -68,33 +64,6 @@ public class RunShop {
             // Clearing before error messages so user has a chance to see them.
             Utils.clear();
             
-
-            // // Handling Admin login.
-            // // For now, assume the admin will use "admin" and "admin" as both the username and password.
-            // if (username.equals("admin") && password.equals("admin")) {
-            //     // Admin and Adminson are temporary first and last names.
-            //     currentPerson = new Admin(0, "Admin", "Adminson", username, password);
-            //     adminLogin();
-            //     currentPerson = null; // Reset the currentPerson so the next person may sign in.
-            //     continue;
-            // }
-            
-            // // Handling User login.
-            // User selected_user = users.getOrDefault(username, null);
-            // // If the username and password match.
-            // if (
-            //     selected_user != null &&
-            //     selected_user.getPassword().equals(password)
-            // ) {
-            //     currentPerson = selected_user;
-            //     userLogin();
-            //     currentPerson = null; // Reset the currentPerson so the next person may sign in.
-            //     System.out.println("Logged out.");
-            // } 
-            // // In case they don't match.
-            // else {
-            //     System.out.println("Username or password incorrect.");
-            // }
 
             // try logging in, print incorrect password message if failed
             if (! login(username, password)) {

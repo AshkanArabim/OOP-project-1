@@ -1,6 +1,5 @@
 package UI;
 
-import entity.Ticket;
 import datautils.Log;
 import entity.Admin;
 

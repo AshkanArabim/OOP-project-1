@@ -94,7 +94,6 @@ public class UserUI extends UI{
     /**
      * Allows user to display new cars or used cars.
      */
-    // FIXME: move this to the user UI class
     private void filterCars() {
         while(true) {
             // Available options for filtering cars.
@@ -126,7 +125,6 @@ public class UserUI extends UI{
      * Allows user to purchase a car.
      * @return The car ID if the purchase was successful, else -1.
      */
-    // FIXME: move this to the user UI class
     private int purchaseCar() {
         User currentUser = (User) this.person; // Cast the currentUser to a User type.
         while(true) {

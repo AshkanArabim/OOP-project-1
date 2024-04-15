@@ -32,4 +32,3 @@ public class CarFactory {
         return headers;
     }
 }
- 
