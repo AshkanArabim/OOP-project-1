@@ -2,6 +2,7 @@ package UI;
 
 import datautils.Log;
 import entity.User;
+import vehicles.Car;
 
 /**
  * Login screen for users that enable them to display all cars, filter cars, purchase a car, view tickets, and sign out.
@@ -197,7 +198,7 @@ public class UserUI extends UI{
 
             System.out.println("Are you sure you want to purchase?");
             System.out.println(CARDATA.getCarStringByID(carID));
-            
+            System.out.println(Car.getLegend());
             // Available options.
             Utils.line();
             System.out.println("1 - Yes");

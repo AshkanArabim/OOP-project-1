@@ -128,7 +128,7 @@ public abstract class Car {
     public static String getLegend() {
         String outstr = "\n";
         outstr += "Row content:\n";
-        outstr += "[ID \t Type \t Mode \t Condition \t Color \t Capacity \t Mileage \t Fuel Type \t Transmission Type \t VIN \t Price \t Cars Available]";
+        outstr += "[ID \t Type \t Model \t Condition \t Color \t Capacity \t Mileage \t Fuel Type \t Transmission Type \t VIN \t Price \t Cars Available \t HasTurbo \t Year]";
 
         return outstr;
     }
