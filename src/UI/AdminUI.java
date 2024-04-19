@@ -1,5 +1,7 @@
 package UI;
 
+import java.io.IOException;
+
 import datautils.Log;
 import entity.Admin;
 
@@ -33,30 +35,35 @@ public class AdminUI extends UI{
         log.addLogEntry("login", "");
 
         while (true) {
-            // Available options for Admins.
-            Utils.line();
-            System.out.println("[ADMIN MODE]");
-            System.out.println("Options:");
-            System.out.println("1 - Display all users"); // Admins may display all users.
-            System.out.println("2 - View all Tickets"); // Admins may view all tickets.
-            System.out.println("0 - Sign out");
-
-            // Prompt admin for desired action.
-            int command = Utils.inputOneInt("Enter command: ");
-
-            Utils.clear();
-
-            if (command == 1) {
-                // print all users
-                System.out.println(USERDATA);
-            } else if (command == 2) {
-                // print all ticktes                
-                System.out.println("Tickets:");
-                System.out.println(USERDATA.getAllTicketsList());
-            } else if (command == 0) {
-                return;
-            } else {
-                System.out.println("Invalid command"); // In case the user entered an invalid command.
+            try {
+                // Available options for Admins.
+                Utils.line();
+                System.out.println("[ADMIN MODE]");
+                System.out.println("Options:");
+                System.out.println("1 - Display all users"); // Admins may display all users.
+                System.out.println("2 - View all Tickets"); // Admins may view all tickets.
+                System.out.println("0 - Sign out");
+    
+                // Prompt admin for desired action.
+                int command = Utils.inputOneInt("Enter command: ");
+    
+                Utils.clear();
+    
+                if (command == 1) {
+                    // print all users
+                    System.out.println(USERDATA);
+                } else if (command == 2) {
+                    // print all ticktes                
+                    System.out.println("Tickets:");
+                    System.out.println(USERDATA.getAllTicketsList());
+                } else if (command == 0) {
+                    return;
+                } else {
+                    throw new IOException();
+                }
+            } catch (IOException e) {
+                Utils.clear();
+                Utils.invalidInput();
             }
         }
     }

@@ -1,6 +1,7 @@
 package UI;
 // import statements
 /************************************************************************/
+import java.io.IOException;
 import java.util.Scanner;
 /************************************************************************/
 
@@ -38,6 +39,15 @@ public class Utils {
     }
 
     /**
+     * Prints a message telling the user their input is invalid.
+     * Useful to keep all invalid input messages consistent instead of manually
+     * hardcoding them every time.
+     */
+    public static void invalidInput() {
+        System.out.println("Invalid input!");
+    }
+
+    /**
      * Prompts the user to enter a word.
      * @param prompt Message displaying to the user.
      * @return The user's decision.
@@ -57,7 +67,7 @@ public class Utils {
      * @param prompt Message displaying to the user.
      * @return The user's decision.
      */
-    public static int inputOneInt(String prompt) {
+    public static int inputOneInt(String prompt) throws IOException{
         System.out.print(prompt);
         
         Scanner s = new Scanner(System.in);
@@ -66,7 +76,8 @@ public class Utils {
             return s.nextInt();
         }
         catch (java.util.InputMismatchException e) {
-            return -1; // In case the user did not enter an integer.
+            // in case the user inputs something other than an integer
+            throw new IOException();
         }
     }
 }
