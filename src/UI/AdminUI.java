@@ -45,6 +45,8 @@ public class AdminUI extends UI{
                 System.out.println("2 - View all Tickets");
                 System.out.println("3 - Add new car");
                 System.out.println("4 - Display all cars"); // for convenience
+                System.out.println("5 - Get Revenue by ID");
+                System.out.println("6 - Get Revenue by Car Type");
                 System.out.println("0 - Sign out");
     
                 // Prompt admin for desired action.
@@ -75,6 +77,17 @@ public class AdminUI extends UI{
                     System.out.println(CARDATA);
                     log.addLogEntry("view cars", "");
 
+                } else if (command == 5) {
+                    System.out.println("Printing revenue by Car ID!");
+                    
+                } else if (command == 6) {
+                    String[] options = new String[] {"Hatchback", "Sedan", "SUV", "Pickup"};
+                    System.out.println();
+                    String type = Utils.inputOneLineLoop(
+                        "Enter car type [" + String.join("|", options) + "]: ",
+                        options);
+                    System.out.println(USERDATA.getRevenueByType(type));
+                    log.addLogEntry("view revenue of car type: " + type, "");
                 } else if (command == 0) {
                     log.addLogEntry("logout", "");
                     return;

@@ -223,7 +223,9 @@ public class CarCSVHandler extends CSVHandler {
             desiredCar.getModel(),
             desiredCar.getYear(),
             desiredCar.getColor(),
-            user.getFirstName() + " " + user.getLastName()
+            user.getFirstName() + " " + user.getLastName(),
+            desiredCar.getPrice(),
+            desiredCar.getCarID()
         );
         
         // Add the ticket to the user's list of tickets.

@@ -10,13 +10,17 @@ public class Ticket {
      * @param year The year of the vehicle purchased.
      * @param color The color of the vehicle purchased.
      * @param owner The owner who purchased the vehicle.
+     * @param price The price of the vehicle.
+     * @param id ID of the vehicle.
      */
-    public Ticket(String type, String model, int year, String color, String owner) {
+    public Ticket(String type, String model, int year, String color, String owner, double price, int id) {
         this.type = type;
         this.model = model;
         this.year = year;
         this.color = color;
         this.owner = owner;
+        this.price = price;
+        this.id = id;
     }
 
     /**
@@ -45,11 +49,21 @@ public class Ticket {
     private String owner;
 
     /**
+     * The price of the vehicle.
+     */
+    private double price;
+
+    /**
+     * The id of the vehicle.
+     */
+    private double id;
+
+    /**
      * Aesthetics for printing.
      */
     @Override
     public String toString() {
-        return getType() + "\t" + getModel() + "\t" + getYear() + "\t" + getColor() + "\t" + getOwner();
+        return getType() + "\t" + getModel() + "\t" + getYear() + "\t" + getColor() + "\t" + getOwner() + "\t" + getPrice() + "\t" + getID();
     }
 
     /**
@@ -59,7 +73,7 @@ public class Ticket {
     public static String getLegend() {
         String outstr = "\n";
         outstr += "Row content:\n";
-        outstr += "[Car Type \t Car Model \t Car Year \t Car Color \t Owner]";
+        outstr += "[Car Type \t Car Model \t Car Year \t Car Color \t Owner \t Price \t ID]";
 
         return outstr;
     }
@@ -104,6 +118,22 @@ public class Ticket {
     
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getID() {
+        return id;
+    }
+
+    public void setID(int id) {
+        this.id = id;
     }
     /************************************************************************/
 }

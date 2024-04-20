@@ -147,6 +147,25 @@ public class UserCSVHandler extends CSVHandler {
     }
     
     /**
+     * 
+     * @param type The type of the car may be Hatchback, Sedan, SUV, or Pickup.
+     * @return A description of revenue by car type.
+     */
+    public String getRevenueByType(String type) {
+        int numberSold = 0;
+        double revenue = 0;
+        for (User user : users.values()) {
+            for (Ticket ticket : user.getTickets()) {
+                if (ticket.getType().equals(type)) {
+                    revenue += ticket.getPrice();
+                    numberSold += 1;
+                }
+            }
+        }
+        return "The shop has made $" + String.format("%.2f", revenue) + " from selling " + numberSold + " of type " + type; 
+    }
+
+    /**
      * Given a username and password, checks in the database to see if there's a match.
      * @return User object if there's a match, null if no match.
      */
