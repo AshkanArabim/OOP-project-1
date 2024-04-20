@@ -21,25 +21,6 @@ public class CarCSVHandler extends CSVHandler {
     // static fields
 
     /**
-     * Determines the car attribute order when writing to the car data CSV file.
-     */
-    private static final String[] CSVORDER = {
-        "Capacity",
-        "Car Type",
-        "Cars Available",
-        "Condition",
-        "Color",
-        "ID",
-        "Year",
-        "Price",
-        "Transmission",
-        "VIN",
-        "Fuel Type",
-        "Model",
-        "hasTurbo"
-    };
-
-    /**
      * A string to the directory of the Car Data CSV file.
      */
     private static final String CSVPATH = DATADIR + "/car_data.csv";
@@ -62,6 +43,11 @@ public class CarCSVHandler extends CSVHandler {
     // instance fields
 
     /**
+     * Determines the car attribute order when writing to the car data CSV file.
+     */
+    private String[] csvCols;
+
+    /**
      * Contains Car objects from the CSV files.
      */
     private ArrayList<Car> cars = new ArrayList<Car>();
@@ -79,30 +65,13 @@ public class CarCSVHandler extends CSVHandler {
             FileWriter fw = new FileWriter(CSVPATH);
 
             // write csv's first line
-            fw.write(String.join(",", CSVORDER));
+            fw.write(String.join(",", csvCols));
             fw.write("\n");
             fw.flush();
 
             // write one line per car
             for (Car car : cars) {
-                String line = "";
-                line += 
-                    car.getCapacity() + "," + 
-                    car.getType() + "," + 
-                    car.getVehiclesRemaining() + "," + 
-                    (car.isNew() ? "New" : "Used") + "," + 
-                    car.getColor() + "," + 
-                    car.getCarID() + "," + 
-                    car.getYear() + "," + 
-                    String.format("%.2f", car.getPrice()) + "," + // price with two decimal places
-                    (car.isAutomatic() ? "Automatic" : "Manual") + "," + 
-                    car.getVin() + "," + 
-                    car.getFuelType() + "," + 
-                    car.getModel() + "," + 
-                    // add the newline character at the end of line instead of a comma
-                    (car.getHasTurbo() ? "Yes" : "No") + "\n";
-
-                fw.write(line);
+                fw.write(String.join(",", car.colsToAttrs(csvCols)) + "\n");
                 fw.flush();
             }
 
@@ -125,8 +94,8 @@ public class CarCSVHandler extends CSVHandler {
             csvCarScanner = new Scanner(f); // Initialize the scanner with the File object.
 
             // Grab the column headers to dynamically assign attributes in ordering of CSV changes
-            String[] columnHeaders = csvCarScanner.nextLine().split(",");
-            CarFactory.setHeaders(columnHeaders);
+            csvCols = csvCarScanner.nextLine().split(",");
+            CarFactory.setHeaders(csvCols);
             // Continue scanning while the file has lines.
             while (csvCarScanner.hasNextLine()) {
                 String[] line = csvCarScanner.nextLine().split(",", -1);
@@ -189,8 +158,16 @@ public class CarCSVHandler extends CSVHandler {
         return outstr;
     }
 
+    /**
+     * Get car's info in string form based on its ID
+     * @param id The real ID of the car (with a +1 offset relative to the index)
+     */
     public String getCarStringByID(int id) {
-        return "" + cars.get(id);
+        return "" + cars.get(id - 1);
+    }
+
+    public String[] getCsvColumns() {
+        return this.csvCols;
     }
 
     /**
@@ -269,5 +246,39 @@ public class CarCSVHandler extends CSVHandler {
         UserCSVHandler.getInstance().updateCSV();
 
         return desiredCar.getCarID();
+    }
+
+    /**
+     * Given a list of attributes, creates and adds a car.
+     * @param carAttrs Sequence of car attributes in the same order as csvCols.
+     *                 Note that the ID field must be included, but it will be ignored internally.
+     * @return -1 if there is a car with those exact attributes (not counting ID).
+     *         Or, the ID number if the car is successfully added.
+     */
+    public int addCar(String[] carAttrs) {
+
+        CarFactory.setHeaders(csvCols); // setting headers again just to be safe
+        Car newCar = CarFactory.createCar(carAttrs);
+
+        // check if there's already a car in the database with same attributes (not considering ID)
+        boolean isRepeated = false;
+        for (Car car : cars) {
+            // if any of these is true, the whole thing will become true
+            isRepeated &= car.equals(newCar); 
+            if (isRepeated) { return -1; } // return immediately if repeated
+        }
+
+        // note that, since IDs start from 1 (not 0), the ID of the car that
+        // we just added is its real index in cars + 2 (1 because everything is 
+        // shifted, and another one because we are adding a new element), which
+        // is the same as length + 1.
+        int newCarID = cars.size() + 1;
+        newCar.setCarID(newCarID);
+        
+        cars.add(newCar);
+
+        updateCSV();
+
+        return newCarID;
     }
 }
