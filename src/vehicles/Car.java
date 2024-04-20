@@ -2,10 +2,15 @@ package vehicles;
 
 import java.util.HashMap;
 
+import datautils.CSVLoadable;
+
 /**
  * Car class that is abstract and describes the state of a car.
  */
-public abstract class Car {
+public abstract class Car implements CSVLoadable{
+
+    // static fields
+
     /**
      * Constructs car objects based off of data from car_data.csv.
      * @param contents hashmap from csv data. Responds dynamically to changes.
@@ -21,11 +26,28 @@ public abstract class Car {
         this.fuelType = contents.get("Fuel Type");
         this.isAutomatic = contents.get("Transmission").equals("Automatic") ? true : false;
         this.vin = contents.get("VIN");
-        this.price = Double.parseDouble(contents.get("Price"));
+        // cut of anything beyond the 2nd decimal point caused by precision errors
+        this.price = ((double)((int)(
+            Double.parseDouble(contents.get("Price")) * 100.0
+        )))/100.0;
         this.vehiclesRemaining = Integer.parseInt(contents.get("Cars Available"));
         this.year = Integer.parseInt(contents.get("Year"));
         this.hasTurbo = contents.get("hasTurbo").equals("Yes");
     }
+
+    /**
+     * Returns the legend to show the order that the toString method prints cars.
+     * Try using this whenever you print any car information.
+     */
+    public static String getLegend() {
+        String outstr = "\n";
+        outstr += "Row content:\n";
+        outstr += "[ID \t Type \t Mode \t Condition \t Color \t Capacity \t Mileage \t Fuel Type \t Transmission Type \t VIN \t Price \t Cars Available]";
+
+        return outstr;
+    }
+
+    // instance fields
 
     /**
      * Year of the car.
@@ -121,16 +143,33 @@ public abstract class Car {
         getYear();
     }
 
-    /**
-     * Returns the legend to show the order that the toString method prints cars.
-     * Try using this whenever you print any car information.
-     */
-    public static String getLegend() {
-        String outstr = "\n";
-        outstr += "Row content:\n";
-        outstr += "[ID \t Type \t Mode \t Condition \t Color \t Capacity \t Mileage \t Fuel Type \t Transmission Type \t VIN \t Price \t Cars Available]";
+    public String[] colsToAttrs(String[] cols) {
+        
+        // define column mappings
+        HashMap<String, String> colToAttrMap = new HashMap<>() {{
+            put("ID", "" + getCarID());
+            put("Car Type", getType());
+            put("Model", getModel());
+            put("Condition", isNew() ? "New" : "Used");
+            put("Color", getColor());
+            put("Capacity", "" + getCapacity());
+            put("Mileage", "" + getMileage());
+            put("Fuel Type", getFuelType());
+            put("Transmission", isAutomatic ? "Automatic" : "Manual");
+            put("VIN", getVin());
+            put("Price", "" + getPrice());
+            put("Cars Available", "" + getVehiclesRemaining());
+            put("Year", "" + getYear());
+            put("hasTurbo", getHasTurbo() ? "Yes" : "No");
+        }};
+        
+        // put corresponding values into attributes array
+        String[] attrs = new String[cols.length];
+        for (int i = 0; i < cols.length; i++) {
+            attrs[i] = colToAttrMap.get(cols[i]);
+        }
 
-        return outstr;
+        return attrs;
     }
     
     // getters and setters

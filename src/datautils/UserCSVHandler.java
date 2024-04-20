@@ -3,6 +3,7 @@ package datautils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
 
@@ -17,20 +18,6 @@ import entity.Ticket;
 public class UserCSVHandler extends CSVHandler {
     
     // static fields
-
-    /**
-     * Determines the user attribute order when writing to the car data CSV file.
-     */
-    private static final String[] CSVORDER = {
-        "ID",
-        "First Name",
-        "Last Name",
-        "Money Available",
-        "Cars Purchased",
-        "MinerCars Membership",
-        "Username",
-        "Password"
-    };
 
     private static UserCSVHandler instance;
 
@@ -55,6 +42,11 @@ public class UserCSVHandler extends CSVHandler {
     // instance fields
 
     /**
+     * Determines the user attribute order when writing to the car data CSV file.
+     */
+    private String[] csvCols;
+
+    /**
      * Hashmap to efficiently match the entered username in login prompt to a valid user in the database.
      */
     private LinkedHashMap<String, User> users = new LinkedHashMap<>();
@@ -72,25 +64,13 @@ public class UserCSVHandler extends CSVHandler {
             FileWriter fw = new FileWriter(CSVPATH);
 
             // write csv's first line
-            fw.write(String.join(",", CSVORDER));
+            fw.write(String.join(",", csvCols));
             fw.write("\n");
             fw.flush();
 
             // write one line per user
             for (User user : users.values()) {
-                String line = "";
-                line += 
-                    user.getIdNumber() + "," +
-                    user.getFirstName() + "," +
-                    user.getLastName() + "," +
-                    String.format("%.2f", user.getBalance()) + "," +
-                    user.getCarsPurchased() + "," +
-                    (user.getIsMember() ? "True" : "False") + "," +
-                    user.getUsername() + "," +
-                    // add the newline character at the end of line instead of a comma
-                    user.getPassword() + "\n";
-
-                fw.write(line);
+                fw.write(String.join(",", user.colsToAttrs(csvCols)) + "\n");
                 fw.flush();
             }
 
@@ -111,31 +91,22 @@ public class UserCSVHandler extends CSVHandler {
         Scanner csvLineScanner; // Scanner to scan the input.
         try {
             csvLineScanner = new Scanner(f); // Initialize the scanner with the File object.
-            csvLineScanner.nextLine(); // Skip the first line.
+
+            csvCols = csvLineScanner.nextLine().split(","); // save the headers
             
             // Continue scanning while the file has lines.
             while (csvLineScanner.hasNextLine()) {
-                String line = csvLineScanner.nextLine();
+                String[] line = csvLineScanner.nextLine().split(",");
 
-                Scanner cvsColScanner = new Scanner(line);
-                cvsColScanner.useDelimiter(",");
+                // fill user's attributes based on the headers
+                HashMap<String, String> userAttrs = new HashMap<>();
+                for (int i = 0; i < line.length; i++) {
+                    userAttrs.put(csvCols[i], line[i]);
+                }
 
-                int id = cvsColScanner.nextInt();
-                String first = cvsColScanner.next();
-                String last = cvsColScanner.next();
-                Double balance = cvsColScanner.nextDouble();
-                int carsPurchased = cvsColScanner.nextInt();
-                boolean isMember = cvsColScanner.nextBoolean();
-                String username = cvsColScanner.next();
-                String password = cvsColScanner.next();
-
-                cvsColScanner.close();
-
-                // Put the user in the HashMap.
-                users.put(
-                    username,
-                    new User(id, first, last, username, password, balance, carsPurchased, isMember)
-                );
+                // use attributes dict to create a user
+                User newUser = new User(userAttrs);
+                users.put(newUser.getUsername(), newUser); // add to database
             }
             csvLineScanner.close(); // Close the scanner.
         } 

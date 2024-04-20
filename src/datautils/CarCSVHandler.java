@@ -21,25 +21,6 @@ public class CarCSVHandler extends CSVHandler {
     // static fields
 
     /**
-     * Determines the car attribute order when writing to the car data CSV file.
-     */
-    private static final String[] CSVORDER = {
-        "Capacity",
-        "Car Type",
-        "Cars Available",
-        "Condition",
-        "Color",
-        "ID",
-        "Year",
-        "Price",
-        "Transmission",
-        "VIN",
-        "Fuel Type",
-        "Model",
-        "hasTurbo"
-    };
-
-    /**
      * A string to the directory of the Car Data CSV file.
      */
     private static final String CSVPATH = DATADIR + "/car_data.csv";
@@ -62,6 +43,11 @@ public class CarCSVHandler extends CSVHandler {
     // instance fields
 
     /**
+     * Determines the car attribute order when writing to the car data CSV file.
+     */
+    private String[] csvCols;
+
+    /**
      * Contains Car objects from the CSV files.
      */
     private ArrayList<Car> cars = new ArrayList<Car>();
@@ -79,30 +65,13 @@ public class CarCSVHandler extends CSVHandler {
             FileWriter fw = new FileWriter(CSVPATH);
 
             // write csv's first line
-            fw.write(String.join(",", CSVORDER));
+            fw.write(String.join(",", csvCols));
             fw.write("\n");
             fw.flush();
 
             // write one line per car
             for (Car car : cars) {
-                String line = "";
-                line += 
-                    car.getCapacity() + "," + 
-                    car.getType() + "," + 
-                    car.getVehiclesRemaining() + "," + 
-                    (car.isNew() ? "New" : "Used") + "," + 
-                    car.getColor() + "," + 
-                    car.getCarID() + "," + 
-                    car.getYear() + "," + 
-                    String.format("%.2f", car.getPrice()) + "," + // price with two decimal places
-                    (car.isAutomatic() ? "Automatic" : "Manual") + "," + 
-                    car.getVin() + "," + 
-                    car.getFuelType() + "," + 
-                    car.getModel() + "," + 
-                    // add the newline character at the end of line instead of a comma
-                    (car.getHasTurbo() ? "Yes" : "No") + "\n";
-
-                fw.write(line);
+                fw.write(String.join(",", car.colsToAttrs(csvCols)) + "\n");
                 fw.flush();
             }
 
@@ -125,8 +94,8 @@ public class CarCSVHandler extends CSVHandler {
             csvCarScanner = new Scanner(f); // Initialize the scanner with the File object.
 
             // Grab the column headers to dynamically assign attributes in ordering of CSV changes
-            String[] columnHeaders = csvCarScanner.nextLine().split(",");
-            CarFactory.setHeaders(columnHeaders);
+            csvCols = csvCarScanner.nextLine().split(",");
+            CarFactory.setHeaders(csvCols);
             // Continue scanning while the file has lines.
             while (csvCarScanner.hasNextLine()) {
                 String[] line = csvCarScanner.nextLine().split(",", -1);
