@@ -74,7 +74,8 @@ public class UserUI extends UI{
                     // purchase a car
                     int id = purchaseCar();
                     if (id != -1) {
-                        log.addLogEntry("purchase car", "User bought car " + CARDATA.getCarStringByID(id));
+                        // note: getCarStringByID takes a real ID with a +1 offset, not the index.
+                        log.addLogEntry("purchase car", "User bought car " + CARDATA.getCarStringByID(id + 1));
                     }
                 } 
                 else if (command == 4) {
@@ -192,7 +193,7 @@ public class UserUI extends UI{
                     System.out.println("Purchase failed...");
                 } else {
                     // Inform the user they successfully purchased the car.
-                    System.out.println("Successfully purchased:\n" + CARDATA.getCarStringByID(id - 1));
+                    System.out.println("Successfully purchased:\n" + CARDATA.getCarStringByID(id));
                     return id - 1;
                 }
             } catch (IOException e) {
@@ -215,7 +216,7 @@ public class UserUI extends UI{
                 System.out.println();
     
                 System.out.println("Are you sure you want to purchase?");
-                System.out.println(CARDATA.getCarStringByID(carID));
+                System.out.println(CARDATA.getCarStringByID(carID + 1)); // converted to real id with offset
                 
                 // Available options.
                 Utils.line();

@@ -144,6 +144,27 @@ public abstract class Car implements CSVLoadable{
     }
 
     /**
+     * Compares this car to another car in every field except the ID.
+     * @return true if everythng except ID matches, false otherwise.
+     */
+    public boolean equals(Car otherCar) {
+        return (
+            this.getCapacity() == otherCar.getCapacity() &&
+            this.getType().equals(otherCar.getType()) &&
+            this.getVehiclesRemaining() == otherCar.getVehiclesRemaining() &&
+            this.isNew() == otherCar.isNew() &&
+            this.getColor().equals(otherCar.getColor()) &&
+            this.getYear() == otherCar.getYear() &&
+            this.getPrice() == otherCar.getPrice() &&
+            this.isAutomatic() == otherCar.isAutomatic() &&
+            this.getVin().equals(otherCar.getVin()) &&
+            this.getFuelType().equals(otherCar.getFuelType()) &&
+            this.getModel().equals(otherCar.getModel()) &&
+            this.getHasTurbo() == otherCar.getHasTurbo()
+        );
+    }
+
+    /**
      * Returns a sequence of corresponding attributes in the same order as given CSV columns.
      */
     public String[] colsToAttrs(String[] cols) {
