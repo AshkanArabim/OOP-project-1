@@ -283,4 +283,18 @@ public class CarCSVHandler extends CSVHandler {
 
         return newCarID;
     }
+
+    /**
+     * Ensures the ID is in the arrayList of cars beforehand for tasks such as removing or obtaining revenue.
+     * @param id
+     * @return true if the cars arraylist has the ID, false otherwise.
+     */
+    public boolean validateID(int id) {
+        for (Car car : cars) {
+            if (car.getCarID() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

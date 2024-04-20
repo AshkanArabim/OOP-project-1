@@ -158,11 +158,31 @@ public class UserCSVHandler extends CSVHandler {
             for (Ticket ticket : user.getTickets()) {
                 if (ticket.getType().equals(type)) {
                     revenue += ticket.getPrice();
-                    numberSold += 1;
+                    numberSold++;
                 }
             }
         }
         return "The shop has made $" + String.format("%.2f", revenue) + " from selling " + numberSold + " of type " + type; 
+    }
+
+    /**
+     * 
+     * @param id The id of the car.
+     * @return A description of revenue based on the ID of the car.
+     */
+    public String getRevenueByID(int id) {
+        
+        int numberSold = 0;
+        double revenue = 0;
+        for (User user : users.values()) {
+            for (Ticket ticket : user.getTickets()) {
+                if (ticket.getID() == id) {
+                    revenue += ticket.getPrice();
+                    numberSold++;
+                }
+            }
+        }
+        return "The shop has made $" + String.format("%.2f", revenue) + " from selling " + numberSold + " of car ID " + id; 
     }
 
     /**

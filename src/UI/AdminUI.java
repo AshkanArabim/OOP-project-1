@@ -78,16 +78,22 @@ public class AdminUI extends UI{
                     log.addLogEntry("view cars", "");
 
                 } else if (command == 5) {
-                    System.out.println("Printing revenue by Car ID!");
-                    
+                    int id = Utils.inputOneInt("Enter ID of car: ");
+                    if (CARDATA.validateID(id)) {
+                        System.out.println(USERDATA.getRevenueByID(id));
+                        log.addLogEntry("view revenue of car: " + id, "");
+                    }
+                    else {
+                        Utils.invalidInput();
+                    }
                 } else if (command == 6) {
                     String[] options = new String[] {"Hatchback", "Sedan", "SUV", "Pickup"};
-                    System.out.println();
                     String type = Utils.inputOneLineLoop(
                         "Enter car type [" + String.join("|", options) + "]: ",
                         options);
                     System.out.println(USERDATA.getRevenueByType(type));
                     log.addLogEntry("view revenue of car type: " + type, "");
+
                 } else if (command == 0) {
                     log.addLogEntry("logout", "");
                     return;
