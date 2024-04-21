@@ -3,10 +3,13 @@ package datautils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Scanner;
 
+import UI.Utils;
 import entity.User;
 import entity.Ticket;
 
@@ -199,5 +202,53 @@ public class UserCSVHandler extends CSVHandler {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Adds a user to CSV file.
+     * @return true if successfully added, false otherwise.
+     */
+    public boolean addUser(String username) {
+        try {
+            double balance = Utils.inputOneDouble("Enter new user's balance: ");
+            String password = Utils.inputOneWord("Enter new user's password: ");
+            String lastName = Utils.inputOneWord("Enter new user's last name: ");
+            String firstName = Utils.inputOneWord("Enter new user's first name: ");
+            int id = getMaximumID() + 1;
+            boolean hasMembership = Utils.inputOneLineLoop("Does the new user have a membership? [Yes|No]: ", new String[] {"Yes", "No"}).equals("Yes");
+            User newUser = new User(id, firstName, lastName, username, password, balance, 0, hasMembership);
+            users.put(username, newUser);
+            updateCSV();
+        }
+        catch (IOException ioe) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    /**
+     * @return the maximum id of the users.
+     */
+    public int getMaximumID() {
+        int max = Integer.MIN_VALUE;
+        for (User u : users.values()) {
+            if (u.getIdNumber() > max) {
+                max = u.getIdNumber();
+            }
+        }
+        return max;
+    }
+
+    /**
+     * Iterates through the users to ensure we cannot add a new user with a username that already exists.
+     */
+    public boolean userNameExists(String name) {
+        for (String username : users.keySet()) {
+            if (name.equalsIgnoreCase(username)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

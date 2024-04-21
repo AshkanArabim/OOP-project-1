@@ -5,6 +5,12 @@ public class CarFactory {
     private static String[] headers;
     private static HashMap<String,String> columnMap = new HashMap<>();
     public static HashMap<String, Integer> columnMapIndices = new HashMap<>();
+
+    /**
+     * Creates a car based on the values of the CSV but responds dynamically to column changes.
+     * @param values The row in the CSV.
+     * @return A car object based on the values from the row.
+     */
     public static Car createCar(String[] values) {
         for (int i = 0; i < headers.length; i++) {
             columnMap.put(headers[i], values[i]);

@@ -285,6 +285,27 @@ public class CarCSVHandler extends CSVHandler {
     }
 
     /**
+     * Removes a car from the ArrayList and the CAR CSV.
+     * @param id The id of the car to remove.
+     * @return True if the car was successfully removed, false otherwise.
+     */
+    public boolean removeCar(int id) {
+        Car carToRemove = null;
+        for (Car car : cars) {
+            if (car.getCarID() == id) {
+                carToRemove = car;
+                break;
+            }
+        }
+        if (carToRemove != null) {
+            cars.remove(carToRemove);
+            updateCSV();
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Ensures the ID is in the arrayList of cars beforehand for tasks such as removing or obtaining revenue.
      * @param id
      * @return true if the cars arraylist has the ID, false otherwise.

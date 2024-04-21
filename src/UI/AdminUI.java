@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import datautils.Log;
 import entity.Admin;
+import entity.User;
 
 public class AdminUI extends UI{
 
@@ -47,6 +48,8 @@ public class AdminUI extends UI{
                 System.out.println("4 - Display all cars"); // for convenience
                 System.out.println("5 - Get Revenue by ID");
                 System.out.println("6 - Get Revenue by Car Type");
+                System.out.println("7 - Remove a car");
+                System.out.println("8 - Add new user");
                 System.out.println("0 - Sign out");
     
                 // Prompt admin for desired action.
@@ -94,6 +97,33 @@ public class AdminUI extends UI{
                     System.out.println(USERDATA.getRevenueByType(type));
                     log.addLogEntry("view revenue of car type: " + type, "");
 
+                } else if (command == 7) {
+                    int id = Utils.inputOneInt("Enter ID of car to remove: ");
+                    if (CARDATA.validateID(id)) {
+                        try {
+                            CARDATA.removeCar(id);
+                        }
+                        catch (Exception e) {}
+                        log.addLogEntry("remove car: " + id, "");
+                        System.out.println("Successfully removed car: " + id);
+                    }
+                    else {
+                        Utils.invalidInput();
+                    }
+                    Utils.clear();
+
+                } else if (command == 8) {
+                    String username = Utils.inputOneWord("Enter new user's username: ");
+                    if (USERDATA.userNameExists(username)) {
+                        System.out.println(username + " already exists.");
+                    }
+                    else if(USERDATA.addUser(username)) {
+                            System.out.println("Successfully added user: " + username);
+                            log.addLogEntry("added user " + username, "");
+                    }
+                    else {
+                        Utils.invalidInput();
+                    }
                 } else if (command == 0) {
                     log.addLogEntry("logout", "");
                     return;

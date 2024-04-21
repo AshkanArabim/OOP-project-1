@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import datautils.Log;
 import entity.User;
-import vehicles.Car;
 
 /**
  * Login screen for users that enable them to display all cars, filter cars, purchase a car, view tickets, and sign out.
@@ -85,7 +84,7 @@ public class UserUI extends UI{
                     System.out.println("Tickets:");
                     System.out.println(currentUser.getTicketsList());
                     log.addLogEntry("view tickets", "");
-                } 
+                }
                 else if (command == 0) {
                     log.addLogEntry("logout", "");
                     return; // exit loop
@@ -163,7 +162,10 @@ public class UserUI extends UI{
                 if (id == 0) {
                     return -1; // If the user enters 0, they wish to go back.
                 } 
-                
+                if (!(CARDATA.validateID(id))) {
+                    Utils.invalidInput();
+                    return -1;
+                }
                 // TODO - this system may need to be revised to provide more detailed info
                 // I had to simplify these errors to make it easier to decouple the UI from the data
                 double[] totalAndSubTotalOrStatus = CARDATA.validatePurchase(id - 1, currentUser);
