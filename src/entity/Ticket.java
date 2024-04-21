@@ -56,7 +56,7 @@ public class Ticket {
     /**
      * The id of the vehicle.
      */
-    private double id;
+    private int id;
 
     /**
      * Aesthetics for printing.
@@ -128,7 +128,7 @@ public class Ticket {
         this.price = price;
     }
 
-    public double getID() {
+    public int getID() {
         return id;
     }
 

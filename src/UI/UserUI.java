@@ -1,7 +1,6 @@
 package UI;
 
 import java.io.IOException;
-
 import datautils.Log;
 import entity.User;
 
@@ -53,6 +52,7 @@ public class UserUI extends UI{
                 System.out.println("2 - Filter Cars (used / new)"); // Users may filter cars based on used/new condition.
                 System.out.println("3 - Purchase a car"); // Users may purchase a car.
                 System.out.println("4 - View Tickets"); // Users may view their tickets.
+                System.out.println("5 - Return a car"); // Users may return a car.
                 System.out.println("0 - Sign out"); // Users may sign out.
 
                 // Prompt user for desired action.
@@ -84,6 +84,20 @@ public class UserUI extends UI{
                     System.out.println("Tickets:");
                     System.out.println(currentUser.getTicketsList());
                     log.addLogEntry("view tickets", "");
+                }
+                else if (command == 5) {
+                    User currentUser = (User) this.person;
+                    if (currentUser.getCarsPurchased() == 0) {
+                        System.out.println("You do not own any cars.");
+                    }
+                    else {
+                        System.out.println("Tickets:");
+                        System.out.println(currentUser.getTicketsList());
+                        int carIDToRemove = Utils.inputOneInt("Enter ID of car to return: ");
+                        if (USERDATA.returnCar(currentUser.getUsername(), carIDToRemove)) {
+                            CARDATA.updateCarCount(carIDToRemove);
+                        }
+                    }
                 }
                 else if (command == 0) {
                     log.addLogEntry("logout", "");

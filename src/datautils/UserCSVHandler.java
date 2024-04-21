@@ -251,4 +251,35 @@ public class UserCSVHandler extends CSVHandler {
         }
         return false;
     }
+
+    public boolean returnCar(String username, int id) {
+        User selected_user = users.getOrDefault(username, null);
+        if (id < 0 || id >= CarCSVHandler.getInstance().getMaximumID()) {
+            System.out.println("Invalid car ID.");
+            return false;
+        }
+
+        boolean ownsCar = false;
+        Ticket reciept = null;
+        for (Ticket t : selected_user.getTickets()) {
+            if (t.getID() == id) {
+                reciept = t;
+                ownsCar = true;
+                break;
+            }
+        }
+
+        if (!ownsCar) {
+            System.out.println("You do not own car " + id);
+            return false;
+        }
+        else {
+            selected_user.setBalance(Math.round((selected_user.getBalance() + reciept.getPrice()) * 100.0) / 100.0);
+            selected_user.getTickets().remove(reciept);
+            selected_user.setCarsPurchased(selected_user.getCarsPurchased() - 1);
+            updateCSV();
+        }
+
+        return true;
+    }
 }

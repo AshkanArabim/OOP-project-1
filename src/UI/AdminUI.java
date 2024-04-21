@@ -100,6 +100,7 @@ public class AdminUI extends UI{
                 } else if (command == 7) {
                     int id = Utils.inputOneInt("Enter ID of car to remove: ");
                     if (CARDATA.validateID(id)) {
+                        // may crash unexpectedly.
                         try {
                             CARDATA.removeCar(id);
                         }

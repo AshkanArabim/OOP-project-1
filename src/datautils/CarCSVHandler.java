@@ -318,4 +318,33 @@ public class CarCSVHandler extends CSVHandler {
         }
         return false;
     }
+
+    /**
+     * Returns the maximum id of cars for tasks like returning a car or adding a car.
+     * @return maximum car id.
+     */
+    public int getMaximumID() {
+        int max = Integer.MIN_VALUE;
+        for (Car car : cars) {
+            if (car.getCarID() > max) {
+                max = car.getCarID();
+            }
+        }
+        return max;
+    }
+
+    public ArrayList<Car> getCars() {
+        return cars;
+    }
+
+    public boolean updateCarCount(int carIDToRemove) {
+        for (Car c : cars) {
+            if (c.getCarID() == carIDToRemove) {
+                c.setVehiclesRemaining(c.getVehiclesRemaining() + 1);
+                updateCSV();
+                return true;
+            }
+        }
+        return false;
+    }
 }
