@@ -253,8 +253,12 @@ public class UserCSVHandler extends CSVHandler {
 
     public boolean returnCar(String username, int id) {
         User selected_user = users.getOrDefault(username, null);
-        if (id < 0 || id >= CarCSVHandler.getInstance().getMaximumID()) {
-            System.out.println("Invalid car ID.");
+        // if (id < 0 || id > CarCSVHandler.getInstance().getMaximumID()) {
+        //     System.out.println("Invalid car ID.");
+        //     return false;
+        // }
+         
+        if (CarCSVHandler.getInstance().getCarByID(id) == null) {
             return false;
         }
 

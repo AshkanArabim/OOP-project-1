@@ -196,7 +196,14 @@ public class AdminUI extends UI{
                     "Enter " + cols[i] + " [" + String.join("|", options) + "]: ", options
                 );
 
-            } else if (cols[i].equals("hasTurbo")) {
+            } else if (cols[i].equals("Fuel Type")) {
+                String[] options = new String[] {"Gasoline", "Electric", "Hybrid", "Diesel"};
+                carAttrs[i] = Utils.inputOneLineLoop(
+                    "Enter " + cols[i] + " [" + String.join("|", options) + "]: ", options
+                );
+
+            }
+            else if (cols[i].equals("hasTurbo")) {
                 String[] options = new String[] {"Yes", "No"};
                 carAttrs[i] = Utils.inputOneLineLoop(
                     "Enter " + cols[i] + " [" + String.join("|", options) + "]: ", options

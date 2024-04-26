@@ -218,7 +218,7 @@ public class CarCSVHandler extends CSVHandler {
      * @return car ID if everything goes as expected.
      * @return -1 in case of an error.
      */
-    public int purchaseCar(int id, User user, double subTotal) {
+    public int purchaseCar(int id, User user, double total) {
         
         // Obtain the car the user wishes to purchase. 
         // At this piont we assume the id is always correct.
@@ -231,7 +231,7 @@ public class CarCSVHandler extends CSVHandler {
             desiredCar.getYear(),
             desiredCar.getColor(),
             user.getFirstName() + " " + user.getLastName(),
-            desiredCar.getPrice(),
+            total,
             desiredCar.getCarID()
         );
         
@@ -251,7 +251,7 @@ public class CarCSVHandler extends CSVHandler {
         this.updateCSV();
 
         // Update the user's balance.
-        user.setBalance(Math.round((user.getBalance() - subTotal) * 100.0) / 100.0);
+        user.setBalance(Math.round((user.getBalance() - total) * 100.0) / 100.0);
         UserCSVHandler.getInstance().updateCSV();
 
         return desiredCar.getCarID();
@@ -337,6 +337,7 @@ public class CarCSVHandler extends CSVHandler {
                 max = car.getCarID();
             }
         }
+        System.out.println("max id is " + max);
         return max;
     }
 
