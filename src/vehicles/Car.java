@@ -27,9 +27,7 @@ public abstract class Car implements CSVLoadable{
         this.isAutomatic = contents.get("Transmission").equals("Automatic") ? true : false;
         this.vin = contents.get("VIN");
         // cut of anything beyond the 2nd decimal point caused by precision errors
-        this.price = ((double)((int)(
-            Double.parseDouble(contents.get("Price")) * 100.0
-        )))/100.0;
+        this.price = Math.round(Double.parseDouble(contents.get("Price")) * 100.0) / 100.0;
         this.vehiclesRemaining = Integer.parseInt(contents.get("Cars Available"));
         this.year = Integer.parseInt(contents.get("Year"));
         this.hasTurbo = contents.get("hasTurbo").equals("Yes");

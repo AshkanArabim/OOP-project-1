@@ -30,7 +30,7 @@ public class User extends Person implements CSVLoadable{
     double balance, int carsPurchased, boolean isMember) {
         super(id, firstName, lastName, username, password);
         // cut of anything beyond the 2nd decimal point caused by precision errors
-        this.balance = ((double)((int)(balance *100.0)))/100.0;
+        this.balance = Math.round(balance * 100.0) / 100.0;
         this.carsPurchased = carsPurchased;
         this.isMember = isMember;
         this.tickets = new ArrayList<>();
