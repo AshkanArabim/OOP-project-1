@@ -3,7 +3,6 @@ package datautils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -277,11 +276,7 @@ public class CarCSVHandler extends CSVHandler {
             if (isRepeated) { return -1; } // return immediately if repeated
         }
 
-        // note that, since IDs start from 1 (not 0), the ID of the car that
-        // we just added is its real index in cars + 2 (1 because everything is 
-        // shifted, and another one because we are adding a new element), which
-        // is the same as length + 1.
-        int newCarID = cars.size() + 1;
+        int newCarID = getMaximumID() + 1;
         newCar.setCarID(newCarID);
         
         cars.put(newCar.getCarID(), newCar);
