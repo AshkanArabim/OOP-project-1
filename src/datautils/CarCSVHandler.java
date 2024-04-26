@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import entity.Ticket;
@@ -50,7 +52,8 @@ public class CarCSVHandler extends CSVHandler {
     /**
      * Contains Car objects from the CSV files.
      */
-    private ArrayList<Car> cars = new ArrayList<Car>();
+    // private ArrayList<Car> cars = new ArrayList<Car>();
+    private LinkedHashMap<Integer, Car> cars = new LinkedHashMap<>();
 
     /**
      * Private constructor to use with getInstance()
@@ -70,7 +73,8 @@ public class CarCSVHandler extends CSVHandler {
             fw.flush();
 
             // write one line per car
-            for (Car car : cars) {
+            for (Map.Entry<Integer, Car> entry : cars.entrySet()) {
+                Car car = entry.getValue();
                 fw.write(String.join(",", car.colsToAttrs(csvCols)) + "\n");
                 fw.flush();
             }
@@ -101,7 +105,7 @@ public class CarCSVHandler extends CSVHandler {
                 String[] line = csvCarScanner.nextLine().split(",", -1);
                 // Initialize the appropriate Car object using Factory Pattern depending on the type and add to ArrayList.
                 Car car = CarFactory.createCar(line);
-                cars.add(car);
+                cars.put(car.getCarID(), car);
             }
             csvCarScanner.close(); // Close the scanner.
         }
@@ -115,8 +119,8 @@ public class CarCSVHandler extends CSVHandler {
     public String toString() {
         String outstr = "";
     
-        for (Car car : cars) {
-            outstr += car + "\n"; // car is automatically converted to String
+        for (Map.Entry<Integer, Car> entry : cars.entrySet()) {
+            outstr += entry.getValue() + "\n"; // car is automatically converted to String
         }
 
         outstr += Car.getLegend();
@@ -130,7 +134,8 @@ public class CarCSVHandler extends CSVHandler {
     public String getNewCarsList() {
         String outstr = "";
 
-        for (Car car : cars) {
+        for (Map.Entry<Integer, Car> entry : cars.entrySet()) {
+            Car car = entry.getValue();
             if (car.isNew()) {
                 outstr += car + "\n";
             }
@@ -147,7 +152,8 @@ public class CarCSVHandler extends CSVHandler {
     public String getUsedCarsList() {
         String outstr = "";
 
-        for (Car car : cars) {
+        for (Map.Entry<Integer, Car> entry : cars.entrySet()) {
+            Car car = entry.getValue();
             if (!car.isNew()) {
                 outstr += car + "\n";
             }
@@ -163,14 +169,7 @@ public class CarCSVHandler extends CSVHandler {
      * @return Car object matching ID, or null if no match.
      */
     public Car getCarByID(int id) {
-        Car desiredCar = null;
-        for (int i = 0; i < cars.size(); i++) {
-            if (cars.get(i).getCarID() == id) {
-                desiredCar = cars.get(i);
-            }
-        }
-
-        return desiredCar;
+        return cars.get(id);
     }
 
     public String[] getCsvColumns() {
@@ -271,8 +270,9 @@ public class CarCSVHandler extends CSVHandler {
 
         // check if there's already a car in the database with same attributes (not considering ID)
         boolean isRepeated = false;
-        for (Car car : cars) {
+        for (Map.Entry<Integer, Car> entry : cars.entrySet()) {
             // if any of these is true, the whole thing will become true
+            Car car = entry.getValue();
             isRepeated &= car.equals(newCar); 
             if (isRepeated) { return -1; } // return immediately if repeated
         }
@@ -284,7 +284,7 @@ public class CarCSVHandler extends CSVHandler {
         int newCarID = cars.size() + 1;
         newCar.setCarID(newCarID);
         
-        cars.add(newCar);
+        cars.put(newCar.getCarID(), newCar);
 
         updateCSV();
 
@@ -297,18 +297,13 @@ public class CarCSVHandler extends CSVHandler {
      * @return True if the car was successfully removed, false otherwise.
      */
     public boolean removeCar(int id) {
-        Car carToRemove = null;
-        for (Car car : cars) {
-            if (car.getCarID() == id) {
-                carToRemove = car;
-                break;
-            }
-        }
-        if (carToRemove != null) {
-            cars.remove(carToRemove);
-            updateCSV();
+
+        // Remove if the id exists. If not, return false
+        if (cars.containsKey(id)) {
+            cars.remove(id);
             return true;
         }
+
         return false;
     }
 
@@ -318,12 +313,7 @@ public class CarCSVHandler extends CSVHandler {
      * @return true if the cars arraylist has the ID, false otherwise.
      */
     public boolean validateID(int id) {
-        for (Car car : cars) {
-            if (car.getCarID() == id) {
-                return true;
-            }
-        }
-        return false;
+        return cars.containsKey(id);
     }
 
     /**
@@ -332,7 +322,8 @@ public class CarCSVHandler extends CSVHandler {
      */
     public int getMaximumID() {
         int max = Integer.MIN_VALUE;
-        for (Car car : cars) {
+        for (Map.Entry<Integer, Car> entry : cars.entrySet()) {
+            Car car = entry.getValue();
             if (car.getCarID() > max) {
                 max = car.getCarID();
             }
@@ -340,18 +331,23 @@ public class CarCSVHandler extends CSVHandler {
         return max;
     }
 
-    public ArrayList<Car> getCars() {
+    public LinkedHashMap<Integer, Car> getCars() {
         return cars;
     }
 
-    public boolean updateCarCount(int carIDToRemove) {
-        for (Car c : cars) {
-            if (c.getCarID() == carIDToRemove) {
-                c.setVehiclesRemaining(c.getVehiclesRemaining() + 1);
-                updateCSV();
-                return true;
-            }
+    /**
+     * Increments the number of cars with a specified ID.
+     * @return true if operation was successful, false if not (car id not in database)
+     */
+    public boolean incrementCarCount(int id) {
+        Car c = getCarByID(id);
+
+        if (c != null) {
+            c.setVehiclesRemaining(c.getVehiclesRemaining() + 1);
+            updateCSV();
+            return true;
         }
+
         return false;
     }
 }

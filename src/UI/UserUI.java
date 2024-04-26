@@ -93,9 +93,9 @@ public class UserUI extends UI{
                     else {
                         System.out.println("Tickets:");
                         System.out.println(currentUser.getTicketsList());
-                        int carIDToRemove = Utils.inputOneInt("Enter ID of car to return: ");
-                        if (USERDATA.returnCar(currentUser.getUsername(), carIDToRemove)) {
-                            CARDATA.updateCarCount(carIDToRemove);
+                        int carIDToReturn = Utils.inputOneInt("Enter ID of car to return: ");
+                        if (USERDATA.returnCar(currentUser.getUsername(), carIDToReturn)) {
+                            CARDATA.incrementCarCount(carIDToReturn);
                         }
                     }
                 }
