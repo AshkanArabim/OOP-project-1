@@ -100,10 +100,7 @@ public class AdminUI extends UI{
                     int id = Utils.inputOneInt("Enter ID of car to remove: ");
                     if (CARDATA.validateID(id)) {
                         // may crash unexpectedly.
-                        try {
-                            CARDATA.removeCar(id);
-                        }
-                        catch (Exception e) {}
+                        CARDATA.removeCar(id);
                         log.addLogEntry("remove car: " + id, "");
                         Utils.clear();
                         System.out.println("Successfully removed car: " + id);

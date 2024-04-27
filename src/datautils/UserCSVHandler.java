@@ -253,26 +253,21 @@ public class UserCSVHandler extends CSVHandler {
 
     public boolean returnCar(String username, int id) {
         User selected_user = users.getOrDefault(username, null);
-        // if (id < 0 || id > CarCSVHandler.getInstance().getMaximumID()) {
-        //     System.out.println("Invalid car ID.");
-        //     return false;
-        // }
          
         if (CarCSVHandler.getInstance().getCarByID(id) == null) {
+            System.out.println("Could not return car.");
             return false;
         }
 
-        boolean ownsCar = false;
         Ticket reciept = null;
         for (Ticket t : selected_user.getTickets()) {
             if (t.getID() == id) {
                 reciept = t;
-                ownsCar = true;
                 break;
             }
         }
 
-        if (!ownsCar) {
+        if (reciept == null) {
             System.out.println("You do not own car " + id);
             return false;
         }
@@ -280,6 +275,8 @@ public class UserCSVHandler extends CSVHandler {
             selected_user.setBalance(Math.round((selected_user.getBalance() + reciept.getPrice()) * 100.0) / 100.0);
             selected_user.getTickets().remove(reciept);
             selected_user.setCarsPurchased(selected_user.getCarsPurchased() - 1);
+
+            //CarCSVHandler.getInstance().getCarByID(reciept.getID()).setVehiclesRemaining()
             updateCSV();
         }
 
