@@ -78,6 +78,23 @@ public class Ticket {
         return outstr;
     }
 
+    /**
+     * Compares two tickets for equality by comparing their attributes.
+     * @param other the other ticket to be compared.
+     * @return true if the are equal, false if they are not.
+     */
+    public boolean equals(Ticket other) {
+        return 
+        getType() == other.getType() &&
+        getModel() == other.getModel() &&
+        getYear() == other.getYear() &&
+        getColor() == other.getColor() &&
+        getOwner() == other.getOwner() &&
+        getPrice() == other.getPrice() &&
+        getID() == other.getID();
+
+    }
+
     // getters and setters
     /************************************************************************/
     public String getType() {
