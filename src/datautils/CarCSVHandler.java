@@ -296,9 +296,9 @@ public class CarCSVHandler extends CSVHandler {
         // Remove if the id exists. If not, return false
         if (cars.containsKey(id)) {
             cars.remove(id);
+            updateCSV();
             return true;
         }
-
         return false;
     }
 
