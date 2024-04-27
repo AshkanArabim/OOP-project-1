@@ -93,10 +93,10 @@ public class UserUI extends UI{
                     else {
                         System.out.println("Tickets:");
                         System.out.println(currentUser.getTicketsList());
-                        int carIDToRemove = Utils.inputOneInt("Enter ID of car to return: ");
-                        if (USERDATA.returnCar(currentUser.getUsername(), carIDToRemove)) {
-                            System.out.println("Successfully returned car!");
-                            CARDATA.updateCarCount(carIDToRemove);
+                        int carIDToReturn = Utils.inputOneInt("Enter ID of car to return: ");
+                        if (USERDATA.returnCar(currentUser.getUsername(), carIDToReturn)) {
+                            System.out.println("Successfully Returned Car!");
+                            CARDATA.incrementCarCount(carIDToReturn);
                         }
                     }
                 }
