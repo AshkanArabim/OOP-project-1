@@ -67,10 +67,11 @@ public class RunShop {
             Utils.clear();
             
 
-            // try logging in, print incorrect password message if failed
-            if (! login(username, password)) {
+            // Try logging in, print incorrect password message if failed.
+            if (!login(username, password)) {
                 System.out.println("Username or password incorrect.");
-            } else {
+            } 
+            else {
                 System.out.println("Logged out.");
             }
         }
@@ -78,8 +79,9 @@ public class RunShop {
 
     /**
      * Tries to log in as user or admin based on given credentials.
-     * 
-     * @return true if login successful, false otherwise.
+     * @param username The username of the person attempting to login.
+     * @param password The password of the person attempting to login.
+     * @return True if login successful, false otherwise.
      */
     private static boolean login(String username, String password) {
         return (

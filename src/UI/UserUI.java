@@ -1,59 +1,61 @@
 package UI;
-
 import java.io.IOException;
 import datautils.Log;
 import entity.User;
 
 /**
- * Login screen for users that enable them to display all cars, filter cars, purchase a car, view tickets, and sign out.
- * @see UI.java for other available fields
+ * Login screen for users that enable them to interact with the system.
  */
 public class UserUI extends UI{
 
-    // static fields
-
-    /**
-     * Try to log in as user with given credentials.
-     * This is the ONLY available public method of this class.
-     * @return true if login successful, false otherwise.
-     */
-    public static boolean login (String username, String password) {
-        User currentUser = USERDATA.validateAndGetUser(username, password);
-        if (currentUser != null) {
-            UserUI ui = new UserUI(currentUser);
-            ui.menuLoop(); // start user's interface
-            return true; // login worked
-        }
-
-        return false; // login failed
-    }
-
-    // instance fields
-
     /**
      * Private constructor to use with login().
+     * @param user The user to be logged in.
      */
     private UserUI(User user) {
         super(user);
     }
+    
+    /**
+     * Try to log in as user with given credentials.
+     * This is the ONLY available public method of this class.
+     * @param username Username of the user.
+     * @param password Password of the user.
+     * @return True if login successful, false otherwise.
+     */
+    public static boolean login (String username, String password) {
+        User currentUser = USERDATA.validateAndGetUser(username, password);
 
+        if (currentUser != null) {
+            UserUI ui = new UserUI(currentUser);
+            ui.menuLoop(); // Start user's interface.
+            return true; // Login succeeded.
+        }
+
+        return false; // Login failed.
+    }
+
+    /**
+     * Display the options for users.
+     */
     @Override
     protected void menuLoop() {
+
         Log log = Log.getInstance(this.person.getUsername());
         
         log.addLogEntry("login", "");
 
         while (true) {
             try {
-                // Avaiable options for Users.
                 Utils.line();
+                // Show available options to users.
                 System.out.println("Options:");
-                System.out.println("1 - Display all cars"); // Users may display all cars.
-                System.out.println("2 - Filter Cars (used / new)"); // Users may filter cars based on used/new condition.
-                System.out.println("3 - Purchase a car"); // Users may purchase a car.
-                System.out.println("4 - View Tickets"); // Users may view their tickets.
-                System.out.println("5 - Return a car"); // Users may return a car.
-                System.out.println("0 - Sign out"); // Users may sign out.
+                System.out.println("1 - Display all cars");
+                System.out.println("2 - Filter Cars (used / new)");
+                System.out.println("3 - Purchase a car");
+                System.out.println("4 - View Tickets");
+                System.out.println("5 - Return a car");
+                System.out.println("0 - Sign out");
 
                 // Prompt user for desired action.
                 int command = Utils.inputOneInt("Enter command: ");
@@ -61,25 +63,20 @@ public class UserUI extends UI{
                 Utils.clear();
 
                 if (command == 1) {
-                    // display all cars
                     System.out.println(CARDATA);
                     log.addLogEntry("view cars", "");
                 } 
                 else if (command == 2) {
-                    // filter cars (used / new)
                     filterCars();
                     log.addLogEntry("filter cars", "");
                 } 
                 else if (command == 3) {
-                    // purchase a car
                     int id = purchaseCar();
                     if (id != -1) {
-                        // note: getCarStringByID takes a real ID with a +1 offset, not the index.
                         log.addLogEntry("purchase car", "User bought car " + CARDATA.getCarByID(id));
                     }
                 } 
                 else if (command == 4) {
-                    // print all tickets
                     User currentUser = (User) this.person;
                     System.out.println("Tickets:");
                     System.out.println(currentUser.getTicketsList());
@@ -96,13 +93,14 @@ public class UserUI extends UI{
                         int carIDToReturn = Utils.inputOneInt("Enter ID of car to return: ");
                         if (USERDATA.returnCar(currentUser.getUsername(), carIDToReturn)) {
                             System.out.println("Successfully Returned Car!");
+                            log.addLogEntry(currentUser.getUsername() + " return car " + carIDToReturn, "");
                             CARDATA.incrementCarCount(carIDToReturn);
                         }
                     }
                 }
                 else if (command == 0) {
                     log.addLogEntry("logout", "");
-                    return; // exit loop
+                    return;
                 } 
                 else {
                     throw new IOException();
@@ -112,12 +110,14 @@ public class UserUI extends UI{
                 Utils.invalidInput();
             }
         }
+
     }
 
     /**
      * Allows user to display new cars or used cars.
      */
     private void filterCars() {
+
         while(true) {
             try {
                 // Available options for filtering cars.
@@ -133,22 +133,24 @@ public class UserUI extends UI{
                 Utils.clear();
 
                 if (command == 1) {
-                    // display new cars
                     System.out.println(CARDATA.getNewCarsList());
-                } else if (command == 2) {
-                    // display used cars
+                } 
+                else if (command == 2) {
                     System.out.println(CARDATA.getUsedCarsList());
-                } else if (command == 0) {
-                    // exit
+                } 
+                else if (command == 0) {
                     return;
-                } else {
+                }
+                else {
                     throw new IOException();
                 }
-            } catch (IOException e) {
+            } 
+            catch (IOException e) {
                 Utils.clear();
                 Utils.invalidInput();
             }
         }
+        
     }
 
     /**
@@ -156,6 +158,7 @@ public class UserUI extends UI{
      * @return The car ID if the purchase was successful, else -1.
      */
     private int purchaseCar() {
+
         User currentUser = (User) this.person; // Cast the currentUser to a User type.
         while(true) {
             try {
@@ -178,19 +181,18 @@ public class UserUI extends UI{
                     return -1; // If the user enters 0, they wish to go back.
                 }
 
-                // TODO - this system may need to be revised to provide more detailed info
                 double[] totalAndSubTotalOrStatus = CARDATA.validatePurchase(id, currentUser);
     
                 if (totalAndSubTotalOrStatus[0] < 0) {
                     if (totalAndSubTotalOrStatus[0] == -1) {
                         System.out.println("Invalid car ID!"); // In case the user enters an invalid ID.
-                        // note that this also handles the case of id being -1 due to an invalid format
-                    } else if (totalAndSubTotalOrStatus[0] == -2) {
+                    } 
+                    else if (totalAndSubTotalOrStatus[0] == -2) {
                         System.out.println("Sorry, that car is out of stock :(");
-                    } else if (totalAndSubTotalOrStatus[0] == -3) {
+                    } 
+                    else if (totalAndSubTotalOrStatus[0] == -3) {
                         System.out.println("Insufficient funds!");
                     }
-    
                     continue;
                 }
     
@@ -205,16 +207,19 @@ public class UserUI extends UI{
     
                 if (purchaseStatus == -1) {
                     System.out.println("Purchase failed...");
-                } else {
+                } 
+                else {
                     // Inform the user they successfully purchased the car.
                     System.out.println("Successfully purchased:\n" + CARDATA.getCarByID(id));
                     return id;
                 }
-            } catch (IOException e) {
+            } 
+            catch (IOException e) {
                 Utils.clear();
                 Utils.invalidInput();
             }
         }
+
     }
 
     /**
@@ -223,6 +228,7 @@ public class UserUI extends UI{
      * @return True if the customer wishes to proceed with the purchase, False if the user changed their mind.
      */
     private boolean confirmPurchase(int carID, double subtotal, double total) {
+
         while (true) {
             try {
                 System.out.println("Total: " + total);
@@ -230,7 +236,7 @@ public class UserUI extends UI{
                 System.out.println();
     
                 System.out.println("Are you sure you want to purchase?");
-                System.out.println(CARDATA.getCarByID(carID)); // converted to real id with offset
+                System.out.println(CARDATA.getCarByID(carID));
                 
                 // Available options.
                 Utils.line();
@@ -243,15 +249,20 @@ public class UserUI extends UI{
     
                 if (decision == 1) {
                     return true;
-                } else if (decision == 2) {
+                } 
+                else if (decision == 2) {
                     return false;
-                } else {
+                } 
+                else {
                     throw new IOException();
                 }
-            } catch (IOException e) {
+            } 
+            catch (IOException e) {
                 Utils.clear();
                 Utils.invalidInput();
             }
         }
+
     }
+
 }

@@ -1,5 +1,4 @@
 package datautils;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -7,41 +6,24 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Scanner;
-
 import UI.Utils;
 import entity.User;
 import entity.Ticket;
 
 /**
- * Handles all User-related data operations. 
- * Try to keep all User data structure modifications here (through specialized 
- * methods) to keep the UI components clean.
+ * Singleton class that handles all User-related data operations. 
  */
 public class UserCSVHandler extends CSVHandler {
     
-    // static fields
-
+    /**
+     * Singleton instance.
+     */
     private static UserCSVHandler instance;
 
     /**
      * A string to the directory of the User Data CSV file.
      */
     private static final String CSVPATH = DATADIR + "/user_data.csv";
-
-    /**
-     * Singleton instance retreiver.
-     * Will initialize the internal data structure based on users csv file on first call.
-     * @return instance of UserCSVHandler
-     */
-    public static UserCSVHandler getInstance() {
-        if (instance == null) {
-            instance = new UserCSVHandler();
-        }
-
-        return instance;
-    }
-
-    // instance fields
 
     /**
      * Determines the user attribute order when writing to the car data CSV file.
@@ -52,6 +34,19 @@ public class UserCSVHandler extends CSVHandler {
      * Hashmap to efficiently match the entered username in login prompt to a valid user in the database.
      */
     private LinkedHashMap<String, User> users = new LinkedHashMap<>();
+    
+    /**
+     * Singleton instance retreiver.
+     * Will initialize the internal data structure based on users csv file on first call.
+     * @return Instance of UserCSVHandler.
+     */
+    public static UserCSVHandler getInstance() {
+        if (instance == null) {
+            instance = new UserCSVHandler();
+        }
+
+        return instance;
+    }
 
     /**
      * Private constructor to use with getInstance()
@@ -60,24 +55,28 @@ public class UserCSVHandler extends CSVHandler {
         loadUsers();
     }
 
+    /**
+     * Updates the user csv file.
+     */
     @Override
     protected void updateCSV() {
         try {
             FileWriter fw = new FileWriter(CSVPATH);
 
-            // write csv's first line
+            // Write csv's first line.
             fw.write(String.join(",", csvCols));
             fw.write("\n");
             fw.flush();
 
-            // write one line per user
+            // Write one line per user.
             for (User user : users.values()) {
                 fw.write(String.join(",", user.colsToAttrs(csvCols)) + "\n");
                 fw.flush();
             }
 
             fw.close();
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             System.out.println("Couldn't re-write CSV file: " + CSVPATH);
             e.printStackTrace();
             System.exit(1);
@@ -94,21 +93,21 @@ public class UserCSVHandler extends CSVHandler {
         try {
             csvLineScanner = new Scanner(f); // Initialize the scanner with the File object.
 
-            csvCols = csvLineScanner.nextLine().split(","); // save the headers
+            csvCols = csvLineScanner.nextLine().split(","); // Save the headers.
             
             // Continue scanning while the file has lines.
             while (csvLineScanner.hasNextLine()) {
                 String[] line = csvLineScanner.nextLine().split(",");
 
-                // fill user's attributes based on the headers
+                // Fill user's attributes based on the headers.
                 HashMap<String, String> userAttrs = new HashMap<>();
                 for (int i = 0; i < line.length; i++) {
                     userAttrs.put(csvCols[i], line[i]);
                 }
 
-                // use attributes dict to create a user
+                // Use attributes dict to create a user.
                 User newUser = new User(userAttrs);
-                users.put(newUser.getUsername(), newUser); // add to database
+                users.put(newUser.getUsername(), newUser); // Add to database.
             }
             csvLineScanner.close(); // Close the scanner.
         } 
@@ -118,6 +117,10 @@ public class UserCSVHandler extends CSVHandler {
         }
     }
 
+    /**
+     * String representation for printing.
+     * @return A string representation of the user csv file.
+     */
     @Override
     public String toString() {
         String outstr = "";
@@ -133,6 +136,7 @@ public class UserCSVHandler extends CSVHandler {
 
     /**
      * Iterates through all users to return a list of all tickets.
+     * @return A list of all tickets as a String.
      */
     public String getAllTicketsList() {
         String outstr = "";
@@ -149,7 +153,7 @@ public class UserCSVHandler extends CSVHandler {
     }
     
     /**
-     * 
+     * Get the revenue by type.
      * @param type The type of the car may be Hatchback, Sedan, SUV, or Pickup.
      * @return A description of revenue by car type.
      */
@@ -168,12 +172,11 @@ public class UserCSVHandler extends CSVHandler {
     }
 
     /**
-     * 
+     * Get the revenue by the ID,
      * @param id The id of the car.
      * @return A description of revenue based on the ID of the car.
      */
     public String getRevenueByID(int id) {
-        
         int numberSold = 0;
         double revenue = 0;
         for (User user : users.values()) {
@@ -184,11 +187,13 @@ public class UserCSVHandler extends CSVHandler {
                 }
             }
         }
-        return "The shop has made $" + String.format("%.2f", revenue) + " from selling " + numberSold + " of car ID " + id; 
+        return "The shop has made $" + String.format("%.2f", revenue) + " from selling " + numberSold + " of car ID " + id;
     }
 
     /**
      * Given a username and password, checks in the database to see if there's a match.
+     * @param username The username of the user.
+     * @param password The password of the user.
      * @return User object if there's a match, null if no match.
      */
     public User validateAndGetUser(String username, String password) {
@@ -198,14 +203,15 @@ public class UserCSVHandler extends CSVHandler {
             selected_user.getPassword().equals(password)
         ) {
             return selected_user;
-        } else {
+        } 
+        else {
             return null;
         }
     }
 
     /**
      * Adds a user to CSV file.
-     * @return true if successfully added, false otherwise.
+     * @return True if successfully added, false otherwise.
      */
     public boolean addUser(String username) {
         try {
@@ -227,6 +233,7 @@ public class UserCSVHandler extends CSVHandler {
     }
 
     /**
+     * Find the maximum ID of the users.
      * @return the maximum id of the users.
      */
     public int getMaximumID() {
@@ -241,6 +248,7 @@ public class UserCSVHandler extends CSVHandler {
 
     /**
      * Iterates through the users to ensure we cannot add a new user with a username that already exists.
+     * @return True if the user already exists, false otherwise.
      */
     public boolean userNameExists(String name) {
         for (String username : users.keySet()) {
@@ -251,6 +259,12 @@ public class UserCSVHandler extends CSVHandler {
         return false;
     }
 
+    /**
+     * Allows users to return cars.
+     * @param username The username of the user.
+     * @param id The ID of the car desired to return.
+     * @return True if the car is successfully returned, false otherwise.
+     */
     public boolean returnCar(String username, int id) {
         User selected_user = users.getOrDefault(username, null);
          
@@ -275,11 +289,10 @@ public class UserCSVHandler extends CSVHandler {
             selected_user.setBalance(Math.round((selected_user.getBalance() + reciept.getPrice()) * 100.0) / 100.0);
             selected_user.getTickets().remove(reciept);
             selected_user.setCarsPurchased(selected_user.getCarsPurchased() - 1);
-
-            //CarCSVHandler.getInstance().getCarByID(reciept.getID()).setVehiclesRemaining()
             updateCSV();
         }
 
         return true;
     }
+
 }

@@ -1,5 +1,4 @@
 package datautils;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.FileWriter;
@@ -11,25 +10,78 @@ import java.time.format.DateTimeFormatter;
  */
 public class Log implements DataHandler{
 
-    // static fields
-
+    /**
+     * Instance of log for writing to files.
+     */
     private static Log instance;
 
     /**
+     * File for filewriting.
+     */
+    private final File logfile;
+
+    /**
+     * Filewriter for writing to files.
+     */
+    private FileWriter logWriter;
+
+    /**
+     * The username to be added to the log.
+     */
+    private String username;
+
+    /**
+     * Get the log file.
+     * @return File to add log.
+     */
+    public File getLogfile() {
+        return logfile;
+    }
+
+    /**
+     * Get the logwriter.
+     * @return Logwriter.
+     */
+    public FileWriter getLogWriter() {
+        return logWriter;
+    }
+
+    /**
+     * Get the username to be added to log.
+     * @return The username to be added to log.
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * Set the username to be added to log.
+     * @param username The username to be added to log.
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
      * Singleton constructor
-     * Be sure to call this when the active user changes!!
-     * @param username the username to log as.
+     * Be sure to call this when the active user changes.
+     * @param username The username to log.
      */
     public static Log getInstance(String username) {
         if (instance == null) {
             instance = new Log(username);
-        } else {
+        } 
+        else {
             instance.username = username;
         }
 
         return instance;
     }
 
+    /**
+     * Get the singleton instance of the Log class.
+     * @return The instance of the class.
+     */
     public static Log getInstance() {
         if (instance == null) {
             throw new IllegalStateException("Log instance has not been initialized!");
@@ -38,26 +90,20 @@ public class Log implements DataHandler{
         return instance;
     }
 
-    // instance fields
-
-    private final File logfile;
-
-    private FileWriter logWriter;
-
-    private String username;
-
     /**
      * Private constructor to use with getInstance
+     * @param username The username to log.
      */
     private Log(String username) {
-        this.username = username;
+        setUsername(username);
 
-        // note that this path is relative to where you run the `java` command from.
+        // This path is relative to where you run the `java` command from.
         this.logfile = new File(DATADIR + "/log.log");
 
         try {
             this.logWriter = new FileWriter(this.logfile, true);
-        } catch (IOException e) {
+        } 
+        catch (IOException e) {
             System.out.println("Error while creating and opening log file!");
             e.printStackTrace();
             System.exit(1);
@@ -86,7 +132,7 @@ public class Log implements DataHandler{
         + this.username + ","
         + action;
         
-        // add extra comma & description if needed
+        // Add extra comma & description if needed.
         if (description.length() > 0) {
             toLog += "," + description;
         }
@@ -96,30 +142,12 @@ public class Log implements DataHandler{
         try {
             this.logWriter.write(toLog);
             this.logWriter.flush();
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             System.out.println("Error while writing to log file!");
             e.printStackTrace();
             System.exit(1);
         }
     }
-
-    // getters
-
-    public File getLogfile() {
-        return logfile;
-    }
-
-    public FileWriter getLogWriter() {
-        return logWriter;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    // setters
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
+   
 }

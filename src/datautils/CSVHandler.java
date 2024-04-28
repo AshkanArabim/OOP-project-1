@@ -1,5 +1,8 @@
 package datautils;
 
+/**
+ * Updates the appropriate CSV file.
+ */
 public abstract class CSVHandler implements DataHandler {
 
     /**

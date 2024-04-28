@@ -8,7 +8,9 @@ import entity.Ticket;
  */
 public class TicketTest {
     
-    // Reference to another Ticket object
+    /**
+     * Reference to another ticket object.
+     */
     static Ticket otherTicket;
     
     /**

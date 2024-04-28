@@ -1,17 +1,13 @@
 package UI;
-// import statements
-/************************************************************************/
 import java.io.IOException;
 import java.util.Scanner;
-/************************************************************************/
 
 /**
- * Utilities for the UI.
- * Includes functions such as "clear" for clearing the output, and "input" 
- * for getting user input. 
- * Note that this class is not instantiated. Use the methods directly.
+ * Utilities for the UI which include functions such as "clear" for clearing the output, and "input" for getting user input. 
+ * Note that this class is not instantiated and must use the methods directly.
  */
 public class Utils {
+
     /**
      * Dashes to enhance printing aesthetics.
      */
@@ -22,7 +18,7 @@ public class Utils {
     }
 
     /**
-     * Extra dashes to further enhance printing aesthetics.
+     * Dashes to further enhance printing aesthetics.
      */
     public static void longerLine() {
         System.out.println("");
@@ -53,26 +49,22 @@ public class Utils {
      * @return The user's decision.
      */
     public static String inputOneWord(String prompt) {
+
         System.out.print(prompt);
-        
         Scanner s = new Scanner(System.in);
-        // Not closing s because doing so will prevent me from reading System.in
-        // ever again. 
 
         return s.next();
     }
 
     /**
-     * Prompts the user to enter a line (everything until \n)
+     * Prompts the user to enter a line and reads everything until \n.
      * @param prompt Message displaying to the user.
      * @return The user's response.
      */
     public static String inputOneLine(String prompt) {
+
         System.out.print(prompt);
-        
         Scanner s = new Scanner(System.in);
-        // Not closing s because doing so will prevent me from reading System.in
-        // ever again. 
 
         return s.nextLine();
     }
@@ -82,17 +74,16 @@ public class Utils {
      * @param prompt Message displaying to the user.
      * @return The user's decision.
      */
-    public static int inputOneInt(String prompt) throws IOException{
+    public static int inputOneInt(String prompt) throws IOException {
+
         System.out.print(prompt);
-        
         Scanner s = new Scanner(System.in);
 
         try {
             return s.nextInt();
         }
         catch (java.util.InputMismatchException e) {
-            // in case the user inputs something other than an integer
-            throw new IOException();
+            throw new IOException(); // The user inputs something other than an integer.
         }
     }
 
@@ -101,25 +92,23 @@ public class Utils {
      * @param prompt Message displaying to the user.
      * @return The user's decision.
      */
-    public static double inputOneDouble(String prompt) throws IOException{
+    public static double inputOneDouble(String prompt) throws IOException {
+
         System.out.print(prompt);
-        
         Scanner s = new Scanner(System.in);
 
         try {
             return s.nextDouble();
         }
         catch (java.util.InputMismatchException e) {
-            // in case the user inputs something other than an integer
-            throw new IOException();
+            throw new IOException(); // The user inputs something other than an integer.
         }
     }
 
     /**
      * Prompts the user to enter an integer, and will repeat if the response is invalid.
      * @param prompt Message displaying to the user.
-     * @param options Valid integer options (useful in UI selection menus). 
-     *                Pass an int array of zero length to have unlimited range.
+     * @param options Valid integer options for UI selection menus and may pass an empty int array to have unlimited range.
      * @param negativeAllowed Whether or not negative integers are accepted.
      * @return The user's decision.
      */
@@ -128,26 +117,26 @@ public class Utils {
             try {
                 int response = inputOneInt(prompt);
 
-                // if negative not allowed but user gave a negative, error
+                // If negative not allowed but user gave a negative, error.
                 if (!negativeAllowed && response < 0){
                     throw new IOException();
                 }
 
-                // if no option restrictions, return response immediately
+                // If no option restrictions, return response immediately.
                 if (options.length == 0) {
                     return response;
                 }
 
-                // only return if response is in list of options
+                // Only return if response is in list of options.
                 for (int option : options) {
                     if (response == option) {
                         return response;
                     }
                 }
 
-                throw new IOException(); // if response is not a valid option
-            } catch (IOException e) {
-                // this will be added before the next prompt
+                throw new IOException(); // If response is not a valid option.
+            } 
+            catch (IOException e) {
                 System.out.print("[INVALID INPUT] ");
             }
         }
@@ -165,7 +154,7 @@ public class Utils {
             try {
                 String response = inputOneLine(prompt);
 
-                // only return if response is in list of options
+                // Only return if response is in list of options.
                 for (String option : options) {
                     if (response.equals(option)) {
                         return response;
@@ -173,8 +162,8 @@ public class Utils {
                 }
 
                 throw new IOException();
-            } catch (IOException e) {
-                // this will be added before the next prompt
+            } 
+            catch (IOException e) {
                 System.out.print("[INVALID INPUT] ");
             }
         }
@@ -194,16 +183,17 @@ public class Utils {
             try {
                 double response = inputOneDouble(prompt);
 
-                // check if the bounds match
+                // Check if the bounds match.
                 if (response > upperBound || response < lowerBound) {
                     throw new IOException();
                 }
 
                 return response;
-            } catch (IOException e) {
-                // this will be added before the next prompt
+            } 
+            catch (IOException e) {
                 System.out.print("[INVALID INPUT] ");
             }
         }
     }
+    
 }

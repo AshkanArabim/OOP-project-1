@@ -1,5 +1,8 @@
 package datautils;
 
+/**
+ * Classes that require loading a database may implement this interface and redefine the column attributes.
+ */
 public interface CSVLoadable {
 
     /**

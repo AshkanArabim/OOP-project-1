@@ -1,12 +1,10 @@
 package datautils;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
-
 import entity.Ticket;
 import vehicles.Car;
 import vehicles.CarFactory;
@@ -18,15 +16,42 @@ import entity.User;
  * UI-related methods do not print anything; they just return Strings.
  */
 public class CarCSVHandler extends CSVHandler {
-    
-    // static fields
 
     /**
      * A string to the directory of the Car Data CSV file.
      */
     private static final String CSVPATH = DATADIR + "/car_data.csv";
     
+    /**
+     * Contains Car objects from the CSV files.
+     */
+    private LinkedHashMap<Integer, Car> cars = new LinkedHashMap<>();
+
+    /**
+     * Singleton instance.
+     */
     private static CarCSVHandler instance;
+
+    
+    /**
+     * Determines the car attribute order when writing to the car data CSV file.
+     */
+    private String[] csvCols;
+    
+    /**
+     * Get the HashMap of cars.
+     * @return The HashMap of cars.
+     */
+    public LinkedHashMap<Integer, Car> getCars() {
+        return cars;
+    }
+
+    /**
+     * Private constructor to use with getInstance()
+     */
+    private CarCSVHandler() {
+        loadCars();
+    }
 
     /**
      * Singleton instance retreiver.
@@ -41,37 +66,19 @@ public class CarCSVHandler extends CSVHandler {
         return instance;
     }
 
-    // instance fields
-
     /**
-     * Determines the car attribute order when writing to the car data CSV file.
+     * Updates the car csv file.
      */
-    private String[] csvCols;
-
-    /**
-     * Contains Car objects from the CSV files.
-     */
-    // private ArrayList<Car> cars = new ArrayList<Car>();
-    private LinkedHashMap<Integer, Car> cars = new LinkedHashMap<>();
-
-    /**
-     * Private constructor to use with getInstance()
-     */
-    private CarCSVHandler() {
-        loadCars();
-    }
-
-    // note: javadoc for this method provided in parent class
     protected void updateCSV() {
         try {
             FileWriter fw = new FileWriter(CSVPATH);
 
-            // write csv's first line
+            // Write csv's first line.
             fw.write(String.join(",", csvCols));
             fw.write("\n");
             fw.flush();
 
-            // write one line per car
+            // Write one line per car.
             for (Map.Entry<Integer, Car> entry : cars.entrySet()) {
                 Car car = entry.getValue();
                 fw.write(String.join(",", car.colsToAttrs(csvCols)) + "\n");
@@ -79,7 +86,8 @@ public class CarCSVHandler extends CSVHandler {
             }
 
             fw.close();
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             System.out.println("Couldn't re-write CSV file: " + CSVPATH);
             e.printStackTrace();
             System.exit(1);
@@ -87,7 +95,7 @@ public class CarCSVHandler extends CSVHandler {
     }
 
     /**
-     * * Initialize the Cars ArrayList by reading from the Car Data CSV file.
+     * Initialize the Cars ArrayList by reading from the Car Data CSV file.
      * @param sourceCSV A string to the directory of the Car Data CSV file.
      */
     private void loadCars() {
@@ -96,7 +104,7 @@ public class CarCSVHandler extends CSVHandler {
         try {
             csvCarScanner = new Scanner(f); // Initialize the scanner with the File object.
 
-            // Grab the column headers to dynamically assign attributes in ordering of CSV changes
+            // Grab the column headers to dynamically assign attributes in ordering of CSV changes.
             csvCols = csvCarScanner.nextLine().split(",");
             CarFactory.setHeaders(csvCols);
             // Continue scanning while the file has lines.
@@ -114,12 +122,16 @@ public class CarCSVHandler extends CSVHandler {
         }
     }
     
+    /**
+     * String representation for printing.
+     * @return A string representation of the car csv file.
+     */
     @Override
     public String toString() {
         String outstr = "";
     
         for (Map.Entry<Integer, Car> entry : cars.entrySet()) {
-            outstr += entry.getValue() + "\n"; // car is automatically converted to String
+            outstr += entry.getValue() + "\n";
         }
 
         outstr += Car.getLegend();
@@ -147,6 +159,7 @@ public class CarCSVHandler extends CSVHandler {
 
     /**
      * Get a list of used cars in String form.
+     * @return A list of used cars as a String.
      */
     public String getUsedCarsList() {
         String outstr = "";
@@ -165,18 +178,25 @@ public class CarCSVHandler extends CSVHandler {
 
     /**
      * Get a car object based on the ID
+     * @param id ID of the car to be found.
      * @return Car object matching ID, or null if no match.
      */
     public Car getCarByID(int id) {
         return cars.get(id);
     }
 
+    /**
+     * Get the columns of the car data csv.
+     * @return The columns of the car data csv as a String array.
+     */
     public String[] getCsvColumns() {
         return this.csvCols;
     }
 
     /**
      * Checks if the purchase is possible
+     * @param id Car ID of desired car.
+     * @param user User purchasing the car.
      * @return {subtotal, total} if everything goes as expected
      * @return {-1} if invalid car ID
      * @return {-2} if out of stock
@@ -198,13 +218,13 @@ public class CarCSVHandler extends CSVHandler {
 
         double subTotal = desiredCar.getPrice();
         if (user.getIsMember()) {
-            // Apply discount if user is a member
+            // Apply discount if user is a member.
             subTotal = Math.round((subTotal - (.10 * subTotal)) * 100.0) / 100.0;
         }
-        // Add taxes
+        // Add taxes.
         double total = Math.round((subTotal + (.0625 * subTotal)) * 100.0) / 100.0;
         if (user.getBalance() < total) {
-            return new double[] {-3}; // insufficient funds
+            return new double[] {-3}; // Insufficient funds.
         }
 
         return new double[] {subTotal, total};
@@ -213,6 +233,9 @@ public class CarCSVHandler extends CSVHandler {
     /**
      * Purchases the case based on the ID for the user.
      * At this stage the id should be checked, and the user is assumed to have enough funds.
+     * @param id ID of the Car to be purchased.
+     * @param user User purchasing the car.
+     * @param total The total price of the purchase.
      * @return car ID if everything goes as expected.
      * @return -1 in case of an error.
      */
@@ -235,11 +258,6 @@ public class CarCSVHandler extends CSVHandler {
         
         // Add the ticket to the user's list of tickets.
         user.addTicket(ticket);
-
-        // TODO - (low priority) when we figure out a way to store and load tickets,
-        //  that class will be used here to update the corresponding CSV file for tickts.
-        // // Add the ticket to the shop's list of tickets.
-        // allTickets.add(ticket);
         
         // Update the user's number of cars purchased.
         user.setCarsPurchased(user.getCarsPurchased() + 1);
@@ -264,16 +282,16 @@ public class CarCSVHandler extends CSVHandler {
      */
     public int addCar(String[] carAttrs) {
 
-        CarFactory.setHeaders(csvCols); // setting headers again just to be safe
+        CarFactory.setHeaders(csvCols); // Set headers again.
         Car newCar = CarFactory.createCar(carAttrs);
 
-        // check if there's already a car in the database with same attributes (not considering ID)
+        // Check if there's already a car in the database with same attributes (not considering ID).
         boolean isRepeated = false;
         for (Map.Entry<Integer, Car> entry : cars.entrySet()) {
-            // if any of these is true, the whole thing will become true
+            // If any of these is true, the whole thing will become true.
             Car car = entry.getValue();
             isRepeated &= car.equals(newCar); 
-            if (isRepeated) { return -1; } // return immediately if repeated
+            if (isRepeated) { return -1; } // Return immediately if repeated.
         }
 
         int newCarID = getMaximumID() + 1;
@@ -292,8 +310,6 @@ public class CarCSVHandler extends CSVHandler {
      * @return True if the car was successfully removed, false otherwise.
      */
     public boolean removeCar(int id) {
-
-        // Remove if the id exists. If not, return false
         if (cars.containsKey(id)) {
             cars.remove(id);
             updateCSV();
@@ -304,8 +320,8 @@ public class CarCSVHandler extends CSVHandler {
 
     /**
      * Ensures the ID is in the arrayList of cars beforehand for tasks such as removing or obtaining revenue.
-     * @param id
-     * @return true if the cars arraylist has the ID, false otherwise.
+     * @param id ID of the car.
+     * @return True if the cars arraylist has the ID, false otherwise.
      */
     public boolean validateID(int id) {
         return cars.containsKey(id);
@@ -313,7 +329,7 @@ public class CarCSVHandler extends CSVHandler {
 
     /**
      * Returns the maximum id of cars for tasks like returning a car or adding a car.
-     * @return maximum car id.
+     * @return Maximum car id.
      */
     public int getMaximumID() {
         int max = Integer.MIN_VALUE;
@@ -323,16 +339,12 @@ public class CarCSVHandler extends CSVHandler {
                 max = car.getCarID();
             }
         }
-        System.out.println("max id is " + max);
         return max;
-    }
-
-    public LinkedHashMap<Integer, Car> getCars() {
-        return cars;
     }
 
     /**
      * Increments the number of cars with a specified ID.
+     * @param id ID of the car to be incremented.
      * @return true if operation was successful, false if not (car id not in database)
      */
     public boolean incrementCarCount(int id) {
@@ -346,4 +358,5 @@ public class CarCSVHandler extends CSVHandler {
 
         return false;
     }
+
 }
