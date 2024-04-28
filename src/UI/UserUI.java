@@ -105,7 +105,8 @@ public class UserUI extends UI{
                 else {
                     throw new IOException();
                 }
-            } catch (IOException e) {
+            } 
+            catch (IOException e) {
                 Utils.clear();
                 Utils.invalidInput();
             }

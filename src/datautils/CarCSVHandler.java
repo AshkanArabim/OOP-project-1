@@ -323,7 +323,10 @@ public class CarCSVHandler extends CSVHandler {
      * @param id ID of the car.
      * @return True if the cars arraylist has the ID, false otherwise.
      */
-    public boolean validateID(int id) {
+    public boolean validateID(int id) throws CarNotFoundException {
+        if (!cars.containsKey(id)) {
+            throw new CarNotFoundException(id);
+        }
         return cars.containsKey(id);
     }
 

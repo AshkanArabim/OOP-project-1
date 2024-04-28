@@ -1,8 +1,11 @@
 package UI;
 import java.io.IOException;
 import java.util.Arrays;
+
+import datautils.CarNotFoundException;
 import datautils.Log;
 import entity.Admin;
+import vehicles.Car;
 
 /**
  * Login screen for admins that enable them to interact with the system.
@@ -92,12 +95,18 @@ public class AdminUI extends UI{
                 } 
                 else if (command == 5) {
                     int id = Utils.inputOneInt("Enter ID of car: ");
-                    if (CARDATA.validateID(id)) {
-                        System.out.println(USERDATA.getRevenueByID(id));
-                        log.addLogEntry("view revenue of car: " + id, "");
+                    try {
+
+                        if (CARDATA.validateID(id)) {
+                            System.out.println(USERDATA.getRevenueByID(id));
+                            log.addLogEntry("view revenue of car: " + id, "");
+                        }
+                        else {
+                            Utils.invalidInput();
+                        }
                     }
-                    else {
-                        Utils.invalidInput();
+                    catch (CarNotFoundException cnfe) {
+                        System.out.println("Could not find that car.");
                     }
                 } 
                 else if (command == 6) {
@@ -110,15 +119,20 @@ public class AdminUI extends UI{
                 } 
                 else if (command == 7) {
                     int id = Utils.inputOneInt("Enter ID of car to remove: ");
-                    if (CARDATA.validateID(id)) {
-                        CARDATA.removeCar(id);
-                        log.addLogEntry("remove car: " + id, "");
-                        Utils.clear();
-                        System.out.println("Successfully removed car: " + id);
+                    try {
+                        if (CARDATA.validateID(id)) {
+                            CARDATA.removeCar(id);
+                            log.addLogEntry("remove car: " + id, "");
+                            Utils.clear();
+                            System.out.println("Successfully removed car: " + id);
+                        }
+                        else {
+                            Utils.clear();
+                            Utils.invalidInput();
+                        }
                     }
-                    else {
-                        Utils.clear();
-                        Utils.invalidInput();
+                    catch (CarNotFoundException cnfe) {
+                        System.out.println("Could not find that car.");
                     }
                 } 
                 else if (command == 8) {
