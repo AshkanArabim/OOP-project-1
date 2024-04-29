@@ -6,7 +6,8 @@ package datautils;
 public interface CSVLoadable {
 
     /**
-     * Returns a sequence of corresponding attributes in the same order as given CSV columns.
+     * @param cols The columns of the CSV file.
+     * @return A sequence of corresponding attributes in the same order as given CSV columns.
      */
     public String[] colsToAttrs(String[] cols);
 

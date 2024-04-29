@@ -225,7 +225,9 @@ public class UserUI extends UI{
 
     /**
      * Ensures the user wants to make the purchase.
-     * @param id index (real, so subtract by 1 if passing from purchaseCar) of the car the user wants to buy
+     * @param carID Index (real, so subtract by 1 if passing from purchaseCar) of the car the user wants to buy.
+     * @param subtotal The price before taxes.
+     * @param total The price after taxes.
      * @return True if the customer wishes to proceed with the purchase, False if the user changed their mind.
      */
     private boolean confirmPurchase(int carID, double subtotal, double total) {

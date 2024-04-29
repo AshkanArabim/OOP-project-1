@@ -85,7 +85,6 @@ public class UserCSVHandler extends CSVHandler {
 
     /**
      * Initialize the Users HashMap by reading from the User Data CSV file.
-     * @param sourceCSV A string to the directory of the User Data CSV file.
      */
     private void loadUsers () {
         File f = new File(CSVPATH); // File to scan input of.
@@ -211,6 +210,7 @@ public class UserCSVHandler extends CSVHandler {
 
     /**
      * Adds a user to CSV file.
+     * @param username The username of the user.
      * @return True if successfully added, false otherwise.
      */
     public boolean addUser(String username) {
@@ -248,6 +248,7 @@ public class UserCSVHandler extends CSVHandler {
 
     /**
      * Iterates through the users to ensure we cannot add a new user with a username that already exists.
+     * @param name The username of the user.
      * @return True if the user already exists, false otherwise.
      */
     public boolean userNameExists(String name) {

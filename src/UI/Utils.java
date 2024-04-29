@@ -73,6 +73,7 @@ public class Utils {
      * Prompts the user to enter an integer.
      * @param prompt Message displaying to the user.
      * @return The user's decision.
+     * @throws IOException If the user enters anything alphabetic.
      */
     public static int inputOneInt(String prompt) throws IOException {
 
@@ -91,6 +92,7 @@ public class Utils {
      * Prompts the user to enter an integer.
      * @param prompt Message displaying to the user.
      * @return The user's decision.
+     * @throws IOException If the user enters anything alphabetic.
      */
     public static double inputOneDouble(String prompt) throws IOException {
 
@@ -172,9 +174,9 @@ public class Utils {
     /**
      * Prompts the user to enter a double, and will repeat if the response is invalid.
      * @param prompt Message displaying to the user.
-     * @param lowerRange Inclusive lower range of allowed inputs.
+     * @param lowerBound Inclusive lower range of allowed inputs.
      *                   To ignore, pass a Double.NEGATIVE_INFINITY
-     * @param upperRange Inclusive upper range of allowed inputs.
+     * @param upperBound Inclusive upper range of allowed inputs.
      *                   To ignore, pass a Double.POSITIVE_INFINITY
      * @return The user's decision.
      */

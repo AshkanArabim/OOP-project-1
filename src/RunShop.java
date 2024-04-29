@@ -39,7 +39,7 @@ public class RunShop {
     /**
      * Main method.
      * 
-     * @param args
+     * @param args Arugments passed to the main method, assumed to be empty.
      */    
     public static void main(String[] args) {
         loginScreen();

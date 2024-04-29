@@ -96,7 +96,6 @@ public class CarCSVHandler extends CSVHandler {
 
     /**
      * Initialize the Cars ArrayList by reading from the Car Data CSV file.
-     * @param sourceCSV A string to the directory of the Car Data CSV file.
      */
     private void loadCars() {
         File f = new File(CSVPATH); // File to scan the input of.
@@ -141,6 +140,7 @@ public class CarCSVHandler extends CSVHandler {
 
     /**
      * Get a list of new cars in String form.
+     * @return A string of new cars.
      */
     public String getNewCarsList() {
         String outstr = "";
@@ -197,10 +197,7 @@ public class CarCSVHandler extends CSVHandler {
      * Checks if the purchase is possible
      * @param id Car ID of desired car.
      * @param user User purchasing the car.
-     * @return {subtotal, total} if everything goes as expected
-     * @return {-1} if invalid car ID
-     * @return {-2} if out of stock
-     * @return {-3} if insufficient funds
+     * @return {subtotal, total} if everything goes as expected, otherwise {-1} if invalid car ID, {-2} if out of stock, {-3} if insufficient funds.
      */
     public double[] validatePurchase(int id, User user) {
         Car desiredCar = getCarByID(id);
@@ -236,8 +233,7 @@ public class CarCSVHandler extends CSVHandler {
      * @param id ID of the Car to be purchased.
      * @param user User purchasing the car.
      * @param total The total price of the purchase.
-     * @return car ID if everything goes as expected.
-     * @return -1 in case of an error.
+     * @return Car ID if everything goes as expected, -1 in case of an error.
      */
     public int purchaseCar(int id, User user, double total) {
         
@@ -245,7 +241,7 @@ public class CarCSVHandler extends CSVHandler {
         // At this piont we assume the id is always correct.
         Car desiredCar = getCarByID(id); 
 
-        // Create a ticket
+        // Create a ticket.
         Ticket ticket = new Ticket(
             desiredCar.getType(),
             desiredCar.getModel(),
@@ -322,6 +318,7 @@ public class CarCSVHandler extends CSVHandler {
      * Ensures the ID is in the arrayList of cars beforehand for tasks such as removing or obtaining revenue.
      * @param id ID of the car.
      * @return True if the cars arraylist has the ID, false otherwise.
+     * @throws CarNotFoundException If the user enters an invalid CAr ID.
      */
     public boolean validateID(int id) throws CarNotFoundException {
         if (!cars.containsKey(id)) {

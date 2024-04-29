@@ -66,6 +66,7 @@ public class Log implements DataHandler{
      * Singleton constructor
      * Be sure to call this when the active user changes.
      * @param username The username to log.
+     * @return The singleton instance of the Log class.
      */
     public static Log getInstance(String username) {
         if (instance == null) {
@@ -120,7 +121,7 @@ public class Log implements DataHandler{
      * @param description More details about the action performed, including the
      *                    subject.
      *                    For example, if user bought car X, simply write "User
-     *                    bought car <carname>".
+     *                    bought car `carname`".
      *                    DO NOT explain what an action is. That's just clutter.
      */
     public void addLogEntry(String action, String description) {
